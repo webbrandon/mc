@@ -1,0 +1,15 @@
+[package]
+name = "mc"
+version = "0.1.0"
+authors = ["Brandon Clark <brandon.clark@leafgroup.com>"]
+build = "src/build.rs"
+
+[build-dependencies]
+clap = "2.32"
+
+[dependencies]
+clap = "2.32"
+handlebars = "1.0.1"
+run_script = "0.1.20"
+serde_json = "1.0.26"
+yaml-rust = "0.4"

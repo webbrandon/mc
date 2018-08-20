@@ -1,0 +1,16 @@
+api: makeconfig
+version: beta/1
+metadata:
+  name: mc
+  description: "A long sentence..."
+specs:
+  template:
+    file: ./sample/sample.template
+  parameters:
+    file: ./sample/sample.params
+  template-out:
+    file: sample.out
+  script:
+    file: ./sample/sample.script
+  post-script:
+    file: ./sample/sample.post-script
