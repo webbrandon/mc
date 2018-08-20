@@ -1,6 +1,6 @@
 # Master of Ceremony
 
-**About**
+**About**   
 This is a build tool similar to other build tools like `make` and `go`'s `template` package but bundled into one.  What it does is provide modern way of configuring and running your build scripts.  Either by setting the command line options or via `Makeconfig` file you can assign your build takes.  Your build can begin with configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script with the use of a single command; `mc`.
 
 ## USAGE
@@ -11,7 +11,7 @@ If no `config-file` is assigned `mc` will look in its current base path for a `M
 
 If you would like to use the config option and keep it to a single command line you can use the bellow listed options to set your build.
 
-**Command Line**
+**Command Line**   
 ```bash
 mc [OPTIONS]
 
@@ -29,7 +29,7 @@ OPTIONS:
 ---    
 To make use of a single file(`Makeconfig`) and single command(`mc`) to control you build process you can use the below bootstrap example(documentation to come).  
     
-**Makeconfig**
+**Makeconfig**   
 ```YAML
 api: makeconfig
 version: beta/1
@@ -49,5 +49,5 @@ specs:
     file: ./sample/sample.post-script
 ```
 
-## License
+## License  
 WFYW (What Ever The <s>Fuck</s> You Want) 1.0
