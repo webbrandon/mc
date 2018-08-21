@@ -1,7 +1,7 @@
 # Master of Ceremony
 
 **About**   
-This is a build tool similar to other build tools like `make` and `go`'s `template` package but bundled into one.  What it does is provide modern way of configuring and running your build scripts.  Either by setting the command line options or via `Makeconfig` file you can assign your build takes.  Your build can begin with configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script with the use of a single command; `mc`.
+This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template pacjage.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
 
 ## USAGE
 
@@ -50,4 +50,4 @@ specs:
 ```
 
 ## License  
-WFYW (What Ever The <s>Fuck</s> You Want) 1.0
+WFYW (Whatever <s>Fuck</s> You Want) 1.0
