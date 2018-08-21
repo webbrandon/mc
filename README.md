@@ -49,5 +49,14 @@ specs:
     file: ./sample/sample.post-script
 ```
 
+## Build From Source
+If you are building from source you will need to have the [Rust language ](https://rustup.rs/) application suite installed and download the [source code](webbrandon.github.io/mc).  I have built and tested for linux and OSX only.  If you try on Windows please let me know how it goes.
+
+Stable build last compiled with with [Rust version 1.28.0](https://rustup.rs/).
+
+```bash
+cargo install
+```
+
 ## License  
 WFYW (Whatever <s>Fuck</s> You Want) 1.0
