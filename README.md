@@ -1,7 +1,7 @@
 # Master of Ceremony
 
 **About**   
-This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template pacjage.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig.yaml` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
+This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template package.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig.yaml` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
 
 ## USAGE
 
@@ -56,7 +56,8 @@ If you are building from source you will need to have the [Rust language ](https
 Stable build last compiled with with [Rust version 1.28.0](https://rustup.rs/).
 
 ```bash
-cargo install
+cargo build
+cargo install --force
 ```
 
 ## License  
