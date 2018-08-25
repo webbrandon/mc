@@ -17,6 +17,8 @@ fn main() {
     let request = &mut Configs::process_args(&matches);
     let mut scripts = Scripts::new();
     let mut templates = Template::new();
+    let mute = &matches.is_present("mute");
+    
     templates.load_templates(request);
     scripts.load_scripts(request);
     

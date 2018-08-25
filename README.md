@@ -5,7 +5,7 @@ This is a build tool similar to other build tools.  It's like `make` on steriods
 
 ## USAGE
 
-If no `config-file` is assigned `mc` will look in its current base path for a `Makeconfig` from which it is ran; with or without the _yaml_ mime type.  When you use option parameters they will override the existence of a `Makeconfig`.  
+If no `file` is assigned `mc` will look in its current base path for a `Makeconfig` from which it is ran; with or without the _yaml_ mime type.  When you use option parameters they will override the existence of a `Makeconfig`.  
 
 ---
 
@@ -19,12 +19,13 @@ FLAGS:
     -h, --help    Prints help information
 
 OPTIONS:
-    -c, --config-file <CONFIG>         Sets the "Makeconfig" file to use.
+    -f, --file <CONFIG>                Sets the "Makeconfig" file to use.
     -p, --params <PARAMS>              Sets a custom template parameters file.
     -S, --post-script <POST_SCRIPT>    Sets the script file to use after configuring template.
     -s, --script <SCRIPT>              Sets the script file to use for setting template parameters.
     -t, --template <TEMPLATE>          Sets a custom template file
     -o, --template-out <OUT>           Rendered template out file write location.
+    -m, --mute                         Silence output.
 ```
 ---    
 To make use of a single file(`Makeconfig`) and single command(`mc`) to control you build process you can use the below bootstrap example(documentation to come).  
