@@ -7,5 +7,6 @@
 
 ## Feature
 - Build in Docker/OCI, default to mc tools based container.
+- Script and template remote download.
 
 
