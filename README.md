@@ -1,11 +1,11 @@
 # Master of Ceremony
 
 **About**   
-This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template pacjage.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
+This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template pacjage.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig.yaml` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
 
 ## USAGE
 
-If no `file` is assigned `mc` will look in its current base path for a `Makeconfig` from which it is ran; with or without the _yaml_ mime type.  When you use option parameters they will override the existence of a `Makeconfig`.  
+If no `file` is assigned `mc` will look in its current base path for a `Makeconfig.yaml` from which it is ran.  When you use option parameters they will override the existence of a `Makeconfig.yaml`.  
 
 ---
 
@@ -19,7 +19,7 @@ FLAGS:
     -h, --help    Prints help information
 
 OPTIONS:
-    -f, --file <CONFIG>                Sets the "Makeconfig" file to use.
+    -f, --file <CONFIG>                Sets the "Makeconfig.yaml" file to use.
     -p, --params <PARAMS>              Sets a custom template parameters file.
     -S, --post-script <POST_SCRIPT>    Sets the script file to use after configuring template.
     -s, --script <SCRIPT>              Sets the script file to use for setting template parameters.
@@ -28,7 +28,7 @@ OPTIONS:
     -m, --mute                         Silence output.
 ```
 ---    
-To make use of a single file(`Makeconfig`) and single command(`mc`) to control you build process you can use the below bootstrap example(documentation to come).  
+To make use of a single file(`Makeconfig.yaml`) and single command(`mc`) to control you build process you can use the below bootstrap example(documentation to come).  
     
 **Makeconfig**   
 ```YAML
