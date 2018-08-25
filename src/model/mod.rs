@@ -12,7 +12,7 @@ pub fn run_build_script(script: &String) -> String {
     options.runner = None; 
     options.capture_output = true; 
     options.exit_on_error = false; 
-    options.print_commands = false;
+    options.print_commands = true;
 
     let args = vec![];
 
@@ -24,7 +24,7 @@ pub fn run_build_script(script: &String) -> String {
     if code == 0 {
         output
     } else {
-        println!("{}", error);
+        println!("{} : {}", code, error);
         bad_format_close_app();
     }
 }
