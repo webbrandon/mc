@@ -14,7 +14,7 @@ impl Configs {
             request.set_script(matches.value_of("script").unwrap_or("").to_owned());
             request.set_post_script(matches.value_of("post-script").unwrap_or("").to_owned());
         } else {
-            let makeconfig = matches.value_of("config").unwrap_or("Makeconfig");
+            let makeconfig = matches.value_of("config").unwrap_or("Makeconfig.yaml");
             let s = file_to_string(makeconfig);
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
