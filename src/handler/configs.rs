@@ -18,11 +18,24 @@ impl Configs {
             let s = file_to_string(makeconfig);
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
+                let param_location = doc["specs"]["parameters"]["type"].as_str().unwrap_or("").to_owned();
                 request.set_template(doc["specs"]["template"]["file"].as_str().unwrap_or("").to_owned());
-                request.set_params(doc["specs"]["parameters"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_render(doc["specs"]["template-out"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_script(doc["specs"]["script"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_post_script(doc["specs"]["post-script"]["file"].as_str().unwrap_or("").to_owned());
+                if param_location == "Url".to_string() {
+                    let mut url:String = String::new();
+                    let remote_check = &doc["specs"]["parameters"]["host"].as_str().unwrap_or("").to_owned()[..4].to_string();
+                    if ! remote_check.contains("http") {
+                        url.push_str("http://");
+                    } 
+                    url.push_str(&doc["specs"]["parameters"]["host"].as_str().unwrap_or("").to_owned());
+                    url.push_str(&doc["specs"]["parameters"]["path"].as_str().unwrap_or("").to_owned());
+                    request.set_params(url);
+                } else if param_location == "File".to_string() {
+                    request.set_params(doc["specs"]["parameters"]["path"].as_str().unwrap_or("").to_owned());
+                }
+                
             }
         }
         request

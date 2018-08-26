@@ -7,7 +7,11 @@ specs:
   template:
     file: ./sample/sample.template
   parameters:
-    file: ./sample/sample.params
+    type: Url
+    host: localhost:3000
+    path: /my-config/1031
+    # type: File
+    # path: ./sample/sample.params
   template-out:
     file: sample.out
   script:

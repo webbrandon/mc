@@ -33,7 +33,13 @@ impl Template {
     }
     pub fn load_templates(&mut self, request: &mut Configs) -> &Template {
         if request.has_params() && request.has_template() {
-            self.set_params(file_to_string(request.params()));
+            let remote_check = &request.params()[..4].to_string();
+            if remote_check.contains("http") {
+                let json = "{\"name\": \"Brandon\"}".to_string();
+                self.set_params(json);
+            } else {
+                self.set_params(file_to_string(request.params()));
+            }
             self.set_template(file_to_string(request.template()));
         }
         self
