@@ -1,7 +1,4 @@
 use std::fmt;
-use file::parse_json;
-use std::process;
-use handlebars::Handlebars;
 use file::file_to_string;
 use model::{Configs};
 
@@ -28,6 +25,12 @@ impl Template {
     pub fn set_render(&mut self, render: String) {
         self.render = render;
     }
+    pub fn params(&mut self) -> &String {
+        &self.params
+    }
+    pub fn template(&mut self) -> &String {
+        &self.template
+    }
     pub fn render(&mut self) -> &String {
         &self.render
     }
@@ -43,23 +46,6 @@ impl Template {
             self.set_template(file_to_string(request.template()));
         }
         self
-    }
-    pub fn render_template(&mut self) -> &String {
-        let json = parse_json(&self.params);
-        let mut handlebars = Handlebars::new();
-        handlebars
-            .register_template_string("template", &self.template)
-            .ok()
-            .unwrap();
-        match handlebars.render("template", &json) {
-            Ok(data) => {
-                self.set_render(data);
-                &self.render
-            }
-            Err(_e) => {
-                process::exit(2);
-            }
-        }
     }
 }
 
