@@ -24,7 +24,7 @@ OPTIONS:
     -b, --build-script <BUILD_SCRIPT>      Sets the script file to use for setting building software.
     -f, --file <CONFIG>                    Sets the "Makeconfig" file to use.
     -d, --deploy-script <DEPLOY_SCRIPT>    Sets the script file to use after _build script_.
-    -p, --param_script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
+    -c, --param-script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
     -p, --param <PARAM>                    Sets a custom template parameters file.
     -s, --post-script <POST_SCRIPT>        Sets the script file to use after configuring template.
     -t, --template <TEMPLATE>              Sets a custom template file
