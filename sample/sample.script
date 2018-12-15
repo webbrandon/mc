@@ -1,2 +1,4 @@
 #!/bin/bash
 printf "Starting Master of Ceremony (mc)."
+
+exit 0

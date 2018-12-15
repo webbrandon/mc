@@ -1,2 +1,4 @@
 #!/bin/bash
 printf "Goodbye"
+
+exit 0

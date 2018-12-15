@@ -28,22 +28,35 @@ fn main() {
     templates.load_templates(&mut request);
     scripts.load_scripts(&mut request); 
     
-    if request.has_script() {
-        log_it(mute, scripts.process_script().to_owned());
-        // Need to dig deep I did something that took ownership so I reinitialize with Configs.
-        scripts = Scripts::new();
-        scripts.load_scripts(&mut request); 
+    if request.has_build_script() {
+        log_it(mute, scripts.process_build_script().to_owned());
     }
     
     if request.has_template() && request.has_params() {
         templates.render_template();
+        if request.has_param_script() {
+            // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+            scripts = Scripts::new();
+            scripts.load_scripts(&mut request); 
+            log_it(mute, scripts.process_param_script().to_owned());
+        }
         if request.has_render() {
             file::outfile(request.render(), templates.render());
             log_it(mute, templates.render().to_string());
         }
     }
     
+    if request.has_deploy_script() {
+        // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+        scripts = Scripts::new();
+        scripts.load_scripts(&mut request); 
+        log_it(mute, scripts.process_deploy_script().to_owned());
+    }
+    
     if request.has_post_script() {
-        log_it(mute, scripts.process_post_script());
+        // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+        scripts = Scripts::new();
+        scripts.load_scripts(&mut request); 
+        log_it(mute, scripts.process_post_script());        
     }
 }

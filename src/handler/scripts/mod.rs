@@ -3,7 +3,7 @@ use run_script::ScriptOptions;
 use file::bad_format_close_app;
 pub use model::{Scripts};
 
-pub fn run_build_script(script: &String) -> String {
+pub fn run_script(script: &String) -> String {
     let mut options = ScriptOptions::new();
     options.runner = None; 
     options.capture_output = true; 
@@ -26,13 +26,21 @@ pub fn run_build_script(script: &String) -> String {
 }
 
 impl Scripts {
-    pub fn process_script(mut self) -> String {
-        let script = &self.script();
-        run_build_script(&script)
+    pub fn process_build_script(mut self) -> String {
+        let script = &self.build_script();
+        run_script(&script)
+    }
+    pub fn process_param_script(mut self) -> String {
+        let script = &self.param_script();
+        run_script(&script)
+    }
+    pub fn process_deploy_script(mut self) -> String {
+        let script = &self.deploy_script();
+        run_script(&script)
     }
     pub fn process_post_script(mut self) -> String {
         let script = &self.post_script();
-        run_build_script(&script)
+        run_script(&script)
     }
 }
 
