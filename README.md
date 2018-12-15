@@ -20,9 +20,10 @@ FLAGS:
 
 OPTIONS:
     -f, --file <CONFIG>                Sets the "Makeconfig.yaml" file to use.
-    -p, --params <PARAMS>              Sets a custom template parameters file.
-    -S, --post-script <POST_SCRIPT>    Sets the script file to use after configuring template.
-    -s, --script <SCRIPT>              Sets the script file to use for setting template parameters.
+    -p, --params <PARAMS>,...          Sets a custom template parameters file.
+    -s, --post-script <POST_SCRIPT>    Sets the script file to use after configuring template.
+    -b, --build-script <BUILD_SCRIPT>  Sets the script file to use for setting template parameters.
+    -d, --deploy-script <DEPLOY_SCRIPT>Sets the script file to use for deployment.
     -t, --template <TEMPLATE>          Sets a custom template file
     -o, --template-out <OUT>           Rendered template out file write location.
     -m, --mute                         Silence output.
@@ -41,10 +42,12 @@ specs:
   template:
     file: ./sample/sample.template
   parameters:
-    file: ./sample/sample.params
+    type: File
+    path: ./sample/sample.params
+    create: ./sample/sample.params-script
   template-out:
     file: sample.out
-  script:
+  build-script:
     file: ./sample/sample.script
   post-script:
     file: ./sample/sample.post-script
@@ -53,7 +56,7 @@ specs:
 ## Build From Source
 If you are building from source you will need to have the [Rust language ](https://rustup.rs/) application suite installed and download the [source code](https://webbrandon.github.io/mc).  I have built and tested for linux and OSX only.  If you try on Windows please let me know how it goes.
 
-Stable build last compiled with with [Rust version 1.28.0](https://rustup.rs/).
+Stable build last compiled with with [Rust version 1.31.0](https://rustup.rs/).
 
 ```bash
 cargo build

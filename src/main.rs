@@ -20,27 +20,43 @@ fn log_it(mute: bool, content: String) {
 
 fn main() {
     let matches = cli::build_cli().get_matches();
-    let request = &mut Configs::process_args(&matches);
+    let mut request = Configs::process_args(&matches);
     let mut scripts = Scripts::new();
     let mut templates = Template::new();
     let mute = matches.is_present("mute");
     
-    templates.load_templates(request);
-    scripts.load_scripts(request);
+    templates.load_templates(&mut request);
+    scripts.load_scripts(&mut request); 
     
-    if request.has_script() {
-        log_it(mute, scripts.process_script());
+    if request.has_build_script() {
+        log_it(mute, scripts.process_build_script().to_owned());
     }
     
     if request.has_template() && request.has_params() {
         templates.render_template();
+        if request.has_param_script() {
+            // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+            scripts = Scripts::new();
+            scripts.load_scripts(&mut request); 
+            log_it(mute, scripts.process_param_script().to_owned());
+        }
         if request.has_render() {
             file::outfile(request.render(), templates.render());
             log_it(mute, templates.render().to_string());
         }
     }
     
+    if request.has_deploy_script() {
+        // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+        scripts = Scripts::new();
+        scripts.load_scripts(&mut request); 
+        log_it(mute, scripts.process_deploy_script().to_owned());
+    }
+    
     if request.has_post_script() {
-        log_it(mute, scripts.process_post_script());
+        // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+        scripts = Scripts::new();
+        scripts.load_scripts(&mut request); 
+        log_it(mute, scripts.process_post_script());        
     }
 }

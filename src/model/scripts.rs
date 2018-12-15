@@ -1,71 +1,68 @@
 use file::file_to_string;
 use std::fmt;
-use run_script;
-use run_script::ScriptOptions;
-use file::bad_format_close_app;
 use model::{Configs};
 
-pub fn run_build_script(script: &String) -> String {
-    let mut options = ScriptOptions::new();
-    options.runner = None; 
-    options.capture_output = true; 
-    options.exit_on_error = false; 
-    options.print_commands = true;
-
-    let args = vec![];
-
-    let (code, output, error) = run_script::run(
-        script,
-        &args,
-        &options,
-    ).unwrap();
-    if code == 0 {
-        output
-    } else {
-        println!("{} : {}", code, error);
-        bad_format_close_app();
-    }
-}
-
 pub struct Scripts {
-    pre: String,
-    post: String
+    build: String,
+    param: String,
+    post: String,
+    deploy: String
 }
 
 impl Scripts {
     pub fn new() -> Scripts {
         Scripts {
-            pre: String::new(),
-            post: String::new()
+            build: String::new(),
+            param: String::new(),
+            post: String::new(),
+            deploy: String::new()
         }
     }
-    pub fn set_script(&mut self, pre: String) {
-        self.pre = pre;
+    pub fn set_build_script(&mut self, build: String) {
+        self.build = build;
+    }
+    pub fn set_param_script(&mut self, param: String) {
+        self.param = param;
+    }
+    pub fn set_deploy_script(&mut self, deploy: String) {
+        self.deploy = deploy;
     }
     pub fn set_post_script(&mut self, post: String) {
         self.post = post;
     }
+    pub fn build_script(&mut self) -> &String {
+        &self.build
+    }
+    pub fn param_script(&mut self) -> &String {
+        &self.param
+    }
+    pub fn post_script(&mut self) -> &String {
+        &self.post
+    }
+    pub fn deploy_script(&mut self) -> &String {
+        &self.deploy
+    }
     pub fn load_scripts(&mut self, request: &mut Configs) -> &Scripts {
-        if request.has_script() {
-            self.set_script(file_to_string(request.script()));
+        if request.has_build_script() {
+            self.set_build_script(file_to_string(request.build_script()));
+        }
+        if request.has_param_script() {
+            self.set_param_script(file_to_string(request.param_script()));
+        }
+        if request.has_deploy_script() {
+            self.set_deploy_script(file_to_string(request.deploy_script()));
         }
         if request.has_post_script() {
             self.set_post_script(file_to_string(request.post_script()));
         }
         self
     }
-    pub fn process_script(&mut self) -> String {
-        run_build_script(&self.pre)
-    }
-    pub fn process_post_script(&mut self) -> String {
-        run_build_script(&self.post)
-    }
 }
 
 impl fmt::Debug for Scripts {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Scripts {{\n\t pre: \n{}\n\t post: \n{}\n}}",
-        self.pre, self.post)
+        write!(f, "Scripts {{\n\t build: \n{}\n\t post: \n{}\n\t deploy: \n{}\n}}",
+        self.build, self.post, self.deploy)
     }
 }
 

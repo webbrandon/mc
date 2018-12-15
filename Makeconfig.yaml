@@ -7,10 +7,17 @@ specs:
   template:
     file: ./sample/sample.template
   parameters:
-    file: ./sample/sample.params
+    # type: Url
+    # host: localhost:3000
+    # path: /my-config/1031
+    type: File
+    path: ./sample/sample.params
+    create: ./sample/sample.params-script
   template-out:
     file: sample.out
-  script:
-    file: ./sample/sample.script
+  build-script:
+    file: ./sample/sample.build-script
   post-script:
     file: ./sample/sample.post-script
+  deploy-script:
+    file: ./sample/sample.deploy-script

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "{" > sample.params
+echo "\"name\": \"Brandon\"" >> sample.params
+echo "}" >> sample.params
+
+exit 0
