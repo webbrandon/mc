@@ -3,6 +3,12 @@
 **About**   
 This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template package.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig.yaml` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
 
+## Install
+You can build from source or with the provided install script for pre built binaries.
+```bash
+curl https://webbrandon.github.io/mc/install.sh -sSf | sh
+```
+
 ## USAGE
 
 If no `file` is assigned `mc` will look in its current base path for a `Makeconfig.yaml` from which it is ran.  When you use option parameters they will override the existence of a `Makeconfig.yaml`.  
