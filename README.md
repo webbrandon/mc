@@ -6,7 +6,7 @@ This is a build tool similar to other build tools.  It's like `make` on steriods
 ## Install
 You can build from source or with the provided install script for pre built binaries.
 ```bash
-curl https://webbrandon.github.io/mc/install.sh -sS | sh
+curl https://webbrandon.github.io/mc/install.sh -sS | bash -s
 ```
 
 ## USAGE
