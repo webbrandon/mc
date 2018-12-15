@@ -7,6 +7,24 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
   echo "Installing Master of Ceremony ${VERSION}"
   chmod +x debian
   mv debian /usr/local/bin/mc
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+  echo "Downloading debian client."
+  curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/debian
+  echo "Installing Master of Ceremony ${VERSION}"
+  chmod +x debian
+  mv debian /usr/local/bin/mc
+elif [[ "$OSTYPE" == "msys" ]]; then
+  echo "Downloading debian client."
+  curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/debian
+  echo "Installing Master of Ceremony ${VERSION}"
+  chmod +x debian
+  mv debian /usr/local/bin/mc
+elif [[ "$OSTYPE" == "freebsd"* ]]; then
+  echo "Downloading debian client."
+  curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/debian
+  echo "Installing Master of Ceremony ${VERSION}"
+  chmod +x debian
+  mv debian /usr/local/bin/mc
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   echo "Downloading darwin client."
   curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/darwin
