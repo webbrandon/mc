@@ -22,10 +22,7 @@ fn main() {
     let matches = cli::build_cli().get_matches();
     let mut request = Configs::process_args(&matches);
     let mut scripts = Scripts::new();
-    let mut templates = Template::new();
     let mute = matches.is_present("mute");
-    
-    templates.load_templates(&mut request);
     scripts.load_scripts(&mut request); 
     
     if request.has_build_script() {
@@ -33,6 +30,8 @@ fn main() {
     }
     
     if request.has_template() && request.has_params() {
+        let mut templates = Template::new();
+        templates.load_templates(&mut request);
         templates.render_template();
         if request.has_param_script() {
             // Need to dig deep I did something that took ownership so I reinitialize with Configs.

@@ -13,20 +13,22 @@ If you would like to use the config option and keep it to a single command line 
 
 **Command Line**   
 ```bash
-mc [OPTIONS]
+USAGE:
+    mc [FLAGS] [OPTIONS]
 
 FLAGS:
     -h, --help    Prints help information
+    -m, --mute    Silence output.
 
 OPTIONS:
-    -f, --file <CONFIG>                Sets the "Makeconfig.yaml" file to use.
-    -p, --params <PARAMS>,...          Sets a custom template parameters file.
-    -s, --post-script <POST_SCRIPT>    Sets the script file to use after configuring template.
-    -b, --build-script <BUILD_SCRIPT>  Sets the script file to use for setting template parameters.
-    -d, --deploy-script <DEPLOY_SCRIPT>Sets the script file to use for deployment.
-    -t, --template <TEMPLATE>          Sets a custom template file
-    -o, --template-out <OUT>           Rendered template out file write location.
-    -m, --mute                         Silence output.
+    -b, --build-script <BUILD_SCRIPT>      Sets the script file to use for setting building software.
+    -f, --file <CONFIG>                    Sets the "Makeconfig" file to use.
+    -d, --deploy-script <DEPLOY_SCRIPT>    Sets the script file to use after _build script_.
+    -p, --param_script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
+    -p, --param <PARAM>                    Sets a custom template parameters file.
+    -s, --post-script <POST_SCRIPT>        Sets the script file to use after configuring template.
+    -t, --template <TEMPLATE>              Sets a custom template file
+    -o, --template-out <OUT>               Rendered template out file write location.
 ```
 ---    
 To make use of a single file(`Makeconfig.yaml`) and single command(`mc`) to control you build process you can use the below bootstrap example(documentation to come).  
