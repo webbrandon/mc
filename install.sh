@@ -35,7 +35,7 @@ else
   printf "System not supported. Attempting to build from source. You must have rust installed."
   curl -LO https://github.com/webbrandon/mc/archive/${VERSION}.tar.gz
   tar -xvzf ${VERSION}.tar.gz
-  cd ${VERSION}
+  cd mc-${VERSION}
   cargo build --release
   chmod +x target/release/mc
   mv target/release/mc /usr/local/bin/mc
