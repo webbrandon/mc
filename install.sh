@@ -1,7 +1,7 @@
 #!/bin/bash 
 VERSION=v0.2.1
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+if [[ "$OSTYPE" =~ ^linux ]]; then
   echo "Downloading debian client."
   curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/debian
   echo "Installing Master of Ceremony ${VERSION}"
@@ -19,13 +19,13 @@ elif [[ "$OSTYPE" == "msys" ]]; then
   echo "Installing Master of Ceremony ${VERSION}"
   chmod +x debian
   mv debian /usr/local/bin/mc
-elif [[ "$OSTYPE" == "freebsd"* ]]; then
+elif [[ "$OSTYPE" =~ ^freebsd ]]; then
   echo "Downloading debian client."
   curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/debian
   echo "Installing Master of Ceremony ${VERSION}"
   chmod +x debian
   mv debian /usr/local/bin/mc
-elif [[ "$OSTYPE" == "darwin"* ]]; then
+elif [[ "$OSTYPE" =~ ^darwin ]]; then
   echo "Downloading darwin client."
   curl -LO https://github.com/webbrandon/mc/releases/download/${VERSION}/darwin
   echo "Installing Master of Ceremony ${VERSION}"
