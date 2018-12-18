@@ -7,7 +7,12 @@ pub struct Configs {
     build_script: String,
     param_script: String,
     deploy_script: String,
-    post_script: String
+    post_script: String,
+    no_build: String,
+    no_deploy: String,
+    no_template: String,
+    no_post: String,
+    no_prompt: String
 }
 
 impl Configs {
@@ -19,7 +24,12 @@ impl Configs {
             build_script: String::new(),
             deploy_script: String::new(),
             param_script: String::new(),
-            post_script: String::new()
+            post_script: String::new(),
+            no_build: String::new(),
+            no_deploy: String::new(),
+            no_template: String::new(),
+            no_post: String::new(),
+            no_prompt: String::new()
         }
     }
     pub fn set_params(&mut self, params: String) {
@@ -42,6 +52,21 @@ impl Configs {
     }
     pub fn set_post_script(&mut self, post_script: String) {
         self.post_script = post_script;
+    }
+    pub fn set_no_build(&mut self, setting: String) {
+        self.no_build = setting;
+    }
+    pub fn set_no_deploy(&mut self, setting: String) {
+        self.no_deploy = setting;
+    }
+    pub fn set_no_template(&mut self, setting: String) {
+        self.no_template = setting;
+    }
+    pub fn set_no_post(&mut self, setting: String) {
+        self.no_post = setting;
+    }
+    pub fn set_no_prompt(&mut self, setting: String) {
+        self.no_prompt = setting;
     }
     pub fn params(&mut self) -> &String {
         &self.params
@@ -102,6 +127,36 @@ impl Configs {
     }
     pub fn has_post_script(&mut self) -> bool {
         match self.post_script.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_no_build(&mut self) -> bool {
+        match self.no_build.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_no_deploy(&mut self) -> bool {
+        match self.no_deploy.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_no_template(&mut self) -> bool {
+        match self.no_template.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_no_post(&mut self) -> bool {
+        match self.no_post.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_no_prompt(&mut self) -> bool {
+        match self.no_prompt.len()  {
             n if n > 0 => true,
             _ => false,
         }

@@ -7,6 +7,13 @@ use clap::{ArgMatches};
 impl Configs {
     pub fn process_args(matches: &ArgMatches) -> Configs {
         let mut request = Configs::new();
+        if (matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
+            request.set_no_build(matches.value_of("no-build").unwrap_or("").to_owned());
+            request.set_no_deploy(matches.value_of("no-deploy").unwrap_or("").to_owned());
+            request.set_no_template(matches.value_of("no-template").unwrap_or("").to_owned());
+            request.set_no_post(matches.value_of("no-post").unwrap_or("").to_owned());
+            request.set_no_prompt(matches.value_of("no-prompt").unwrap_or("").to_owned());
+        }
         if (matches.is_present("template") && matches.is_present("parameters")) || matches.is_present("script") {
             request.set_template(matches.value_of("template").unwrap_or("").to_owned());
             request.set_param_script(matches.value_of("param-script").unwrap_or("").to_owned());
