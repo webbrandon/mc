@@ -23,8 +23,13 @@ USAGE:
     mc [FLAGS] [OPTIONS]
 
 FLAGS:
-    -h, --help    Prints help information
-    -m, --mute    Silence output.
+    -h, --help           Prints help information
+    -m, --mute           Silence output.
+        --no-build       Skip build step from Makeconfig.
+        --no-deploy      Skip deploy step from Makeconfig.
+        --no-post        Skip post build step from Makeconfig.
+        --no-prompt      Turn prompt off for Makeconfig steps.
+        --no-template    Skip template step from Makeconfig settings.
 
 OPTIONS:
     -b, --build-script <BUILD_SCRIPT>      Sets the script file to use for setting building software.
