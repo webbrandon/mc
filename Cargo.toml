@@ -1,6 +1,6 @@
 [package]
 name = "mc"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["Brandon Clark <brandon.clark@leafgroup.com>"]
 build = "src/build.rs"
 
