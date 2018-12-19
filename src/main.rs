@@ -3,8 +3,9 @@ extern crate yaml_rust;
 extern crate handlebars;
 extern crate serde_json;
 extern crate run_script;
+extern crate dialoguer;
 
-use std::io;
+use dialoguer::{Confirmation};
 
 mod cli;
 mod model;
@@ -20,26 +21,22 @@ fn log_it(mute: bool, content: String) {
     }
 }
 
-fn continue_prompt(step_name: String, ask: bool) {
+pub fn continue_prompt(step_name: String, ask: bool) -> bool {
+    let mut is_requested = true;
     if ask {
-        println!("Would you like to continue with the {} step? (y/N)", step_name);
-        let buffer = &mut String::new();
-        io::stdin().read_line(buffer);
-        match buffer.trim_right() {
-            "true" => true,
-            "TRUE" => true,
-            "True" => true,
-            "T" => true,
-            "t" => true,
-            "false" => false,
-            "FALSE" => false,
-            "False" => false,
-            "F" => false,
-            "f" => false,
-            "" => false,
-            _ => false
-        };
+        let question = format!("Do you want to continue with the {} step?", step_name);
+        if Confirmation::new()
+            .with_text(question.as_str())
+            .interact()
+            .unwrap()
+        {
+            println!("Looks like you want to continue");
+        } else {
+            println!("Skipping {} step.", step_name);
+            is_requested = false;
+        }
     }
+    is_requested
 }
 
 fn main() {
@@ -50,47 +47,56 @@ fn main() {
     scripts.load_scripts(&mut request); 
     
     if !request.has_no_build() {
-        if request.has_build_script() {
-            log_it(mute, scripts.process_build_script().to_owned());
+        let ask_question = continue_prompt("build script".to_string(), !request.has_no_prompt());
+        if ask_question {
+            if request.has_build_script() {
+                log_it(mute, scripts.process_build_script().to_owned());
+            }
         }
     }
     
     if !request.has_no_template() {
-        continue_prompt("template".to_string(), request.has_no_prompt());
-        if request.has_template() && request.has_params() {
-            let mut templates = Template::new();
-            templates.load_templates(&mut request);
-            templates.render_template();
-            if request.has_param_script() {
-                // Need to dig deep I did something that took ownership so I reinitialize with Configs.
-                scripts = Scripts::new();
-                scripts.load_scripts(&mut request); 
-                log_it(mute, scripts.process_param_script().to_owned());
-            }
-            if request.has_render() {
-                file::outfile(request.render(), templates.render());
-                log_it(mute, templates.render().to_string());
+        let ask_question = continue_prompt("template".to_string(), !request.has_no_prompt());
+        if ask_question {
+            if request.has_template() && request.has_params() {
+                let mut templates = Template::new();
+                templates.load_templates(&mut request);
+                templates.render_template();
+                if request.has_param_script() {
+                    // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+                    scripts = Scripts::new();
+                    scripts.load_scripts(&mut request); 
+                    log_it(mute, scripts.process_param_script().to_owned());
+                }
+                if request.has_render() {
+                    file::outfile(request.render(), templates.render());
+                    log_it(mute, templates.render().to_string());
+                }
             }
         }
     }
     
     if !request.has_no_deploy() {
-        continue_prompt("deploy script".to_string(), request.has_no_prompt());
-        if request.has_deploy_script() {
-            // Need to dig deep I did something that took ownership so I reinitialize with Configs.
-            scripts = Scripts::new();
-            scripts.load_scripts(&mut request); 
-            log_it(mute, scripts.process_deploy_script().to_owned());
+        let ask_question = continue_prompt("deploy script".to_string(), !request.has_no_prompt());
+        if ask_question {
+            if request.has_deploy_script() {
+                // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+                scripts = Scripts::new();
+                scripts.load_scripts(&mut request); 
+                log_it(mute, scripts.process_deploy_script().to_owned());
+            }
         }
     }
     
     if !request.has_no_post() {
-        continue_prompt("post script".to_string(), request.has_no_prompt());
-        if request.has_post_script() {
-            // Need to dig deep I did something that took ownership so I reinitialize with Configs.
-            scripts = Scripts::new();
-            scripts.load_scripts(&mut request); 
-            log_it(mute, scripts.process_post_script());        
+        let ask_question = continue_prompt("post script".to_string(), !request.has_no_prompt());
+        if ask_question {
+            if request.has_post_script() {
+                // Need to dig deep I did something that took ownership so I reinitialize with Configs.
+                scripts = Scripts::new();
+                scripts.load_scripts(&mut request); 
+                log_it(mute, scripts.process_post_script());        
+            }
         }
     }
 }
