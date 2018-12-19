@@ -24,13 +24,13 @@ fn log_it(mute: bool, content: String) {
 pub fn continue_prompt(step_name: String, ask: bool) -> bool {
     let mut is_requested = true;
     if ask {
-        let question = format!("Do you want to continue with the {} step?", step_name);
+        let question = format!("Do you want to continue {} step?", step_name);
         if Confirmation::new()
             .with_text(question.as_str())
             .interact()
             .unwrap()
         {
-            println!("Looks like you want to continue");
+            println!("Now running...");
         } else {
             println!("Skipping {} step.", step_name);
             is_requested = false;
@@ -56,7 +56,7 @@ fn main() {
     }
     
     if !request.has_no_template() {
-        let ask_question = continue_prompt("template".to_string(), !request.has_no_prompt());
+        let ask_question = continue_prompt("and apply parameters to template".to_string(), !request.has_no_prompt());
         if ask_question {
             if request.has_template() && request.has_params() {
                 let mut templates = Template::new();
