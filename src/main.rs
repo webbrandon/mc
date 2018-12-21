@@ -4,16 +4,17 @@ extern crate handlebars;
 extern crate serde_json;
 extern crate run_script;
 extern crate dialoguer;
-
-use dialoguer::{Confirmation};
+extern crate dotenv;
 
 mod cli;
 mod model;
 mod handler;
 mod file;
 
+use dialoguer::{Confirmation};
 use model::{Scripts, Template};
 use handler::{Configs};
+use file::{EnvFile};
 
 fn log_it(mute: bool, content: String) {
     if ! mute {
@@ -44,6 +45,8 @@ fn main() {
     let mut request = Configs::process_args(&matches);
     let mut scripts = Scripts::new();
     let mute = matches.is_present("mute");
+    
+    EnvFile::check_and_load(&matches);
     scripts.load_scripts(&mut request); 
     
     if !request.has_no_build() {
