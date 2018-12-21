@@ -1,13 +1,18 @@
 use std::fmt;
 
+#[derive(Default)]
 pub struct Configs {
     params: String,
     template: String,
     render: String,
     build_script: String,
+    build_env: Vec<(String, String, String)>,
     param_script: String,
+    param_env: Vec<(String, String, String)>,
     deploy_script: String,
+    deploy_env: Vec<(String, String, String)>,
     post_script: String,
+    post_env: Vec<(String, String, String)>,
     no_build: bool,
     no_deploy: bool,
     no_template: bool,
@@ -17,20 +22,7 @@ pub struct Configs {
 
 impl Configs {
     pub fn new() -> Configs {
-        Configs {
-            params: String::new(),
-            template: String::new(),
-            render: String::new(),
-            build_script: String::new(),
-            deploy_script: String::new(),
-            param_script: String::new(),
-            post_script: String::new(),
-            no_build: false,
-            no_deploy: false,
-            no_template: false,
-            no_post: false,
-            no_prompt: false
-        }
+        Default::default()
     }
     pub fn set_params(&mut self, params: String) {
         self.params = params;
@@ -44,14 +36,26 @@ impl Configs {
     pub fn set_build_script(&mut self, script: String) {
         self.build_script = script;
     }
+    pub fn set_build_env(&mut self, env_options: Vec<(String, String, String)>) {
+        self.build_env = env_options;
+    }
     pub fn set_param_script(&mut self, script: String) {
         self.param_script = script;
+    }
+    pub fn set_param_env(&mut self, env_options: Vec<(String, String, String)>) {
+        self.param_env = env_options;
     }
     pub fn set_deploy_script(&mut self, script: String) {
         self.deploy_script = script;
     }
+    pub fn set_deploy_env(&mut self, env_options: Vec<(String, String, String)>) {
+        self.deploy_env = env_options;
+    }
     pub fn set_post_script(&mut self, post_script: String) {
         self.post_script = post_script;
+    }
+    pub fn set_post_env(&mut self, env_options: Vec<(String, String, String)>) {
+        self.post_env = env_options;
     }
     pub fn set_no_build(&mut self, setting: bool) {
         self.no_build = setting;
@@ -80,14 +84,26 @@ impl Configs {
     pub fn build_script(&mut self) -> &String {
         &self.build_script
     }
+    pub fn build_env(&mut self) -> &Vec<(String, String, String)> {
+        &self.build_env
+    }
     pub fn param_script(&mut self) -> &String {
         &self.param_script
+    }
+    pub fn param_env(&mut self) -> &Vec<(String, String, String)> {
+        &self.param_env
     }
     pub fn deploy_script(&mut self) -> &String {
         &self.deploy_script
     }
+    pub fn deploy_env(&mut self) -> &Vec<(String, String, String)> {
+        &self.deploy_env
+    }
     pub fn post_script(&mut self) -> &String {
         &self.post_script
+    }
+    pub fn post_env(&mut self) -> &Vec<(String, String, String)> {
+        &self.post_env
     }
     pub fn has_params(&mut self) -> bool {
         match self.params.len()  {

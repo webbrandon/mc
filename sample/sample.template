@@ -1,1 +1,1 @@
-Hello {{name}}
+The template set value HAS_VALUE {{has_value}}

@@ -53,6 +53,14 @@ metadata:
   name: mc
   description: "A long sentence..."
 specs:
+  build-script:
+    file: ./sample/sample.script    
+    env:
+    - name: ENVIRONMENT
+      default: value1
+      options:
+      - value: value1
+      - value: value2
   template:
     file: ./sample/sample.template
   parameters:
@@ -61,8 +69,11 @@ specs:
     create: ./sample/sample.params-script
   template-out:
     file: sample.out
-  build-script:
-    file: ./sample/sample.script
+  deploy-script:
+    file: ./sample/sample.script    
+    env:
+    - name: OPTION
+      default: value1
   post-script:
     file: ./sample/sample.post-script
 ```

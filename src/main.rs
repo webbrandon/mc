@@ -22,9 +22,9 @@ fn log_it(mute: bool, content: String) {
     }
 }
 
-pub fn continue_prompt(step_name: String, ask: bool) -> bool {
+pub fn continue_prompt(step_name: String, ask: &bool) -> bool {
     let mut is_requested = true;
-    if ask {
+    if !ask.to_owned() {
         let question = format!("Do you want to continue {} step?", step_name);
         if Confirmation::new()
             .with_text(question.as_str())
@@ -49,17 +49,20 @@ fn main() {
     EnvFile::check_and_load(&matches);
     scripts.load_scripts(&mut request); 
     
+    let no_prompt = request.has_no_prompt();
+    
     if !request.has_no_build() {
-        let ask_question = continue_prompt("build script".to_string(), !request.has_no_prompt());
+        let ask_question = continue_prompt("build script".to_string(), &no_prompt);
         if ask_question {
             if request.has_build_script() {
+                EnvFile::run_env_prompt(&request.build_env(), &no_prompt);
                 log_it(mute, scripts.process_build_script().to_owned());
             }
         }
     }
     
     if !request.has_no_template() {
-        let ask_question = continue_prompt("and apply parameters to template".to_string(), !request.has_no_prompt());
+        let ask_question = continue_prompt("and apply parameters to template".to_string(), &no_prompt);
         if ask_question {
             if request.has_template() && request.has_params() {
                 let mut templates = Template::new();
@@ -69,6 +72,7 @@ fn main() {
                     // Need to dig deep I did something that took ownership so I reinitialize with Configs.
                     scripts = Scripts::new();
                     scripts.load_scripts(&mut request); 
+                    EnvFile::run_env_prompt(&request.param_env(), &no_prompt);
                     log_it(mute, scripts.process_param_script().to_owned());
                 }
                 if request.has_render() {
@@ -80,24 +84,26 @@ fn main() {
     }
     
     if !request.has_no_deploy() {
-        let ask_question = continue_prompt("deploy script".to_string(), !request.has_no_prompt());
+        let ask_question = continue_prompt("deploy script".to_string(), &no_prompt);
         if ask_question {
             if request.has_deploy_script() {
                 // Need to dig deep I did something that took ownership so I reinitialize with Configs.
                 scripts = Scripts::new();
                 scripts.load_scripts(&mut request); 
+                EnvFile::run_env_prompt(&request.deploy_env(), &no_prompt);
                 log_it(mute, scripts.process_deploy_script().to_owned());
             }
         }
     }
     
     if !request.has_no_post() {
-        let ask_question = continue_prompt("post script".to_string(), !request.has_no_prompt());
+        let ask_question = continue_prompt("post script".to_string(), &no_prompt);
         if ask_question {
             if request.has_post_script() {
                 // Need to dig deep I did something that took ownership so I reinitialize with Configs.
                 scripts = Scripts::new();
                 scripts.load_scripts(&mut request); 
+                EnvFile::run_env_prompt(&request.post_env(), &no_prompt);
                 log_it(mute, scripts.process_post_script());        
             }
         }

@@ -4,6 +4,38 @@ use file::file_to_string;
 use yaml_rust::yaml;
 use clap::{ArgMatches};
 
+fn extract_env(yaml_doc: yaml_rust::Yaml) -> Vec<(String, String, String)> {
+    let mut env_list:Vec<(String, String, String)> = Vec::new();
+    
+    for x in yaml_doc {    
+        let mut name: String;
+        let mut default_value: String;
+        let mut value_options: String;
+        
+        match x["name"].as_str() {
+            Some(a) => {name = a.to_string();},
+            None => {name = String::new();}
+        }
+        match x["default"].as_str() {
+            Some(a) => {default_value = a.to_string()},
+            None => {default_value = String::new();}
+        }
+        match x["options"].as_vec() {
+            Some(a) => {
+                let mut options = String::new();
+                for b in a {
+                    options.push_str(b["value"].as_str().unwrap());
+                    options.push_str(" ");
+                }
+                value_options = options;
+            },
+            None => {value_options = String::new();}
+        }
+        env_list.push((name, default_value, value_options));
+    }
+    env_list    
+}
+
 impl Configs {
     pub fn process_args(matches: &ArgMatches) -> Configs {
         let mut request = Configs::new();
@@ -33,6 +65,12 @@ impl Configs {
                 request.set_build_script(doc["specs"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_deploy_script(doc["specs"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_post_script(doc["specs"]["post-script"]["file"].as_str().unwrap_or("").to_owned());
+                
+                // Check for enviornment name value settings.
+                request.set_build_env(extract_env(doc["specs"]["build-script"]["env"].to_owned()));
+                request.set_deploy_env(extract_env(doc["specs"]["deploy-script"]["env"].to_owned()));
+                request.set_param_env(extract_env(doc["specs"]["parameters"]["env"].to_owned()));
+                request.set_post_env(extract_env(doc["specs"]["post-script"]["env"].to_owned()));
                 
                 let param_location = doc["specs"]["parameters"]["type"].as_str().unwrap_or("").to_owned();
                 if param_location == "Url".to_string() {

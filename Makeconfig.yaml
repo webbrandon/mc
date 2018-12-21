@@ -13,10 +13,19 @@ specs:
     type: File
     path: ./sample/sample.params
     create: ./sample/sample.params-script
+    env:
+    - name: HAS_THIS
+      default: "true"
   template-out:
     file: sample.out
   build-script:
     file: ./sample/sample.build-script
+    env:
+    - name: ENVIRONMENT
+      default: stg
+      options:
+      - value: stg
+      - value: prod
   post-script:
     file: ./sample/sample.post-script
   deploy-script:
