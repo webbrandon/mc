@@ -63,7 +63,7 @@ impl Configs {
                 request.set_param_script(doc["specs"]["parameters"]["create"].as_str().unwrap_or("").to_owned());
                 request.set_render(doc["specs"]["template-out"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_build_script(doc["specs"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
-                request.set_deploy_script(doc["specs"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_deploy_script(doc["specs"]["deploy-script"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_post_script(doc["specs"]["post-script"]["file"].as_str().unwrap_or("").to_owned());
                 
                 // Check for enviornment name value settings.

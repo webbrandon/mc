@@ -65,16 +65,16 @@ fn main() {
         let ask_question = continue_prompt("and apply parameters to template".to_string(), &no_prompt);
         if ask_question {
             if request.has_template() && request.has_params() {
-                let mut templates = Template::new();
-                templates.load_templates(&mut request);
-                templates.render_template();
+                EnvFile::run_env_prompt(&request.param_env(), &no_prompt);
                 if request.has_param_script() {
                     // Need to dig deep I did something that took ownership so I reinitialize with Configs.
                     scripts = Scripts::new();
                     scripts.load_scripts(&mut request); 
-                    EnvFile::run_env_prompt(&request.param_env(), &no_prompt);
                     log_it(mute, scripts.process_param_script().to_owned());
                 }
+                let mut templates = Template::new();
+                templates.load_templates(&mut request);
+                templates.render_template();
                 if request.has_render() {
                     file::outfile(request.render(), templates.render());
                     log_it(mute, templates.render().to_string());
