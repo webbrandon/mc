@@ -11,7 +11,7 @@ mod model;
 mod handler;
 mod file;
 
-use dialoguer::{Confirmation};
+use dialoguer::{Confirmation, theme::ColorfulTheme};
 use model::{Scripts, Template};
 use handler::{Configs};
 use file::{EnvFile};
@@ -26,7 +26,7 @@ pub fn continue_prompt(step_name: String, ask: &bool) -> bool {
     let mut is_requested = true;
     if !ask.to_owned() {
         let question = format!("Do you want to continue {} step?", step_name);
-        if Confirmation::new()
+        if Confirmation::with_theme(&ColorfulTheme::default())
             .with_text(question.as_str())
             .interact()
             .unwrap()
