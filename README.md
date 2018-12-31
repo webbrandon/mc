@@ -48,32 +48,29 @@ To make use of a single file(`Makeconfig.yaml`) and single command(`mc`) to cont
 **Makeconfig**   
 ```YAML
 api: makeconfig
-version: beta/1
+version: alpha/v1
 metadata:
   name: mc
   description: "A long sentence..."
 specs:
   build-script:
-    file: ./sample/sample.script    
+    file: ./sample/sample.build-script
     env:
     - name: ENVIRONMENT
-      default: value1
+      default: stg
       options:
-      - value: value1
-      - value: value2
+      - value: stg
+      - value: prod
   template:
     file: ./sample/sample.template
-  parameters:
-    type: File
-    path: ./sample/sample.params
-    create: ./sample/sample.params-script
-  template-out:
-    file: sample.out
-  deploy-script:
-    file: ./sample/sample.script    
+    parameters: ./sample/sample.params
+    script: ./sample/sample.params-script
+    outfile: sample.out
     env:
-    - name: OPTION
-      default: value1
+    - name: HAS_THIS
+      default: "true"
+  deploy-script:
+    file: ./sample/sample.deploy-script
   post-script:
     file: ./sample/sample.post-script
 ```

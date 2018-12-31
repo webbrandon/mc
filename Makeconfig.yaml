@@ -1,23 +1,9 @@
 api: makeconfig
-version: beta/1
+version: alpha/v1
 metadata:
   name: mc
   description: "A long sentence..."
 specs:
-  template:
-    file: ./sample/sample.template
-  parameters:
-    # type: Url
-    # host: localhost:3000
-    # path: /my-config/1031
-    type: File
-    path: ./sample/sample.params
-    create: ./sample/sample.params-script
-    env:
-    - name: HAS_THIS
-      default: "true"
-  template-out:
-    file: sample.out
   build-script:
     file: ./sample/sample.build-script
     env:
@@ -26,7 +12,15 @@ specs:
       options:
       - value: stg
       - value: prod
-  post-script:
-    file: ./sample/sample.post-script
+  template:
+    file: ./sample/sample.template
+    parameters: ./sample/sample.params
+    script: ./sample/sample.params-script
+    outfile: sample.out
+    env:
+    - name: HAS_THIS
+      default: "true"
   deploy-script:
     file: ./sample/sample.deploy-script
+  post-script:
+    file: ./sample/sample.post-script
