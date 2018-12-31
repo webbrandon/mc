@@ -3,11 +3,19 @@ use std::io::prelude::*;
 use std::str::FromStr;
 use serde_json::value::Value as Json;
 use file::bad_format_close_app;
+use std::process;
 
 pub fn file_to_string(file: &str) -> String {
-    let mut f = File::open(file).unwrap();
     let mut s = String::new();
-    f.read_to_string(&mut s).unwrap_or(0);
+    match File::open(file) {
+        Ok(mut a) => {
+            a.read_to_string(&mut s).unwrap_or(0);
+        },
+        Err(_e) => {
+            println!("Unable to open {}.", file);
+            process::exit(0x0100);
+        },
+    }
     s
 }
 
