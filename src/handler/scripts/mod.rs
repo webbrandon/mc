@@ -26,21 +26,21 @@ pub fn run_script(script: &String) -> String {
 }
 
 impl Scripts {
-    pub fn process_build_script(mut self) -> String {
-        let script = &self.build_script();
-        run_script(&script)
+    pub fn process_build_script(&self) -> String {
+        let script = self.build_script();
+        run_script(script)
     }
-    pub fn process_param_script(mut self) -> String {
-        let script = &self.param_script();
-        run_script(&script)
+    pub fn process_param_script(&self) -> String {
+        let script = self.param_script();
+        run_script(script)
     }
-    pub fn process_deploy_script(mut self) -> String {
-        let script = &self.deploy_script();
-        run_script(&script)
+    pub fn process_deploy_script(&self) -> String {
+        let script = self.deploy_script();
+        run_script(script)
     }
-    pub fn process_post_script(mut self) -> String {
-        let script = &self.post_script();
-        run_script(&script)
+    pub fn process_post_script(&self) -> String {
+        let script = self.post_script();
+        run_script(script)
     }
 }
 

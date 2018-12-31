@@ -30,19 +30,19 @@ impl Scripts {
     pub fn set_post_script(&mut self, post: String) {
         self.post = post;
     }
-    pub fn build_script(&mut self) -> &String {
+    pub fn build_script(&self) -> &String {
         &self.build
     }
-    pub fn param_script(&mut self) -> &String {
+    pub fn param_script(&self) -> &String {
         &self.param
     }
-    pub fn post_script(&mut self) -> &String {
+    pub fn post_script(&self) -> &String {
         &self.post
     }
-    pub fn deploy_script(&mut self) -> &String {
+    pub fn deploy_script(&self) -> &String {
         &self.deploy
     }
-    pub fn load_scripts(&mut self, request: &mut Configs) -> &Scripts {
+    pub fn load_scripts(&mut self, request: &Configs) -> &Scripts {
         if request.has_build_script() {
             self.set_build_script(file_to_string(request.build_script()));
         }

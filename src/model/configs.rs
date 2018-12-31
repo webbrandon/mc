@@ -72,94 +72,94 @@ impl Configs {
     pub fn set_no_prompt(&mut self, setting: bool) {
         self.no_prompt = setting;
     }
-    pub fn params(&mut self) -> &String {
+    pub fn params(&self) -> &String {
         &self.params
     }
-    pub fn template(&mut self) -> &String {
+    pub fn template(&self) -> &String {
         &self.template
     }
-    pub fn render(&mut self) -> &String {
+    pub fn render(&self) -> &String {
         &self.render
     }
-    pub fn build_script(&mut self) -> &String {
+    pub fn build_script(&self) -> &String {
         &self.build_script
     }
-    pub fn build_env(&mut self) -> &Vec<(String, String, String)> {
+    pub fn build_env(&self) -> &Vec<(String, String, String)> {
         &self.build_env
     }
-    pub fn param_script(&mut self) -> &String {
+    pub fn param_script(&self) -> &String {
         &self.param_script
     }
-    pub fn param_env(&mut self) -> &Vec<(String, String, String)> {
+    pub fn param_env(&self) -> &Vec<(String, String, String)> {
         &self.param_env
     }
-    pub fn deploy_script(&mut self) -> &String {
+    pub fn deploy_script(&self) -> &String {
         &self.deploy_script
     }
-    pub fn deploy_env(&mut self) -> &Vec<(String, String, String)> {
+    pub fn deploy_env(&self) -> &Vec<(String, String, String)> {
         &self.deploy_env
     }
-    pub fn post_script(&mut self) -> &String {
+    pub fn post_script(&self) -> &String {
         &self.post_script
     }
-    pub fn post_env(&mut self) -> &Vec<(String, String, String)> {
+    pub fn post_env(&self) -> &Vec<(String, String, String)> {
         &self.post_env
     }
-    pub fn has_params(&mut self) -> bool {
+    pub fn has_params(&self) -> bool {
         match self.params.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_template(&mut self) -> bool {
+    pub fn has_template(&self) -> bool {
         match self.template.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_render(&mut self) -> bool {
+    pub fn has_render(&self) -> bool {
         match self.render.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_build_script(&mut self) -> bool {
+    pub fn has_build_script(&self) -> bool {
         match self.build_script.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_param_script(&mut self) -> bool {
+    pub fn has_param_script(&self) -> bool {
         match self.param_script.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_deploy_script(&mut self) -> bool {
+    pub fn has_deploy_script(&self) -> bool {
         match self.deploy_script.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_post_script(&mut self) -> bool {
+    pub fn has_post_script(&self) -> bool {
         match self.post_script.len()  {
             n if n > 0 => true,
             _ => false,
         }
     }
-    pub fn has_no_build(&mut self) -> bool {
+    pub fn has_no_build(&self) -> bool {
         self.no_build
     }
-    pub fn has_no_deploy(&mut self) -> bool {
+    pub fn has_no_deploy(&self) -> bool {
         self.no_deploy
     }
-    pub fn has_no_template(&mut self) -> bool {
+    pub fn has_no_template(&self) -> bool {
         self.no_template
     }
-    pub fn has_no_post(&mut self) -> bool {
+    pub fn has_no_post(&self) -> bool {
         self.no_post
     }
-    pub fn has_no_prompt(&mut self) -> bool {
+    pub fn has_no_prompt(&self) -> bool {
         self.no_prompt
     }
 }

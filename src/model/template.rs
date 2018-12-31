@@ -34,7 +34,7 @@ impl Template {
     pub fn render(&mut self) -> &String {
         &self.render
     }
-    pub fn load_templates(&mut self, request: &mut Configs) -> &Template {
+    pub fn load_templates(&mut self, request: &Configs) -> &Template {
         if request.has_params() && request.has_template() {
             let remote_check = &request.params()[..4].to_string();
             if remote_check.contains("http") {

@@ -37,7 +37,7 @@ fn extract_env(yaml_doc: yaml_rust::Yaml) -> Vec<(String, String, String)> {
 }
 
 impl Configs {
-    pub fn process_args(matches: &ArgMatches) -> Configs {
+    pub fn process_args(matches: ArgMatches) -> Configs {
         let mut request = Configs::new();
         if (matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
             request.set_no_build(matches.is_present("no-build"));
