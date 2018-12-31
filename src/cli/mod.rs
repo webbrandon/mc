@@ -2,7 +2,7 @@ use clap::{Arg, App, AppSettings};
 
 pub fn build_cli() -> App<'static, 'static> {
     App::new("mc")
-        .version("0.3.0")
+        .version("0.3.1")
         .setting(AppSettings::DisableVersion)
         .about("\nBuild configuration for todays software made easy. You can import files individually or with a \"Makeconfig\" YAML file. Option settings will override use of \"Makeconfig\" file.")
         .arg(Arg::with_name("config")
