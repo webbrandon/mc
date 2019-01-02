@@ -6,7 +6,7 @@ pub use model::{Scripts};
 pub fn run_script(script: &String) -> String {
     let mut options = ScriptOptions::new();
     options.runner = None; 
-    options.capture_output = true; 
+    options.capture_output = false; 
     options.exit_on_error = false; 
     options.print_commands = true;
 
