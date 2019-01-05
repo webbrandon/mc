@@ -8,7 +8,7 @@ This is a build tool similar to other build tools.  Except it's on steroids!
 **Features**  
 - Static configuration file with Makeconfig.yaml. (Optional)
 - Command line options override config files.
-- Built in template engine using JSON params file [(learn more)[https://handlebarsjs.com]].
+- Built in template engine using JSON params file. ([learn more on templating](https://handlebarsjs.com))
 - Controlled process flow. (e.g. `build` -> `kubernetes template` -> `deploy for testing` -> `send traffic` )
 - Script steps in any shell available. (i.e. bash, sh, zsh, node)
 - No prompt for automation or prompted for local user response and control. 
