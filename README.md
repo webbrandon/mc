@@ -10,7 +10,7 @@ This is a build tool similar to other build tools.  Except it's on steroids!
 If no `file` is assigned `mc` will look in its current base path for a `Makeconfig.yaml` from which it is ran.  Best practice is to create modular and stateless scripts for each step. 
 
 ![Master OF Ceremony Cli Tool](sample/cli-demo.gif)  
-_When you use option parameters they will override the existing `Makeconfig.yaml` configuration._
+_When you use option parameters they will override the existing Makeconfig.yaml configuration._
 
 **Command Line Options** (Use individually or conjunction w/ Makeconfig.yaml)   
 ```bash
