@@ -24,7 +24,6 @@ pub fn build_cli() -> App<'static, 'static> {
            .help("Sets a custom template file")
            .takes_value(true))
         .arg(Arg::with_name("param-script")
-            .short("c")
             .long("param-script")
             .value_name("PARAM_SCRIPT")
             .help("Sets a custom script to configure parameters file at render time.")

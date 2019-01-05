@@ -16,7 +16,7 @@ specs:
     file: ./sample/sample.template
     parameters: ./sample/sample.params
     script: ./sample/sample.params-script
-    outfile: sample.out
+    outfile: ./sample/sample.template-out
     env:
     - name: HAS_THIS
       default: "true"

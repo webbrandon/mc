@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Send your build image out for deployment with 'kubectl' or other tools."
+
+echo "Doing stuff..."
+
+exit 0

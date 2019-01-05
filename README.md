@@ -1,23 +1,18 @@
 # Master of Ceremony
 
-**About**   
-This is a build tool similar to other build tools.  It's like `make` on steriods with features like built in dynamic templating similiar to `go`'s template package.  What it provides is a modern way of configuring and running your build scripts with a single command.  Either by setting the command line options or via `Makeconfig.yaml` file you can assign your build task.  Your build can begin with a configuration script which can create the parameters needed to fill in a template (or not) and finish off with a post initialization script in one step for the user.
+**About**  
+The purpose of this tool is to simply management of continuous development and integration pipelines while decoupling them from any one service like Jenkins.  Using modern practices of configuration management you can begin building software, parameterize templates to deploy or record activity and deploy and release software with a single command that will run cross platform (Depending how well you can script).
 
-## Install
-You can build from source or with the provided install script for pre built binaries.
-```bash
-curl https://webbrandon.github.io/mc/install.sh -sS | bash -s
-```
+This is a build tool similar to other build tools.  Except it's on steroids!
 
 ## USAGE
 
-If no `file` is assigned `mc` will look in its current base path for a `Makeconfig.yaml` from which it is ran.  When you use option parameters they will override the existence of a `Makeconfig.yaml`.  
+If no `file` is assigned `mc` will look in its current base path for a `Makeconfig.yaml` from which it is ran.  Best practice is to create modular and stateless scripts for each step. 
 
----
+![Master OF Ceremony Cli Tool](sample/cli-demo.gif)
+_When you use option parameters they will override the existing `Makeconfig.yaml` configuration._
 
-If you would like to use the config option and keep it to a single command line you can use the bellow listed options to set your build.
-
-**Command Line**   
+**Command Line Options (Use individually or conjunction w/ Makeconfig.yaml)**   
 ```bash
 USAGE:
     mc [FLAGS] [OPTIONS]
@@ -43,9 +38,8 @@ OPTIONS:
     -o, --template-out <OUT>               Rendered template out file write location.
 ```
 ---    
-To make use of a single file(`Makeconfig.yaml`) and single command(`mc`) to control you build process you can use the below bootstrap example(documentation to come).  
     
-**Makeconfig**   
+**Makeconfig.yaml**   
 ```YAML
 api: makeconfig
 version: alpha/v1
@@ -75,15 +69,26 @@ specs:
     file: ./sample/sample.post-script
 ```
 
+## Install
+You can build from source or with the provided install script for pre built binaries.
+```bash
+curl https://webbrandon.github.io/mc/install.sh -sS | bash -s
+```
+
 ## Build From Source
 If you are building from source you will need to have the [Rust language ](https://rustup.rs/) application suite installed and download the [source code](https://webbrandon.github.io/mc).  I have built and tested for linux and OSX only.  If you try on Windows please let me know how it goes.
 
-Stable build last compiled with with [Rust version 1.31.0](https://rustup.rs/).
+Stable build last compiled with with [Rust version 1.31.1](https://rustup.rs/).
 
 ```bash
-cargo build
+cargo build --release
 cargo install --force
 ```
+
+## Future  
+- Run In Docker Container  
+- Jenkins Integrations (Under Planning)
+- Remote Files Over HTTP
 
 ## License  
 WFYW (Whatever <s>Fuck</s> You Want) 1.0
