@@ -5,6 +5,16 @@ The purpose of this tool is to simplify management of continuous development and
 
 This is a build tool similar to other build tools.  Except it's on steroids!
 
+**Features**  
+- Static configuration file with Makeconfig.yaml. (Optional)
+- Command line options override config files.
+- Built in template engine using JSON params file [(learn more)[https://handlebarsjs.com]].
+- Controlled process flow. (e.g. `build` -> `kubernetes template` -> `deploy for testing` -> `send traffic` )
+- Script steps in any shell available. (i.e. bash, sh, zsh, node)
+- No prompt for automation or prompted for local user response and control. 
+- Runs on Darwin(Mac) and Debian(Linux).
+- Configurable prompting for environment values with default setting and option suggestions.
+
 ## USAGE
 
 If no file is assigned to a step the cli will look in its current base path for a **Makeconfig.yaml**.  Best practice is to create modular and stateless scripts for each step. 
