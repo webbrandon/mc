@@ -23,7 +23,7 @@ If no file is assigned to a step the cli will look in its current base path for 
 _When you use option parameters they will override the existing Makeconfig.yaml configuration._
 
 **Cli Options** (Use individually or conjunction w/ Makeconfig.yaml)   
-```bash
+```
 USAGE:
     mc [FLAGS] [OPTIONS]
 
@@ -81,7 +81,7 @@ specs:
 
 ## Install
 You can build from source or with the provided install script for pre built binaries.
-```bash
+```
 curl https://webbrandon.github.io/mc/install.sh -sS | bash -s
 ```
 
@@ -90,7 +90,7 @@ If you are building from source you will need to have the [Rust language ](https
 
 Stable build last compiled with with [Rust version 1.31.1](https://rustup.rs/).
 
-```bash
+```
 cargo build --release
 cargo install --force
 ```
