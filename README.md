@@ -1,7 +1,7 @@
 # Master of Ceremony
 
 **About**  
-The purpose of this tool is to simply management of continuous development and integration pipelines while decoupling them from any one service like Jenkins.  Using modern practices of configuration management you can begin building software, parameterize templates to deploy or record activity and deploy and release software with a single command that will run cross platform (Depending how well you can script).
+The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling them from any one service like Jenkins.  Using modern practices of configuration management you can begin building software, parameterize templates to deploy or record activity and deploy and release software with a single command that will run cross platform (Depending how well you can script).
 
 This is a build tool similar to other build tools.  Except it's on steroids!
 
