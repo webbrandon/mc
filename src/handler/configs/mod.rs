@@ -1,6 +1,6 @@
-pub use model::{Configs};
+pub use crate::model::{Configs};
 
-use file::file_to_string;
+use crate::file::file_to_string;
 use yaml_rust::yaml;
 use clap::{ArgMatches};
 

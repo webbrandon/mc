@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::str::FromStr;
 use serde_json::value::Value as Json;
-use file::bad_format_close_app;
+use crate::file::bad_format_close_app;
 use std::process;
 
 pub fn file_to_string(file: &str) -> String {

@@ -1,7 +1,7 @@
-use file::parse_json;
+use crate::file::parse_json;
 use std::process;
 use handlebars::Handlebars;
-pub use model::{Template};
+pub use crate::model::{Template};
 
 impl Template {
     pub fn render_template(&mut self) -> &String {

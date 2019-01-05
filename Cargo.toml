@@ -3,6 +3,7 @@ name = "mc"
 version = "0.3.2"
 authors = ["Brandon Clark <brandon.clark@leafgroup.com>"]
 build = "src/build.rs"
+edition = "2018"
 
 [build-dependencies]
 clap = "2.32.0"

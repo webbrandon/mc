@@ -1,6 +1,6 @@
 use std::fmt;
-use file::file_to_string;
-use model::{Configs};
+use crate::file::file_to_string;
+use crate::model::{Configs};
 
 pub struct Template {
     params: String,
