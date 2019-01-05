@@ -1,6 +1,6 @@
-pub use model::{Configs};
+pub use crate::model::{Configs};
 
-use file::file_to_string;
+use crate::file::file_to_string;
 use yaml_rust::yaml;
 use clap::{ArgMatches};
 
@@ -8,9 +8,9 @@ fn extract_env(yaml_doc: yaml_rust::Yaml) -> Vec<(String, String, String)> {
     let mut env_list:Vec<(String, String, String)> = Vec::new();
     
     for x in yaml_doc {    
-        let mut name: String;
-        let mut default_value: String;
-        let mut value_options: String;
+        let name: String;
+        let default_value: String;
+        let value_options: String;
         
         match x["name"].as_str() {
             Some(a) => {name = a.to_string();},

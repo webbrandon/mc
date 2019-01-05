@@ -1,6 +1,6 @@
-use file::file_to_string;
+use crate::file::file_to_string;
 use std::fmt;
-use model::{Configs};
+use crate::model::{Configs};
 
 pub struct Scripts {
     build: String,

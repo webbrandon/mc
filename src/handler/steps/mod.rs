@@ -1,8 +1,8 @@
 use dialoguer::{Confirmation, theme::ColorfulTheme};
-use model::{Scripts, Template};
-use handler::{Configs};
-use::file;
-use file::{EnvFile};
+use crate::model::{Scripts, Template};
+use crate::handler::{Configs};
+use crate::file;
+use crate::file::{EnvFile};
 
 fn log_it(mute: bool, content: String) {
     if ! mute {

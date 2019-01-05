@@ -11,9 +11,9 @@ mod model;
 mod handler;
 mod file;
 
-use model::{Scripts};
-use handler::{Configs, Steps};
-use file::{EnvFile};
+use crate::model::{Scripts};
+use crate::handler::{Configs, Steps};
+use crate::file::{EnvFile};
 
 
 fn main() {

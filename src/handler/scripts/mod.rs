@@ -1,9 +1,9 @@
 use run_script;
 use run_script::ScriptOptions;
-use file::bad_format_close_app;
-pub use model::{Scripts};
+use crate::file::bad_format_close_app;
+pub use crate::model::{Scripts};
 
-pub fn run_script(script: &String) -> String {
+pub fn run_step_script(script: &String) -> String {
     let mut options = ScriptOptions::new();
     options.runner = None; 
     options.capture_output = false; 
@@ -28,19 +28,19 @@ pub fn run_script(script: &String) -> String {
 impl Scripts {
     pub fn process_build_script(&self) -> String {
         let script = self.build_script();
-        run_script(script)
+        run_step_script(script)
     }
     pub fn process_param_script(&self) -> String {
         let script = self.param_script();
-        run_script(script)
+        run_step_script(script)
     }
     pub fn process_deploy_script(&self) -> String {
         let script = self.deploy_script();
-        run_script(script)
+        run_step_script(script)
     }
     pub fn process_post_script(&self) -> String {
         let script = self.post_script();
-        run_script(script)
+        run_step_script(script)
     }
 }
 
