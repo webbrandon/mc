@@ -12,7 +12,7 @@ If no `file` is assigned `mc` will look in its current base path for a `Makeconf
 ![Master OF Ceremony Cli Tool](sample/cli-demo.gif)  
 _When you use option parameters they will override the existing `Makeconfig.yaml` configuration._
 
-**Command Line Options (Use individually or conjunction w/ Makeconfig.yaml)**   
+**Command Line Options** (Use individually or conjunction w/ Makeconfig.yaml)   
 ```bash
 USAGE:
     mc [FLAGS] [OPTIONS]
