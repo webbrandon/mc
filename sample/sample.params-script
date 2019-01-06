@@ -1,5 +1,5 @@
 #!/bin/sh
-
+echo "Script a params file for current content."
 echo "{" > ./sample/sample.params
 echo "\"has_value\": \""${HAS_THIS}"\"" >> ./sample/sample.params
 echo "}" >> ./sample/sample.params

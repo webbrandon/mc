@@ -1,5 +1,4 @@
 #!/bin/sh
-
-printf "Want to assign your deployment to an endpoint or clean it all up? You can do it here."
+printf "Test and release."
 
 exit 0
