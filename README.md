@@ -4,9 +4,9 @@
 The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
 
 **Features**  
-- Static configuration file with Makeconfig.yaml. (Optional)
+- Static configuration file with mc.yaml. (Optional)
 - Command line options override config files.
-- Built in Handlbars template engine using JSON params file. ([learn more on templating](https://handlebarsjs.com))
+- Built in Handlebars template engine using JSON params file. ([learn more on templating](https://handlebarsjs.com))
 - Controlled process flow. e.g. build > kubernetes template > deploy for testing > send traffic
 - Script steps in any shell available. (i.e. bash, sh, zsh, node)
 - No prompt for automation or prompted for local user response and control. 
@@ -15,12 +15,12 @@ The purpose of this tool is to simplify management of continuous development and
 
 ## USAGE
 
-If no file is assigned to a step the cli will look in its current base path for a **Makeconfig.yaml**.  Best practice is to create modular and stateless scripts for each step. 
+If no file is assigned to a step the cli will look in its current base path for a **mc.yaml**.  Best practice is to create modular and stateless scripts for each step. 
 
 ![Master OF Ceremony Cli Tool](sample/cli-demo.gif)  
-_When you use option parameters they will override the existing Makeconfig.yaml configuration._
+_When you use option parameters they will override the existing mc.yaml configuration._
 
-**Cli Options** (Use individually or conjunction w/ Makeconfig.yaml)   
+**Cli Options** (Use individually or conjunction w/ mc.yaml)   
 ```
 USAGE:
     mc [FLAGS] [OPTIONS]
@@ -28,15 +28,15 @@ USAGE:
 FLAGS:
     -h, --help           Prints help information
     -m, --mute           Silence output.
-        --no-build       Skip build step from Makeconfig.
-        --no-deploy      Skip deploy step from Makeconfig.
-        --no-post        Skip post build step from Makeconfig.
-        --no-prompt      Turn prompt off for Makeconfig steps.
-        --no-template    Skip template step from Makeconfig settings.
+        --no-build       Skip build step from mc.yaml.
+        --no-deploy      Skip deploy step from mc.yaml.
+        --no-post        Skip post build step from mc.yaml.
+        --no-prompt      Turn prompt off for mc steps.
+        --no-template    Skip template step from mc.yaml settings.
 
 OPTIONS:
     -b, --build-script <BUILD_SCRIPT>      Sets the script file to use for setting building software.
-    -f, --file <CONFIG>                    Sets the "Makeconfig" file to use.
+    -f, --file <CONFIG>                    Sets the "mc.yaml" file to use.
     -d, --deploy-script <DEPLOY_SCRIPT>    Sets the script file to use after _build script_.
     -e, --env <ENV>                        Load from .env file.
         --param-script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
@@ -47,12 +47,12 @@ OPTIONS:
 ```
 ---    
     
-**Makeconfig.yaml**   
+**mc.yaml**   
 ```YAML
-api: makeconfig
+api: mc
 version: alpha/v1
 metadata:
-  name: mc
+  name: "Master Of Ceremony"
   description: "A long sentence..."
 specs:
   build-script:
@@ -97,8 +97,6 @@ cargo install --force
 - Run In Docker Container  
 - Jenkins Integrations (Under Planning)
 - Remote Files Over HTTP
-- Rename Makeconfig.yaml to mc.yaml
-
 
 Unlicense (Public Domain)
 ============================

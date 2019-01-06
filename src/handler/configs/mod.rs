@@ -55,8 +55,8 @@ impl Configs {
             request.set_deploy_script(matches.value_of("deploy-script").unwrap_or("").to_owned());
             request.set_post_script(matches.value_of("post-script").unwrap_or("").to_owned());
         } else {
-            let makeconfig = matches.value_of("config").unwrap_or("Makeconfig.yaml");
-            let s = file_to_string(makeconfig);
+            let mc_config = matches.value_of("config").unwrap_or("mc.yaml");
+            let s = file_to_string(mc_config);
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
                 request.set_template(doc["specs"]["template"]["file"].as_str().unwrap_or("").to_owned());

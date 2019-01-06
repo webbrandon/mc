@@ -1,7 +1,7 @@
-api: makeconfig
+api: mc
 version: alpha/v1
 metadata:
-  name: mc
+  name: "Master Of Ceremony"
   description: "A long sentence..."
 specs:
   build-script:
