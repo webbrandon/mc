@@ -1,14 +1,12 @@
 # Master of Ceremony
 
 **About**  
-The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling them from any one service like Jenkins.  Using modern practices of configuration management you can begin building software, parameterize templates to deploy or record activity and deploy and release software with a single command that will run cross platform (Depending how well you can script).
-
-This is a build tool similar to other build tools.  Except it's on steroids!
+The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
 
 **Features**  
 - Static configuration file with Makeconfig.yaml. (Optional)
 - Command line options override config files.
-- Built in template engine using JSON params file. ([learn more on templating](https://handlebarsjs.com))
+- Built in Handlbars template engine using JSON params file. ([learn more on templating](https://handlebarsjs.com))
 - Controlled process flow. e.g. build > kubernetes template > deploy for testing > send traffic
 - Script steps in any shell available. (i.e. bash, sh, zsh, node)
 - No prompt for automation or prompted for local user response and control. 
@@ -41,7 +39,7 @@ OPTIONS:
     -f, --file <CONFIG>                    Sets the "Makeconfig" file to use.
     -d, --deploy-script <DEPLOY_SCRIPT>    Sets the script file to use after _build script_.
     -e, --env <ENV>                        Load from .env file.
-    -c, --param-script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
+        --param-script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
     -p, --param <PARAM>                    Sets a custom template parameters file.
     -s, --post-script <POST_SCRIPT>        Sets the script file to use after configuring template.
     -t, --template <TEMPLATE>              Sets a custom template file
@@ -99,6 +97,33 @@ cargo install --force
 - Run In Docker Container  
 - Jenkins Integrations (Under Planning)
 - Remote Files Over HTTP
+- Rename Makeconfig.yaml to mc.yaml
 
-## License  
-WFYW (Whatever <s>Fuck</s> You Want) 1.0
+
+Unlicense (Public Domain)
+============================
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to &lt;<http://unlicense.org/>&gt;
