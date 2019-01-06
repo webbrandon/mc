@@ -6,11 +6,11 @@ The purpose of this tool is to simplify management of continuous development and
 **Features**  
 - Static configuration file with mc.yaml. (Optional)
 - Command line options override config files.
-- Built in Handlebars template engine using JSON params file. ([learn more on templating](https://handlebarsjs.com))
-- Controlled process flow. e.g. build > kubernetes template > deploy for testing > send traffic
-- Script steps in any shell available. (i.e. bash, sh, zsh, node)
+- Built in _Handlebars_ template engine using JSON params file. (_[learn more](https://handlebarsjs.com)_)
+- Controlled process flow. (_e.g. build > kubernetes template > deploy for testing > send traffic_)
+- Script steps in any shell available. (_i.e. bash, sh, zsh, node_)
 - No prompt for automation or prompted for local user response and control. 
-- Runs on Darwin(Mac) and Debian(Linux).
+- Runs on Darwin(_Mac_) and Debian(_Linux_).
 - Configurable prompting for environment values with default setting and option suggestions.
 
 ## USAGE
