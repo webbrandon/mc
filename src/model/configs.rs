@@ -5,6 +5,7 @@ pub struct Configs {
     params: String,
     template: String,
     render: String,
+    global_env: Vec<(String, String, String)>,
     build_script: String,
     build_env: Vec<(String, String, String)>,
     param_script: String,
@@ -32,6 +33,9 @@ impl Configs {
     }
     pub fn set_render(&mut self, render: String) {
         self.render = render;
+    }
+    pub fn set_global_env(&mut self, env: Vec<(String, String, String)>) {
+        self.global_env = env;
     }
     pub fn set_build_script(&mut self, script: String) {
         self.build_script = script;
@@ -83,6 +87,9 @@ impl Configs {
     }
     pub fn build_script(&self) -> &String {
         &self.build_script
+    }
+    pub fn global_env(&self) -> &Vec<(String, String, String)> {
+        &self.global_env
     }
     pub fn build_env(&self) -> &Vec<(String, String, String)> {
         &self.build_env

@@ -28,6 +28,8 @@ fn main() {
     
     let no_prompt = request.has_no_prompt();
     
+    EnvFile::run_env_prompt(&request.global_env(), &no_prompt);
+    
     Steps::run_build(&request, &scripts, no_prompt, mute);
     Steps::run_template(&request, &scripts, no_prompt, mute);
     Steps::run_deploy(&request, &scripts, no_prompt, mute);

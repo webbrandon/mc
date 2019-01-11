@@ -59,32 +59,33 @@ impl Configs {
             let s = file_to_string(mc_config);
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
-                request.set_template(doc["specs"]["template"]["file"].as_str().unwrap_or("").to_owned());
-                request.set_param_script(doc["specs"]["template"]["script"].as_str().unwrap_or("").to_owned());
-                request.set_render(doc["specs"]["template"]["outfile"].as_str().unwrap_or("").to_owned());
-                request.set_build_script(doc["specs"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
-                request.set_deploy_script(doc["specs"]["deploy-script"]["file"].as_str().unwrap_or("").to_owned());
-                request.set_post_script(doc["specs"]["post-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_template(doc["specs"]["steps"]["template"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_param_script(doc["specs"]["steps"]["template"]["script"].as_str().unwrap_or("").to_owned());
+                request.set_render(doc["specs"]["steps"]["template"]["outfile"].as_str().unwrap_or("").to_owned());
+                request.set_build_script(doc["specs"]["steps"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_deploy_script(doc["specs"]["steps"]["deploy-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_post_script(doc["specs"]["steps"]["post-script"]["file"].as_str().unwrap_or("").to_owned());
                 
                 // Check for enviornment name value settings.
-                request.set_build_env(extract_env(doc["specs"]["build-script"]["env"].to_owned()));
-                request.set_deploy_env(extract_env(doc["specs"]["deploy-script"]["env"].to_owned()));
-                request.set_param_env(extract_env(doc["specs"]["template"]["env"].to_owned()));
-                request.set_post_env(extract_env(doc["specs"]["post-script"]["env"].to_owned()));
+                request.set_global_env(extract_env(doc["specs"]["env"].to_owned()));
+                request.set_build_env(extract_env(doc["specs"]["steps"]["build-script"]["env"].to_owned()));
+                request.set_deploy_env(extract_env(doc["specs"]["steps"]["deploy-script"]["env"].to_owned()));
+                request.set_param_env(extract_env(doc["specs"]["steps"]["template"]["env"].to_owned()));
+                request.set_post_env(extract_env(doc["specs"]["steps"]["post-script"]["env"].to_owned()));
                 
-                match doc["specs"]["template"]["remote"].to_owned().as_str() {
+                match doc["specs"]["steps"]["template"]["remote"].to_owned().as_str() {
                     Some(_a) => {
                         let mut url:String = String::new();
-                        let remote_check = &doc["specs"]["template"]["host"].as_str().unwrap_or("").to_owned()[..4].to_string();
+                        let remote_check = &doc["specs"]["steps"]["template"]["host"].as_str().unwrap_or("").to_owned()[..4].to_string();
                         if ! remote_check.contains("http") {
                             url.push_str("http://");
                         } 
-                        url.push_str(&doc["specs"]["template"]["host"].as_str().unwrap_or("").to_owned());
-                        url.push_str(&doc["specs"]["template"]["parameters"].as_str().unwrap_or("").to_owned());
+                        url.push_str(&doc["specs"]["steps"]["template"]["host"].as_str().unwrap_or("").to_owned());
+                        url.push_str(&doc["specs"]["steps"]["template"]["parameters"].as_str().unwrap_or("").to_owned());
                         request.set_params(url);
                     },
                     None => {
-                        request.set_params(doc["specs"]["template"]["parameters"].as_str().unwrap_or("").to_owned());
+                        request.set_params(doc["specs"]["steps"]["template"]["parameters"].as_str().unwrap_or("").to_owned());
                     }
                 }
             }

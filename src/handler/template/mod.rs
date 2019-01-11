@@ -16,7 +16,8 @@ impl Template {
                 self.set_render(data);
                 &self.render()
             }
-            Err(_e) => {
+            Err(e) => {
+                println!("Error rendering {}", e);
                 process::exit(2);
             }
         }
