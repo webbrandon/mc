@@ -55,26 +55,30 @@ metadata:
   name: "Master Of Ceremony"
   description: "A long sentence..."
 specs:
-  build-script:
-    file: ./sample/sample.build-script
-    env:
-    - name: ENVIRONMENT
-      default: stg
-      options:
-      - value: stg
-      - value: prod
-  template:
-    file: ./sample/sample.template
-    parameters: ./sample/sample.params
-    script: ./sample/sample.params-script
-    outfile: sample.out
-    env:
-    - name: HAS_THIS
-      default: "true"
-  deploy-script:
-    file: ./sample/sample.deploy-script
-  post-script:
-    file: ./sample/sample.post-script
+  env:
+  - name: GLOBAL
+    default: global-value
+  steps:
+    build-script:
+      file: ./sample/sample.build-script
+      env:
+      - name: ENVIRONMENT
+        default: stg
+        options:
+        - value: stg
+        - value: prod
+    template:
+      file: ./sample/sample.template
+      parameters: ./sample/sample.params
+      script: ./sample/sample.params-script
+      outfile: ./sample/sample.template-out
+      env:
+      - name: HAS_THIS
+        default: "true"
+    deploy-script:
+      file: ./sample/sample.deploy-script
+    post-script:
+      file: ./sample/sample.post-script
 ```
 
 ## Install
