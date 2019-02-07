@@ -12,22 +12,23 @@ specs:
       file: ./sample/sample.build-script
       env:
       - name: SUGGESTION
-        default: one
+        default: Two
         options:
-        - value: one
-        - value: two
+        - value: One
+        - value: Two
+        - value: "Anything else."
       - name: OPTION
         type: option
-        default: one
         options:
-        - value: one
-        - value: two
+        - value: "Option One"
+        - value: "Option Two"
       - name: QUESTION
         context: "How do you like how this works?"
-        default: one
+        default: "I like it!"
         options:
-        - value: one
-        - value: two
+        - value: "I like it!"
+        - value: "Not sure yet."
+        - value: "This is wierd..."
       - name: BOOLEAN
         context: "Are you being honest?"
         type: boolean
