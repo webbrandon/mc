@@ -11,19 +11,32 @@ specs:
     build-script:
       file: ./sample/sample.build-script
       env:
-      - name: ENVIRONMENT
-        default: stg
+      - name: SUGGESTION
+        default: Two
         options:
-        - value: stg
-        - value: prod
+        - value: One
+        - value: Two
+        - value: "Anything else."
+      - name: OPTION
+        type: option
+        options:
+        - value: "Option One"
+        - value: "Option Two"
+      - name: QUESTION
+        context: "How do you like how this works?"
+        default: "I like it!"
+        options:
+        - value: "I like it!"
+        - value: "Not sure yet."
+        - value: "This is wierd..."
+      - name: BOOLEAN
+        context: "Are you being honest?"
+        type: boolean
     template:
       file: ./sample/sample.template
       parameters: ./sample/sample.params
       script: ./sample/sample.params-script
       outfile: ./sample/sample.template-out
-      env:
-      - name: HAS_THIS
-        default: "true"
     deploy-script:
       file: ./sample/sample.deploy-script
     post-script:

@@ -1,12 +1,9 @@
 #!/bin/sh
-echo "Now building for '${ENVIRONMENT}'."
+echo "Your pipeline while request value for GLOBAL is '${GLOBAL}'."
 
-cargo build --release
-cp target/release/mc darwin
-
-docker build -t mc:dev -f docker/Dockerfile.linux .
-docker create --name=mc-linux mc:dev
-docker cp mc-linux:/opt/mc/target/release/mc debian
-docker rm mc-linux
+echo "For SUGGESTION you answered:\n '${SUGGESTION}'."
+echo "For OPTION you answered:\n '${OPTION}'."
+echo "For QUESTION you answered:\n '${QUESTION}'."
+echo "For BOOLEAN you answered:\n '${BOOLEAN}'."
 
 exit 0

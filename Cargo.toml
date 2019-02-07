@@ -1,6 +1,6 @@
 [package]
 name = "mc"
-version = "0.5.1"
+version = "0.5.2"
 authors = ["Brandon Clark <brandon.clark@leafgroup.com>"]
 build = "src/build.rs"
 edition = "2018"
@@ -11,8 +11,8 @@ clap = "2.32.0"
 [dependencies]
 clap = "2.32.0"
 handlebars = "1.1.0"
-run_script = "0.2.3"
-serde_json = "1.0.33"
+run_script = "0.2.5"
+serde_json = "1.0.38"
 yaml-rust = "0.4.2"
 dialoguer = "0.3.0"
 dotenv = "0.13.0"
