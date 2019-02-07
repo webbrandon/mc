@@ -5,15 +5,15 @@ pub struct Configs {
     params: String,
     template: String,
     render: String,
-    global_env: Vec<(String, String, String)>,
+    global_env: Vec<(String, String, String, String, Vec<String>)>,
     build_script: String,
-    build_env: Vec<(String, String, String)>,
+    build_env: Vec<(String, String, String, String, Vec<String>)>,
     param_script: String,
-    param_env: Vec<(String, String, String)>,
+    param_env: Vec<(String, String, String, String, Vec<String>)>,
     deploy_script: String,
-    deploy_env: Vec<(String, String, String)>,
+    deploy_env: Vec<(String, String, String, String, Vec<String>)>,
     post_script: String,
-    post_env: Vec<(String, String, String)>,
+    post_env: Vec<(String, String, String, String, Vec<String>)>,
     no_build: bool,
     no_deploy: bool,
     no_template: bool,
@@ -34,31 +34,31 @@ impl Configs {
     pub fn set_render(&mut self, render: String) {
         self.render = render;
     }
-    pub fn set_global_env(&mut self, env: Vec<(String, String, String)>) {
+    pub fn set_global_env(&mut self, env: Vec<(String, String, String, String, Vec<String>)>) {
         self.global_env = env;
     }
     pub fn set_build_script(&mut self, script: String) {
         self.build_script = script;
     }
-    pub fn set_build_env(&mut self, env_options: Vec<(String, String, String)>) {
+    pub fn set_build_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.build_env = env_options;
     }
     pub fn set_param_script(&mut self, script: String) {
         self.param_script = script;
     }
-    pub fn set_param_env(&mut self, env_options: Vec<(String, String, String)>) {
+    pub fn set_param_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.param_env = env_options;
     }
     pub fn set_deploy_script(&mut self, script: String) {
         self.deploy_script = script;
     }
-    pub fn set_deploy_env(&mut self, env_options: Vec<(String, String, String)>) {
+    pub fn set_deploy_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.deploy_env = env_options;
     }
     pub fn set_post_script(&mut self, post_script: String) {
         self.post_script = post_script;
     }
-    pub fn set_post_env(&mut self, env_options: Vec<(String, String, String)>) {
+    pub fn set_post_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.post_env = env_options;
     }
     pub fn set_no_build(&mut self, setting: bool) {
@@ -88,28 +88,28 @@ impl Configs {
     pub fn build_script(&self) -> &String {
         &self.build_script
     }
-    pub fn global_env(&self) -> &Vec<(String, String, String)> {
+    pub fn global_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.global_env
     }
-    pub fn build_env(&self) -> &Vec<(String, String, String)> {
+    pub fn build_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.build_env
     }
     pub fn param_script(&self) -> &String {
         &self.param_script
     }
-    pub fn param_env(&self) -> &Vec<(String, String, String)> {
+    pub fn param_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.param_env
     }
     pub fn deploy_script(&self) -> &String {
         &self.deploy_script
     }
-    pub fn deploy_env(&self) -> &Vec<(String, String, String)> {
+    pub fn deploy_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.deploy_env
     }
     pub fn post_script(&self) -> &String {
         &self.post_script
     }
-    pub fn post_env(&self) -> &Vec<(String, String, String)> {
+    pub fn post_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.post_env
     }
     pub fn has_params(&self) -> bool {

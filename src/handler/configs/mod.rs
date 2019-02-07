@@ -4,34 +4,41 @@ use crate::file::file_to_string;
 use yaml_rust::yaml;
 use clap::{ArgMatches};
 
-fn extract_env(yaml_doc: yaml_rust::Yaml) -> Vec<(String, String, String)> {
-    let mut env_list:Vec<(String, String, String)> = Vec::new();
+fn extract_env(yaml_doc: yaml_rust::Yaml) -> Vec<(String, String, String, String, Vec<String>)> {
+    let mut env_list:Vec<(String, String, String, String, Vec<String>)> = Vec::new();
     
     for x in yaml_doc {    
         let name: String;
+        let type_value: String;
+        let context: String;
         let default_value: String;
-        let value_options: String;
         
         match x["name"].as_str() {
             Some(a) => {name = a.to_string();},
             None => {name = String::new();}
         }
+        match x["type"].as_str() {
+            Some(a) => {type_value = a.to_string();},
+            None => {type_value = "input".to_string();}
+        }
+        match x["context"].as_str() {
+            Some(a) => {context = a.to_string();},
+            None => {context = "".to_string();}
+        }
         match x["default"].as_str() {
             Some(a) => {default_value = a.to_string()},
             None => {default_value = String::new();}
         }
+        let mut value_options: Vec<String> = Vec::new();
         match x["options"].as_vec() {
             Some(a) => {
-                let mut options = String::new();
                 for b in a {
-                    options.push_str(b["value"].as_str().unwrap());
-                    options.push_str(" ");
+                    value_options.push(b["value"].as_str().unwrap().to_string());
                 }
-                value_options = options;
             },
-            None => {value_options = String::new();}
+            None => {value_options = Vec::new();}
         }
-        env_list.push((name, default_value, value_options));
+        env_list.push((name, type_value, context, default_value, value_options));
     }
     env_list    
 }
