@@ -1,0 +1,17 @@
+api: mc
+version: alpha/v2
+metadata:
+  name: "Master Of Ceremony"
+  description: "The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm."
+specs:
+  env:
+  - name: VERSION
+    default: 0.5.2
+  steps:
+    build-script:
+      file: ./pipelines/build.bash
+    template:
+      file: ./pipelines/install.template.sh
+      parameters: install.params
+      script: ./pipelines/template.bash
+      outfile: install.sh
