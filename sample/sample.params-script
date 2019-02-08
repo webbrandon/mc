@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "Script a params file for current content."
-echo "{" > ./sample/sample.params
-echo "\"has_value\": \""${GLOBAL}"\"" >> ./sample/sample.params
-echo "}" >> ./sample/sample.params
+echo "{" > ./sample.params
+echo "\"has_value\": \""${GLOBAL}"\"" >> ./sample.params
+echo "}" >> ./sample.params
 
 exit 0

@@ -9,7 +9,7 @@ specs:
     default: global-value
   steps:
     build-script:
-      file: ./sample/sample.build-script
+      file: sample.build-script
       env:
       - name: SUGGESTION
         default: Two
@@ -33,11 +33,11 @@ specs:
         context: "Are you being honest?"
         type: boolean
     template:
-      file: ./sample/sample.template
-      parameters: ./sample/sample.params
-      script: ./sample/sample.params-script
-      outfile: ./sample/sample.template-out
+      file: sample.template
+      parameters: sample.params
+      script: sample.params-script
+      outfile: sample.template-out
     deploy-script:
-      file: ./sample/sample.deploy-script
+      file: sample.deploy-script
     post-script:
-      file: ./sample/sample.post-script
+      file: sample.post-script
