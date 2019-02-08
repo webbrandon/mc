@@ -5,6 +5,7 @@ extern crate serde_json;
 extern crate run_script;
 extern crate dialoguer;
 extern crate dotenv;
+extern crate console;
 
 mod cli;
 mod model;

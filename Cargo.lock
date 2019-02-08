@@ -283,6 +283,7 @@ name = "mc"
 version = "0.5.2"
 dependencies = [
  "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "console 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "dialoguer 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dotenv 0.13.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "handlebars 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
