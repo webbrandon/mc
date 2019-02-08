@@ -1,6 +1,7 @@
 use dotenv;
 use clap::{ArgMatches};
 use dialoguer::{Confirmation, Input, Select};
+use console::{Style};
 use std::env;
 
 use dialoguer::{theme::ColorfulTheme};
@@ -31,7 +32,11 @@ fn ask_with_options(context: String, default_value: String, env_name: String, va
 
 fn ask_bool(context: String, env_name: String) -> bool {
     let question = if context.len() > 0 {context} else {format!("{} should be set?", env_name)};
-    let color_theme = ColorfulTheme::default();
+    let color_theme = ColorfulTheme {
+        yes_style: Style::new().cyan(),
+        no_style: Style::new().cyan(),
+        ..ColorfulTheme::default()
+    };
     Confirmation::with_theme(&color_theme)
             .with_text(&question)
             .interact()

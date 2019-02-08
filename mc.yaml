@@ -2,42 +2,16 @@ api: mc
 version: alpha/v2
 metadata:
   name: "Master Of Ceremony"
-  description: "A long sentence..."
+  description: "The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm."
 specs:
   env:
-  - name: GLOBAL
-    default: global-value
+  - name: VERSION
+    default: 0.5.2
   steps:
     build-script:
-      file: ./sample/sample.build-script
-      env:
-      - name: SUGGESTION
-        default: Two
-        options:
-        - value: One
-        - value: Two
-        - value: "Anything else."
-      - name: OPTION
-        type: option
-        options:
-        - value: "Option One"
-        - value: "Option Two"
-      - name: QUESTION
-        context: "How do you like how this works?"
-        default: "I like it!"
-        options:
-        - value: "I like it!"
-        - value: "Not sure yet."
-        - value: "This is wierd..."
-      - name: BOOLEAN
-        context: "Are you being honest?"
-        type: boolean
+      file: ./pipelines/build.bash
     template:
-      file: ./sample/sample.template
-      parameters: ./sample/sample.params
-      script: ./sample/sample.params-script
-      outfile: ./sample/sample.template-out
-    deploy-script:
-      file: ./sample/sample.deploy-script
-    post-script:
-      file: ./sample/sample.post-script
+      file: ./pipelines/install.template.sh
+      parameters: install.params
+      script: ./pipelines/template.bash
+      outfile: install.sh

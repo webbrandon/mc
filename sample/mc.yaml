@@ -1,0 +1,43 @@
+api: mc
+version: alpha/v2
+metadata:
+  name: "Master Of Ceremony"
+  description: "A long sentence..."
+specs:
+  env:
+  - name: GLOBAL
+    default: global-value
+  steps:
+    build-script:
+      file: sample.build-script
+      env:
+      - name: SUGGESTION
+        default: Two
+        options:
+        - value: One
+        - value: Two
+        - value: "Anything else."
+      - name: OPTION
+        type: option
+        options:
+        - value: "Option One"
+        - value: "Option Two"
+      - name: QUESTION
+        context: "How do you like how this works?"
+        default: "I like it!"
+        options:
+        - value: "I like it!"
+        - value: "Not sure yet."
+        - value: "This is wierd..."
+      - name: BOOLEAN
+        context: "Are you being honest?"
+        type: boolean
+    template:
+      file: sample.template
+      parameters: sample.params
+      script: sample.params-script
+      outfile: sample.template-out
+    deploy-script:
+      file: sample.deploy-script
+    post-script:
+      file: sample.post-script
