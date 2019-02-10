@@ -7,6 +7,19 @@ specs:
   env:
   - name: GLOBAL
     default: global-value
+  flows:
+  - name: build
+    env-file: .env
+    flow:
+    - build-script 
+  - name: deploy
+    env-file: .env
+    flow:
+    - template 
+    - deploy-script
+  - name: remove-deploy
+    flow:
+    - post-script
   steps:
     build-script:
       file: sample.build-script

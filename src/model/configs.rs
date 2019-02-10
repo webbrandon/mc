@@ -18,7 +18,9 @@ pub struct Configs {
     no_deploy: bool,
     no_template: bool,
     no_post: bool,
-    no_prompt: bool
+    no_prompt: bool,
+    flow_name: String,
+    flow: (String, String, Vec<String>)
 }
 
 impl Configs {
@@ -76,6 +78,12 @@ impl Configs {
     pub fn set_no_prompt(&mut self, setting: bool) {
         self.no_prompt = setting;
     }
+    pub fn set_flow_name(&mut self, flow_name: String) {
+        self.flow_name = flow_name;
+    }
+    pub fn set_flow(&mut self, flow: (String, String, Vec<String>)) {
+        self.flow = flow;
+    }
     pub fn params(&self) -> &String {
         &self.params
     }
@@ -111,6 +119,12 @@ impl Configs {
     }
     pub fn post_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.post_env
+    }
+    pub fn flow_name(&self) -> &String {
+        &self.flow_name
+    }
+    pub fn flow(&self) -> &(String, String, Vec<String>) {
+        &self.flow
     }
     pub fn has_params(&self) -> bool {
         match self.params.len()  {
@@ -168,6 +182,12 @@ impl Configs {
     }
     pub fn has_no_prompt(&self) -> bool {
         self.no_prompt
+    }
+    pub fn has_flow(&self) -> bool {
+        match self.flow_name.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
     }
 }
 
