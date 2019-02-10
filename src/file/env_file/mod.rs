@@ -78,6 +78,9 @@ impl EnvFile {
             dotenv::from_filename(file_path.as_str()).ok();
         }
     }
+    pub fn load_env(env_file: String) {
+        dotenv::from_filename(env_file.as_str()).ok();
+    }
     pub fn run_env_prompt(env_array: &Vec<(String, String, String, String, Vec<String>)>, no_prompt: &bool) {
         if !no_prompt {
             for x in env_array {

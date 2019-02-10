@@ -1,5 +1,6 @@
 pub use crate::model::{Configs};
 
+//use std::process;
 use crate::file::file_to_string;
 use yaml_rust::yaml;
 use clap::{ArgMatches};
@@ -43,16 +44,43 @@ fn extract_env(yaml_doc: yaml_rust::Yaml) -> Vec<(String, String, String, String
     env_list    
 }
 
+pub fn flow_by_type(flow_name: String, yaml_doc: yaml_rust::Yaml) -> (String, String, Vec<String>) {
+    let mut flow: Vec<String> = Vec::new();
+    let mut flow_env = String::new();
+    
+    for x in yaml_doc {
+        if x["name"].as_str() == Some(flow_name.as_str()) {
+            match &x["env-file"].as_str() {
+                Some(a) => {
+                    flow_env = a.to_string();
+                },
+                None => {
+                    println!("Empty flow pattern.  Will apply default pattern.");
+                }
+            }
+            match x["flow"].as_vec() {
+                Some(a) => {
+                    for b in a {
+                        match b.as_str() {
+                            Some(z) => {
+                                flow.push(z.to_string());
+                            },
+                            None    => print!("You cannot have empty steps in flow request.")
+                        }
+                    }
+                },
+                None => {
+                    println!("Empty flow pattern.  Will apply default pattern.");
+                }
+            }
+        }
+    }
+    (flow_name, flow_env, flow)
+}
+    
 impl Configs {
     pub fn process_args(matches: ArgMatches) -> Configs {
         let mut request = Configs::new();
-        if (matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
-            request.set_no_build(matches.is_present("no-build"));
-            request.set_no_deploy(matches.is_present("no-deploy"));
-            request.set_no_template(matches.is_present("no-template"));
-            request.set_no_post(matches.is_present("no-post"));
-            request.set_no_prompt(matches.is_present("no-prompt"));
-        }
         if (matches.is_present("template") && matches.is_present("parameters")) || matches.is_present("script") {
             request.set_template(matches.value_of("template").unwrap_or("").to_owned());
             request.set_param_script(matches.value_of("param-script").unwrap_or("").to_owned());
@@ -66,6 +94,15 @@ impl Configs {
             let s = file_to_string(mc_config);
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
+                if (matches.is_present("flow") || matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
+                    request.set_no_build(matches.is_present("no-build"));
+                    request.set_no_deploy(matches.is_present("no-deploy"));
+                    request.set_no_template(matches.is_present("no-template"));
+                    request.set_no_post(matches.is_present("no-post"));
+                    request.set_no_prompt(matches.is_present("no-prompt"));
+                    request.set_flow_name(matches.value_of("flow").unwrap_or("").to_owned());
+                    request.set_flow(flow_by_type(request.flow_name().to_string(), doc["specs"]["flows"].to_owned()));
+                }
                 request.set_template(doc["specs"]["steps"]["template"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_param_script(doc["specs"]["steps"]["template"]["script"].as_str().unwrap_or("").to_owned());
                 request.set_render(doc["specs"]["steps"]["template"]["outfile"].as_str().unwrap_or("").to_owned());
