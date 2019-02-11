@@ -4,14 +4,10 @@
 The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
 
 **Features**  
-- Static configuration file with mc.yaml. (Optional)
-- Command line options override config files.
 - Built in _Handlebars_ template engine using JSON params file. (_[learn more](https://handlebarsjs.com)_)
-- Controlled process flow. (_e.g. build > kubernetes template > deploy for testing > send traffic_)
-- Script steps in any shell available. (_i.e. bash, sh, zsh, node_)
-- No prompt for automation or prompted for local user response and control. 
+- Script pipeline steps in any shell available. (_i.e. bash, sh, zsh, node_)
 - Runs on Darwin(_Mac_) and Debian(_Linux_).
-- Configurable prompting for environment values with default setting and option suggestions.
+- Configurable prompting for environment values. ([learn more](#prompts))
 - Custom flow pattens to segment steps together. ([learn more](#flows))
 
 ## USAGE
@@ -52,7 +48,7 @@ OPTIONS:
 **mc.yaml**   
 ```YAML
 api: mc
-version: alpha/v1
+version: alpha/v2
 metadata:
   name: "Master Of Ceremony"
   description: "A long sentence..."
@@ -61,32 +57,73 @@ specs:
   - name: GLOBAL
     default: global-value
   flows:
-  - name: build
-    env-file: .env
+  - name: remove-deploy
     flow:
-    - build-script 
+    - post-script
   steps:
     build-script:
-      file: ./sample/sample.build-script
+      file: sample.build-script
       env:
-      - name: ENVIRONMENT
-        default: stg
+      - name: SUGGESTION
+        default: Two
         options:
-        - value: stg
-        - value: prod
+        - value: One
+        - value: Two
     template:
-      file: ./sample/sample.template
-      parameters: ./sample/sample.params
-      script: ./sample/sample.params-script
-      outfile: ./sample/sample.template-out
-      env:
-      - name: HAS_THIS
-        default: "true"
+      file: sample.template
+      parameters: sample.params
+      script: sample.params-script
+      outfile: sample.template-out
     deploy-script:
-      file: ./sample/sample.deploy-script
+      file: sample.deploy-script
     post-script:
-      file: ./sample/sample.post-script
+      file: sample.post-script
 ```
+
+### Prompts
+Instead of loading default values you may want to ask for values at run time, especially if not being ran through automation.  Environment values can be set using mmc's configurable prompt. Find more instructions below.
+
+**mc.yaml (formatting options)**   
+```YAML
+...
+specs:
+  env:
+  - name: GLOBAL
+    default: global-value
+  steps:
+    build-script:
+      env:
+      - name: SUGGESTION
+        default: Two
+        options:
+        - value: One
+        - value: Two
+        - value: "Anything else."
+      - name: OPTION
+        type: option
+        options:
+        - value: "Option One"
+        - value: "Option Two"
+      - name: QUESTION
+        context: "How do you like how this works?"
+        default: "I like it!"
+        options:
+        - value: "I like it!"
+        - value: "Not sure yet."
+        - value: "This is wierd..."
+      - name: BOOLEAN
+        context: "Are you being honest?"
+        type: boolean
+      ...
+```
+_Prompts can be set before all pipeline steps or only when a step is ran._
+
+Each entry has several options you can set.
+- **Name**: The name of the environment value. (i.e. USER_VALUE)
+- **Type**: suggestion(default), option, boolean
+- **Default**: The default option for the user if they only press the "Enter" key.
+- **Context**: How you want the question to be asked.
+- **Options**: Possible or set options for a suggestion or option type.
 
 ### Flows
 You can segment your steps into flow patterns.  This is useful if you find yourself often using many options like `--no-build` and others when reading from mc.yaml file contents.
