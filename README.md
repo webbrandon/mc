@@ -90,7 +90,7 @@ specs:
 ```
 
 ### Pipeline Steps
-Steps are currently limited to a defined set.  We do plan on enhancing this down the line.  Currently we have defined what will possible become the reserved step types that will have special feature integrations down the line.
+Steps are currently limited to a defined set.  We do plan on enhancing this down the line.  Currently we have defined what will possibly become the reserved step types that will have special feature integrations in future releases.
     
 Currently the reserved steps are presented below in the default order they are ran when present:
 - pre-script
