@@ -26,8 +26,20 @@ pub fn run_step_script(script: &String) -> String {
 }
 
 impl Scripts {
+    pub fn process_pre_script(&self) -> String {
+        let script = self.pre_script();
+        run_step_script(script)
+    }
+    pub fn process_unit_test(&self) -> String {
+        let script = self.unit_test();
+        run_step_script(script)
+    }
     pub fn process_build_script(&self) -> String {
         let script = self.build_script();
+        run_step_script(script)
+    }
+    pub fn process_functional_test(&self) -> String {
+        let script = self.functional_test();
         run_step_script(script)
     }
     pub fn process_param_script(&self) -> String {
@@ -36,6 +48,10 @@ impl Scripts {
     }
     pub fn process_deploy_script(&self) -> String {
         let script = self.deploy_script();
+        run_step_script(script)
+    }
+    pub fn process_system_test(&self) -> String {
+        let script = self.system_test();
         run_step_script(script)
     }
     pub fn process_post_script(&self) -> String {

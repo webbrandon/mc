@@ -24,25 +24,33 @@ USAGE:
     mc [FLAGS] [OPTIONS]
 
 FLAGS:
-    -h, --help           Prints help information
-    -m, --mute           Silence output.
-        --no-build       Skip build step from mc.yaml.
-        --no-deploy      Skip deploy step from mc.yaml.
-        --no-post        Skip post build step from mc.yaml.
-        --no-prompt      Turn prompt off for mc.yaml steps.
-        --no-template    Skip template step from mc.yaml settings.
+    -h, --help                  Prints help information
+    -m, --mute                  Silence output.
+        --no-build              Skip build step from mc.yaml.
+        --no-deploy             Skip deploy step from mc.yaml.
+        --no-functional-test    Skip functional testing step from mc.yaml.
+        --no-post               Skip post build step from mc.yaml.
+        --no-pre                Skip pre step from mc.yaml.
+        --no-prompt             Turn prompt off for mc.yaml steps.
+        --no-system-test        Skip system testing step from mc.yaml.
+        --no-template           Skip template step from mc.yaml settings.
+        --no-unit-test          Skip unit testing step from mc.yaml.
 
 OPTIONS:
-    -b, --build-script <BUILD_SCRIPT>      Sets the script file to use for setting building software.
-    -f, --file <CONFIG>                    Sets the "mc.yaml" file to use.
-    -d, --deploy-script <DEPLOY_SCRIPT>    Sets the script file to use after _build script_.
-    -e, --env <ENV>                        Load from .env file.
-        --flow <FLOW_NAME>                 Use flow pattern from mc.yaml.
-        --param-script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
-    -p, --param <PARAM>                    Sets a custom template parameters file.
-    -s, --post-script <POST_SCRIPT>        Sets the script file to use after configuring template.
-    -t, --template <TEMPLATE>              Sets a custom template file
-    -o, --template-out <OUT>               Rendered template out file write location.
+    -b, --build-script <BUILD_SCRIPT>          Sets the script file to use for setting building software.
+    -f, --file <CONFIG>                        Sets the "mc.yaml" file to use.
+    -d, --deploy-script <DEPLOY_SCRIPT>        Sets the script file to use after _build script_.
+    -e, --env <ENV>                            Load from .env file.
+        --flow <FLOW_NAME>                     Use flow pattern from mc.yaml.
+    -n, --functional-test <FUNCTIONAL_TEST>    Sets the script file to use for running functional test.
+        --param-script <PARAM_SCRIPT>          Sets a custom script to configure parameters file at render time.
+    -p, --param <PARAM>                        Sets a custom template parameters file.
+    -s, --post-script <POST_SCRIPT>            Sets the script file to use after configuring template.
+    -c, --pre-script <PRE_SCRIPT>              Sets the script that run before all other scripts.
+    -y, --system-test <SYSTEM_TEST>            Sets the script file to use for running system test.
+    -t, --template <TEMPLATE>                  Sets a custom template file
+    -o, --template-out <OUT>                   Rendered template out file write location.
+    -u, --unit-test <UNIT_TEST>                Sets the script file to use for running unit test.
 ```
 ---    
     
@@ -85,9 +93,13 @@ specs:
 Steps are currently limited to a defined set.  We do plan on enhancing this down the line.  Currently we have defined what will possible become the reserved step types that will have special feature integrations down the line.
     
 Currently the reserved steps are presented below in the default order they are ran when present:
+- pre-script
+- unit-test
 - build-script
+- functional-test
 - template
 - deploy-script
+- system-test
 - post-script
 
 #### Scripts
@@ -201,7 +213,7 @@ curl https://webbrandon.github.io/mc/install.sh -sS | bash -s
 ## Build From Source
 If you are building from source you will need to have the [Rust language ](https://rustup.rs/) application suite installed and download the [source code](https://webbrandon.github.io/mc).  I have built and tested for linux and OSX only.  If you try on Windows please let me know how it goes.
 
-Stable build last compiled with with [Rust version 1.31.1](https://rustup.rs/).
+Stable build last compiled with with [Rust version 1.32.0](https://rustup.rs/).
 
 ```
 cargo build --release

@@ -43,6 +43,54 @@ impl Steps {
         }
     }
 
+    pub fn run_pre(request: &Configs, scripts: &Scripts, no_prompt: bool, mute: bool) {
+        if request.has_pre_script() {
+            if !request.has_no_pre() {
+                let ask_question = continue_prompt("pre script".to_string(), &no_prompt);
+                if ask_question {
+                    EnvFile::run_env_prompt(&request.pre_env(), &no_prompt);
+                    log_it(mute, scripts.process_pre_script().to_owned());
+                }
+            }
+        }
+    }
+
+    pub fn run_unit_test(request: &Configs, scripts: &Scripts, no_prompt: bool, mute: bool) {
+        if request.has_unit_test() {
+            if !request.has_no_unit_test() {
+                let ask_question = continue_prompt("unit test".to_string(), &no_prompt);
+                if ask_question {
+                    EnvFile::run_env_prompt(&request.unit_test_env(), &no_prompt);
+                    log_it(mute, scripts.process_unit_test().to_owned());
+                }
+            }
+        }
+    }
+
+    pub fn run_functional_test(request: &Configs, scripts: &Scripts, no_prompt: bool, mute: bool) {
+        if request.has_functional_test() {
+            if !request.has_no_functional_test() {
+                let ask_question = continue_prompt("functional test".to_string(), &no_prompt);
+                if ask_question {
+                    EnvFile::run_env_prompt(&request.functional_test_env(), &no_prompt);
+                    log_it(mute, scripts.process_functional_test().to_owned());
+                }
+            }
+        }
+    }
+
+    pub fn run_system_test(request: &Configs, scripts: &Scripts, no_prompt: bool, mute: bool) {
+        if request.has_system_test() {
+            if !request.has_no_system_test() {
+                let ask_question = continue_prompt("system test".to_string(), &no_prompt);
+                if ask_question {
+                    EnvFile::run_env_prompt(&request.system_test_env(), &no_prompt);
+                    log_it(mute, scripts.process_system_test().to_owned());
+                }
+            }
+        }
+    }
+    
     pub fn run_template(request: &Configs, scripts: &Scripts, no_prompt: bool, mute: bool) {    
         if request.has_template() && request.has_params() {
             if !request.has_no_template() {

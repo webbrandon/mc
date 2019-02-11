@@ -6,7 +6,7 @@ metadata:
 specs:
   env:
   - name: VERSION
-    default: 0.5.3
+    default: 0.5.4
   steps:
     build-script:
       file: ./pipelines/build.bash

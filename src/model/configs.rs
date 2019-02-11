@@ -6,16 +6,28 @@ pub struct Configs {
     template: String,
     render: String,
     global_env: Vec<(String, String, String, String, Vec<String>)>,
+    pre_script: String,
+    pre_env: Vec<(String, String, String, String, Vec<String>)>,
+    unit_test: String,
+    unit_test_env: Vec<(String, String, String, String, Vec<String>)>,
     build_script: String,
     build_env: Vec<(String, String, String, String, Vec<String>)>,
+    functional_test: String,
+    functional_test_env: Vec<(String, String, String, String, Vec<String>)>,
     param_script: String,
     param_env: Vec<(String, String, String, String, Vec<String>)>,
     deploy_script: String,
     deploy_env: Vec<(String, String, String, String, Vec<String>)>,
+    system_test: String,
+    system_test_env: Vec<(String, String, String, String, Vec<String>)>,
     post_script: String,
     post_env: Vec<(String, String, String, String, Vec<String>)>,
+    no_pre: bool,
+    no_unit_test: bool,
     no_build: bool,
+    no_functional_test: bool,
     no_deploy: bool,
+    no_system_test: bool,
     no_template: bool,
     no_post: bool,
     no_prompt: bool,
@@ -39,11 +51,32 @@ impl Configs {
     pub fn set_global_env(&mut self, env: Vec<(String, String, String, String, Vec<String>)>) {
         self.global_env = env;
     }
+    pub fn set_pre_script(&mut self, pre_script: String) {
+        self.pre_script = pre_script;
+    }
+    pub fn set_pre_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
+        self.pre_env = env_options;
+    }
+    pub fn set_no_pre(&mut self, setting: bool) {
+        self.no_pre = setting;
+    }
+    pub fn set_unit_test(&mut self, script: String) {
+        self.unit_test = script;
+    }
+    pub fn set_unit_test_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
+        self.unit_test_env = env_options;
+    }
     pub fn set_build_script(&mut self, script: String) {
         self.build_script = script;
     }
     pub fn set_build_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.build_env = env_options;
+    }
+    pub fn set_functional_test(&mut self, script: String) {
+        self.functional_test = script;
+    }
+    pub fn set_functional_test_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
+        self.functional_test_env = env_options;
     }
     pub fn set_param_script(&mut self, script: String) {
         self.param_script = script;
@@ -57,20 +90,35 @@ impl Configs {
     pub fn set_deploy_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.deploy_env = env_options;
     }
+    pub fn set_system_test(&mut self, script: String) {
+        self.system_test = script;
+    }
+    pub fn set_system_test_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
+        self.system_test_env = env_options;
+    }
     pub fn set_post_script(&mut self, post_script: String) {
         self.post_script = post_script;
     }
     pub fn set_post_env(&mut self, env_options: Vec<(String, String, String, String, Vec<String>)>) {
         self.post_env = env_options;
     }
+    pub fn set_no_unit_test(&mut self, setting: bool) {
+        self.no_unit_test = setting;
+    }
     pub fn set_no_build(&mut self, setting: bool) {
         self.no_build = setting;
+    }
+    pub fn set_no_functional_test(&mut self, setting: bool) {
+        self.no_functional_test = setting;
     }
     pub fn set_no_deploy(&mut self, setting: bool) {
         self.no_deploy = setting;
     }
     pub fn set_no_template(&mut self, setting: bool) {
         self.no_template = setting;
+    }
+    pub fn set_no_system_test(&mut self, setting: bool) {
+        self.no_system_test = setting;
     }
     pub fn set_no_post(&mut self, setting: bool) {
         self.no_post = setting;
@@ -93,8 +141,32 @@ impl Configs {
     pub fn render(&self) -> &String {
         &self.render
     }
+    pub fn pre_script(&self) -> &String {
+        &self.pre_script
+    }
+    pub fn pre_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
+        &self.pre_env
+    }
+    pub fn unit_test(&self) -> &String {
+        &self.unit_test
+    }
+    pub fn unit_test_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
+        &self.unit_test_env
+    }
     pub fn build_script(&self) -> &String {
         &self.build_script
+    }
+    pub fn functional_test(&self) -> &String {
+        &self.functional_test
+    }
+    pub fn functional_test_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
+        &self.functional_test_env
+    }
+    pub fn system_test(&self) -> &String {
+        &self.system_test
+    }
+    pub fn system_test_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
+        &self.system_test_env
     }
     pub fn global_env(&self) -> &Vec<(String, String, String, String, Vec<String>)> {
         &self.global_env
@@ -144,8 +216,35 @@ impl Configs {
             _ => false,
         }
     }
+    pub fn has_pre_script(&self) -> bool {
+        match self.pre_script.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_no_pre(&self) -> bool {
+        self.no_pre
+    }
     pub fn has_build_script(&self) -> bool {
         match self.build_script.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_unit_test(&self) -> bool {
+        match self.unit_test.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_system_test(&self) -> bool {
+        match self.system_test.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
+    }
+    pub fn has_functional_test(&self) -> bool {
+        match self.functional_test.len()  {
             n if n > 0 => true,
             _ => false,
         }
@@ -168,11 +267,20 @@ impl Configs {
             _ => false,
         }
     }
+    pub fn has_no_unit_test(&self) -> bool {
+        self.no_unit_test
+    }
     pub fn has_no_build(&self) -> bool {
         self.no_build
     }
+    pub fn has_no_functional_test(&self) -> bool {
+        self.no_functional_test
+    }
     pub fn has_no_deploy(&self) -> bool {
         self.no_deploy
+    }
+    pub fn has_no_system_test(&self) -> bool {
+        self.no_system_test
     }
     pub fn has_no_template(&self) -> bool {
         self.no_template
@@ -193,7 +301,7 @@ impl Configs {
 
 impl fmt::Debug for Configs {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Configs {{\n\t template: {}\n\t params: {}\n\t params-script: {}\n\t build-script: {}\n\t deploy-script: {}\n\t post-script: {}\n}}",
-        self.template, self.params, self.param_script, self.build_script, self.deploy_script, self.post_script)
+        write!(f, "Configs {{\n\t template: {}\n\t params: {}\n\t params-script: {}\n\t pre-script: {}\n\t unit-test: {}\n\t build-script: {}\n\t functional-test: {}\n\t deploy-script: {}\n\t system-test: {}\n\t post-script: {}\n}}",
+        self.template, self.params, self.param_script, self.pre_script, self.unit_test, self.build_script, self.functional_test, self.deploy_script, self.system_test, self.post_script)
     }
 }

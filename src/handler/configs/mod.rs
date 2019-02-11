@@ -86,17 +86,25 @@ impl Configs {
             request.set_param_script(matches.value_of("param-script").unwrap_or("").to_owned());
             request.set_params(matches.value_of("parameters").unwrap_or("").to_owned());
             request.set_render(matches.value_of("template-out").unwrap_or("").to_owned());
+            request.set_pre_script(matches.value_of("pre-script").unwrap_or("").to_owned());
+            request.set_unit_test(matches.value_of("unit-test").unwrap_or("").to_owned());
             request.set_build_script(matches.value_of("build-script").unwrap_or("").to_owned());
+            request.set_functional_test(matches.value_of("functional-test").unwrap_or("").to_owned());
             request.set_deploy_script(matches.value_of("deploy-script").unwrap_or("").to_owned());
+            request.set_system_test(matches.value_of("system-test").unwrap_or("").to_owned());
             request.set_post_script(matches.value_of("post-script").unwrap_or("").to_owned());
         } else {
             let mc_config = matches.value_of("config").unwrap_or("mc.yaml");
             let s = file_to_string(mc_config);
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
-                if (matches.is_present("flow") || matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
+                if (matches.is_present("flow") || matches.is_present("no-pre") || matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
+                    request.set_no_pre(matches.is_present("no-pre"));
+                    request.set_no_unit_test(matches.is_present("no-unit-test"));
                     request.set_no_build(matches.is_present("no-build"));
+                    request.set_no_functional_test(matches.is_present("no-functional-test"));
                     request.set_no_deploy(matches.is_present("no-deploy"));
+                    request.set_no_system_test(matches.is_present("no-system-test"));
                     request.set_no_template(matches.is_present("no-template"));
                     request.set_no_post(matches.is_present("no-post"));
                     request.set_no_prompt(matches.is_present("no-prompt"));
@@ -106,14 +114,22 @@ impl Configs {
                 request.set_template(doc["specs"]["steps"]["template"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_param_script(doc["specs"]["steps"]["template"]["script"].as_str().unwrap_or("").to_owned());
                 request.set_render(doc["specs"]["steps"]["template"]["outfile"].as_str().unwrap_or("").to_owned());
+                request.set_pre_script(doc["specs"]["steps"]["pre-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_unit_test(doc["specs"]["steps"]["unit-test"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_build_script(doc["specs"]["steps"]["build-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_functional_test(doc["specs"]["steps"]["functional-test"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_deploy_script(doc["specs"]["steps"]["deploy-script"]["file"].as_str().unwrap_or("").to_owned());
+                request.set_system_test(doc["specs"]["steps"]["system-test"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_post_script(doc["specs"]["steps"]["post-script"]["file"].as_str().unwrap_or("").to_owned());
                 
                 // Check for enviornment name value settings.
                 request.set_global_env(extract_env(doc["specs"]["env"].to_owned()));
+                request.set_pre_env(extract_env(doc["specs"]["steps"]["pre-script"]["env"].to_owned()));
+                request.set_unit_test_env(extract_env(doc["specs"]["steps"]["unit-test"]["env"].to_owned()));
                 request.set_build_env(extract_env(doc["specs"]["steps"]["build-script"]["env"].to_owned()));
+                request.set_functional_test_env(extract_env(doc["specs"]["steps"]["functional-test"]["env"].to_owned()));
                 request.set_deploy_env(extract_env(doc["specs"]["steps"]["deploy-script"]["env"].to_owned()));
+                request.set_system_test_env(extract_env(doc["specs"]["steps"]["system-test"]["env"].to_owned()));
                 request.set_param_env(extract_env(doc["specs"]["steps"]["template"]["env"].to_owned()));
                 request.set_post_env(extract_env(doc["specs"]["steps"]["post-script"]["env"].to_owned()));
                 

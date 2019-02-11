@@ -28,7 +28,20 @@ fn main() {
     
     let no_prompt = request.has_no_prompt();
     
-    let mut flow = ("default".to_string(), "".to_string(), vec!["build-script".to_string(), "template".to_string(), "deploy-script".to_string(), "post-script".to_string()]);
+    let mut flow = (
+        "default".to_string(), 
+        "".to_string(), 
+        vec![
+             "pre-script".to_string(), 
+             "unit-test".to_string(), 
+             "build-script".to_string(), 
+             "functional-test".to_string(), 
+             "template".to_string(), 
+             "deploy-script".to_string(), 
+             "system-test".to_string(), 
+             "post-script".to_string()
+            ]
+    );
     if request.has_flow() {
         flow = request.flow().to_owned();
         if flow.1.len() < 1 {
@@ -38,12 +51,20 @@ fn main() {
     
     EnvFile::run_env_prompt(&request.global_env(), &no_prompt);
     for x in flow.2 {
-        if x == "build-script".to_string() {
+        if x == "pre-script".to_string() {
+            Steps::run_pre(&request, &scripts, no_prompt, mute);
+        } else if x == "unit-test".to_string() {
+            Steps::run_unit_test(&request, &scripts, no_prompt, mute);
+        } else if x == "build-script".to_string() {
             Steps::run_build(&request, &scripts, no_prompt, mute);
+        } else if x == "functional-test".to_string() {
+            Steps::run_functional_test(&request, &scripts, no_prompt, mute);
         } else if x == "template".to_string() {
             Steps::run_template(&request, &scripts, no_prompt, mute);
         } else if x == "deploy-script".to_string() {
             Steps::run_deploy(&request, &scripts, no_prompt, mute);
+        } else if x == "system-test".to_string() {
+            Steps::run_system_test(&request, &scripts, no_prompt, mute);
         } else if x == "post-script".to_string() {
             Steps::run_post(&request, &scripts, no_prompt, mute);
         }
