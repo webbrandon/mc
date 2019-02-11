@@ -113,6 +113,11 @@ Setting the template pipeline step is slightly different as you will target a Ha
 ### Prompts
 Instead of loading default values you may want to ask for values at run time, especially if not being ran through automation.  Environment values can be set using mmc's configurable prompt. Find more instructions below.
 
+```bash
+mc --no-prompt
+```
+_Use the no-prompt option to bypass prompting. You must account for empty values if not set from .env file._
+
 **mc.yaml (formatting options)**   
 ```YAML
 ...
