@@ -80,8 +80,17 @@ specs:
       file: sample.post-script
 ```
 
-### Scripts
-In development operations we often use many different script to achieve certain task.  This methodology applies to script usage in the mc tool. Use any shell based scripts for the system mc executes on and you should have no issues. 
+### Pipeline Steps
+Steps are currently limited to a defined set.  We do plan on enhancing this down the line.  Currently we have defined what will possible become the reserved step types that will have special feature integrations down the line.
+    
+Currently the reserved steps are presented below in the default order they are ran when present:
+- build-script
+- template
+- deploy-script
+- post-script
+
+#### Scripts
+Each pipeline step will run a script.  You can link to script anywhere on the host system but we recommend having placing script in a subpath to you mc.yaml file.  Be sure to set the shebang in the first line of a script to specify the shell you are targeting. 
 
 ### Templating 
 We have based out built in template engine on Handlebars.js.  Currently we only accept JSON param body but have plans for other integrations. Learn more on how to write Handlebar templates from the [documentation](https://handlebarsjs.com)
