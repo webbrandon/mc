@@ -12,6 +12,7 @@ The purpose of this tool is to simplify management of continuous development and
 - No prompt for automation or prompted for local user response and control. 
 - Runs on Darwin(_Mac_) and Debian(_Linux_).
 - Configurable prompting for environment values with default setting and option suggestions.
+- Custom flow pattens to segment steps together. ([learn more](#flows))
 
 ## USAGE
 
@@ -31,7 +32,7 @@ FLAGS:
         --no-build       Skip build step from mc.yaml.
         --no-deploy      Skip deploy step from mc.yaml.
         --no-post        Skip post build step from mc.yaml.
-        --no-prompt      Turn prompt off for mc steps.
+        --no-prompt      Turn prompt off for mc.yaml steps.
         --no-template    Skip template step from mc.yaml settings.
 
 OPTIONS:
@@ -39,6 +40,7 @@ OPTIONS:
     -f, --file <CONFIG>                    Sets the "mc.yaml" file to use.
     -d, --deploy-script <DEPLOY_SCRIPT>    Sets the script file to use after _build script_.
     -e, --env <ENV>                        Load from .env file.
+        --flow <FLOW_NAME>                 Use flow pattern from mc.yaml.
         --param-script <PARAM_SCRIPT>      Sets a custom script to configure parameters file at render time.
     -p, --param <PARAM>                    Sets a custom template parameters file.
     -s, --post-script <POST_SCRIPT>        Sets the script file to use after configuring template.
@@ -58,6 +60,11 @@ specs:
   env:
   - name: GLOBAL
     default: global-value
+  flows:
+  - name: build
+    env-file: .env
+    flow:
+    - build-script 
   steps:
     build-script:
       file: ./sample/sample.build-script
@@ -79,6 +86,28 @@ specs:
       file: ./sample/sample.deploy-script
     post-script:
       file: ./sample/sample.post-script
+```
+
+### Flows
+You can segment your steps into flow patterns.  This is useful if you find yourself often using many options like `--no-build` and others when reading from mc.yaml file contents.
+
+
+**mc.yaml (spec.flows)**   
+```YAML
+...
+specs:
+  flows:
+  - name: build
+    env-file: .env
+    flow:
+    - build-script 
+    ...
+```
+_mc.yaml format for setting flow patterns._  
+
+You call it using the option flow option.
+```
+mc --flow=build
 ```
 
 ## Install
