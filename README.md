@@ -86,6 +86,19 @@ In development operations we often use many different script to achieve certain 
 ### Templating 
 We have based out built in template engine on Handlebars.js.  Currently we only accept JSON param body but have plans for other integrations. Learn more on how to write Handlebar templates from the [documentation](https://handlebarsjs.com)
 
+**mc.yaml (template options)**   
+```YAML
+...
+specs:
+  steps:
+    template:
+      file: template.tmpl
+      parameters: params.json
+      script: template.bash
+      outfile: template.out
+    ...
+```
+
 Setting the template pipeline step is slightly different as you will target a Handlebars template with the `file` parameter.  
 - **File**: Handlebars template.
 - **Parameters**: JSON param body for template values.
