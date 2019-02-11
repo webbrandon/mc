@@ -4,11 +4,11 @@
 The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
 
 **Features**  
-- Built in _Handlebars_ template engine using JSON params file. (_[learn more](https://handlebarsjs.com)_)
+- Built in _Handlebars_ template engine using JSON params file. (_[learn more](#templating)_)
 - Script pipeline steps in any shell available. (_i.e. bash, sh, zsh, node_)
-- Runs on Darwin(_Mac_) and Debian(_Linux_).
-- Configurable prompting for environment values. ([learn more](#prompts))
-- Custom flow pattens to segment steps together. ([learn more](#flows))
+- Runs on Darwin(_Mac_) and Debian(_Linux_). (_[see releases](https://github.com/webbrandon/mc/releases)_)
+- Configurable prompting for environment values. (_[learn more](#prompts)_)
+- Custom flow pattens to segment steps together. (_[learn more](#flows)_)
 
 ## USAGE
 
@@ -79,6 +79,18 @@ specs:
     post-script:
       file: sample.post-script
 ```
+
+### Scripts
+In development operation we often use many different script to achieve certain task.  The methodology applies to script usage in the mc tool. Use any shell based script for the system mc executes on and you should have no issues. 
+
+### Templating 
+We have based out built in template engine on Handlebars.js.  Currently we only accept JSON param body but have plans for other integrations. Learn more on how to write Handlebar templates from the [documentation](https://handlebarsjs.com)
+
+Setting the template pipeline step is slightly different as you will target a Handlebars template with the `file` parameter.  
+- **File**: Handlebars template.
+- **Parameters**: JSON param body for template values.
+- **Script**: Optional script file to run prior to applying the template.
+- **Outfile**: The output file from template.
 
 ### Prompts
 Instead of loading default values you may want to ask for values at run time, especially if not being ran through automation.  Environment values can be set using mmc's configurable prompt. Find more instructions below.
