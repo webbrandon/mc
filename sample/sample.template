@@ -1,1 +1,4 @@
-The template grabbed the GLOBAL value of {{has_value}}!
+For SUGGESTION you answered "{{suggestion}}".
+For OPTION you answered "{{option}}".
+For QUESTION you answered "{{question}}".
+For BOOLEAN you answered "{{boolean}}".

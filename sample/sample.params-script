@@ -1,7 +1,13 @@
 #!/bin/sh
-echo "Script a params file for current content."
-echo "{" > ./sample.params
-echo "\"has_value\": \""${GLOBAL}"\"" >> ./sample.params
-echo "}" >> ./sample.params
+
+cat <<EOF > ./sample.params
+{
+  "global" : "$GLOBAL",
+  "suggestion" : "$SUGGESTION",
+  "option" : "$OPTION",
+  "question" : "$QUESTION",
+  "boolean" : "$BOOLEAN"
+}
+EOF
 
 exit 0

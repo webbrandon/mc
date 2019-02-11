@@ -1,9 +1,4 @@
 #!/bin/sh
-echo "Your pipeline while request value for GLOBAL is '${GLOBAL}'."
-
-echo "For SUGGESTION you answered:\n '${SUGGESTION}'."
-echo "For OPTION you answered:\n '${OPTION}'."
-echo "For QUESTION you answered:\n '${QUESTION}'."
-echo "For BOOLEAN you answered:\n '${BOOLEAN}'."
+printf "Your pipeline while request value for GLOBAL is '${GLOBAL}'."
 
 exit 0

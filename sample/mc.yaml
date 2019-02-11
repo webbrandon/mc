@@ -23,6 +23,7 @@ specs:
   steps:
     build-script:
       file: sample.build-script
+    template:
       env:
       - name: SUGGESTION
         default: Two
@@ -45,7 +46,6 @@ specs:
       - name: BOOLEAN
         context: "Are you being honest?"
         type: boolean
-    template:
       file: sample.template
       parameters: sample.params
       script: sample.params-script
