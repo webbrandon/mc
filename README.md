@@ -81,7 +81,7 @@ specs:
 ```
 
 ### Scripts
-In development operation we often use many different script to achieve certain task.  The methodology applies to script usage in the mc tool. Use any shell based script for the system mc executes on and you should have no issues. 
+In development operations we often use many different script to achieve certain task.  This methodology applies to script usage in the mc tool. Use any shell based scripts for the system mc executes on and you should have no issues. 
 
 ### Templating 
 We have based out built in template engine on Handlebars.js.  Currently we only accept JSON param body but have plans for other integrations. Learn more on how to write Handlebar templates from the [documentation](https://handlebarsjs.com)
