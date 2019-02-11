@@ -5,7 +5,8 @@ The purpose of this tool is to simplify management of continuous development and
 
 **Features**  
 - Built in _Handlebars_ template engine using JSON params file. (_[learn more](#templating)_)
-- Script pipeline steps in any shell available. (_i.e. bash, sh, zsh, node_)
+- Defined pipeline steps. (_[learn more](#pipeline-steps)_)
+- Script pipeline steps in any shell available. (_[learn more](#scripts)_)
 - Runs on Darwin(_Mac_) and Debian(_Linux_). (_[see releases](https://github.com/webbrandon/mc/releases)_)
 - Configurable prompting for environment values. (_[learn more](#prompts)_)
 - Custom flow pattens to segment steps together. (_[learn more](#flows)_)
