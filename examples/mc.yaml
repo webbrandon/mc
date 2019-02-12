@@ -21,8 +21,14 @@ specs:
     flow:
     - post-script
   steps:
+    pre-script:
+      file: scripts/sample.pre-script
+    unit-test:
+      file: scripts/sample.unit-test-script
     build-script:
-      file: sample.build-script
+      file: scripts/sample.build-script
+    functional-test:
+      file: scripts/sample.functional-test-script
     template:
       env:
       - name: SUGGESTION
@@ -46,11 +52,13 @@ specs:
       - name: BOOLEAN
         context: "Are you being honest?"
         type: boolean
-      file: sample.template
+      file: templates/sample.template
       parameters: sample.params
-      script: sample.params-script
+      script: scripts/sample.params-script
       outfile: sample.template-out
     deploy-script:
-      file: sample.deploy-script
+      file: scripts/sample.deploy-script
+    system-test:
+      file: scripts/sample.system-test-script
     post-script:
-      file: sample.post-script
+      file: scripts/sample.post-script
