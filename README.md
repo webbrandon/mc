@@ -47,6 +47,7 @@ OPTIONS:
     -p, --param <PARAM>                        Sets a custom template parameters file.
     -s, --post-script <POST_SCRIPT>            Sets the script file to use after configuring template.
     -c, --pre-script <PRE_SCRIPT>              Sets the script that run before all other scripts.
+        --repo <REPO>                          Clone git repository.
     -y, --system-test <SYSTEM_TEST>            Sets the script file to use for running system test.
     -t, --template <TEMPLATE>                  Sets a custom template file
     -o, --template-out <OUT>                   Rendered template out file write location.
@@ -181,6 +182,21 @@ Each entry has several options you can set.
 - **Default**: The default option for the user if they only press the "Enter" key.
 - **Context**: How you want the question to be asked.
 - **Options**: Possible or set options for a suggestion or option type.
+
+### Repository Settings
+Set the repository your pipeline works with. This will clone and enter the repository.
+
+**mc.yaml (repository options)**   
+```YAML
+...
+specs:
+  repository:
+    url: https://github.com/webbrandon/mc.git
+  ...
+```
+
+Currently we only have one parameter `url` for repository remote host.  These options are expected to grow.
+
 
 ### Flows
 You can segment your steps into flow patterns.  This is useful if you find yourself often using many options like `--no-build` and others when reading from mc.yaml file contents.
