@@ -6,6 +6,7 @@ extern crate run_script;
 extern crate dialoguer;
 extern crate dotenv;
 extern crate console;
+extern crate git2;
 
 mod cli;
 mod model;
@@ -13,13 +14,12 @@ mod handler;
 mod file;
 
 use crate::model::{Scripts};
-use crate::handler::{Configs, Steps};
+use crate::handler::{Configs, Steps, Repo};
 use crate::file::{EnvFile};
 
 fn main() {
     let matches = cli::build_cli().get_matches();
     let mute = matches.is_present("mute");
-    EnvFile::check_and_load(&matches);
     
     let request = Configs::process_args(matches.to_owned());
     let mut scripts = Scripts::new();
@@ -42,6 +42,11 @@ fn main() {
              "post-script".to_string()
             ]
     );
+    
+    // Clone repository if config entry exist.
+    Repo::check_and_process(&request);
+    
+    EnvFile::check_and_load(&matches);
     if request.has_flow() {
         flow = request.flow().to_owned();
         if flow.1.len() < 1 {

@@ -4,6 +4,8 @@ metadata:
   name: "Master Of Ceremony"
   description: "A long sentence..."
 specs:
+  repository: 
+    url: https://github.com/webbrandon/mc.git
   env:
   - name: GLOBAL
     default: global-value

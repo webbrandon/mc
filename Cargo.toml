@@ -1,6 +1,6 @@
 [package]
 name = "mc"
-version = "0.5.4"
+version = "0.5.5"
 authors = ["Brandon Clark <brandon.clark@leafgroup.com>"]
 build = "src/build.rs"
 edition = "2018"
@@ -17,3 +17,4 @@ yaml-rust = "0.4.2"
 dialoguer = "0.3.0"
 dotenv = "0.13.0"
 console = "0.7.1"
+git2 = "0.8"
