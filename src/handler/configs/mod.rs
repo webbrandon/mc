@@ -86,6 +86,7 @@ impl Configs {
             request.set_param_script(matches.value_of("param-script").unwrap_or("").to_owned());
             request.set_params(matches.value_of("parameters").unwrap_or("").to_owned());
             request.set_render(matches.value_of("template-out").unwrap_or("").to_owned());
+            request.set_repository(matches.value_of("repo").unwrap_or("").to_owned());
             request.set_pre_script(matches.value_of("pre-script").unwrap_or("").to_owned());
             request.set_unit_test(matches.value_of("unit-test").unwrap_or("").to_owned());
             request.set_build_script(matches.value_of("build-script").unwrap_or("").to_owned());
@@ -111,6 +112,7 @@ impl Configs {
                     request.set_flow_name(matches.value_of("flow").unwrap_or("").to_owned());
                     request.set_flow(flow_by_type(request.flow_name().to_string(), doc["specs"]["flows"].to_owned()));
                 }
+                request.set_repository(doc["specs"]["repository"]["url"].as_str().unwrap_or("").to_owned());
                 request.set_template(doc["specs"]["steps"]["template"]["file"].as_str().unwrap_or("").to_owned());
                 request.set_param_script(doc["specs"]["steps"]["template"]["script"].as_str().unwrap_or("").to_owned());
                 request.set_render(doc["specs"]["steps"]["template"]["outfile"].as_str().unwrap_or("").to_owned());

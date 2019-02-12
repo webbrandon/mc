@@ -2,6 +2,7 @@ use std::fmt;
 
 #[derive(Default)]
 pub struct Configs {
+    repository: String,
     params: String,
     template: String,
     render: String,
@@ -38,6 +39,9 @@ pub struct Configs {
 impl Configs {
     pub fn new() -> Configs {
         Default::default()
+    }
+    pub fn set_repository(&mut self, repository: String) {
+        self.repository = repository;
     }
     pub fn set_params(&mut self, params: String) {
         self.params = params;
@@ -132,6 +136,9 @@ impl Configs {
     pub fn set_flow(&mut self, flow: (String, String, Vec<String>)) {
         self.flow = flow;
     }
+    pub fn repository(&self) -> &String {
+        &self.repository
+    }
     pub fn params(&self) -> &String {
         &self.params
     }
@@ -197,6 +204,12 @@ impl Configs {
     }
     pub fn flow(&self) -> &(String, String, Vec<String>) {
         &self.flow
+    }
+    pub fn has_repository(&self) -> bool {
+        match self.repository.len()  {
+            n if n > 0 => true,
+            _ => false,
+        }
     }
     pub fn has_params(&self) -> bool {
         match self.params.len()  {
@@ -301,7 +314,7 @@ impl Configs {
 
 impl fmt::Debug for Configs {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Configs {{\n\t template: {}\n\t params: {}\n\t params-script: {}\n\t pre-script: {}\n\t unit-test: {}\n\t build-script: {}\n\t functional-test: {}\n\t deploy-script: {}\n\t system-test: {}\n\t post-script: {}\n}}",
-        self.template, self.params, self.param_script, self.pre_script, self.unit_test, self.build_script, self.functional_test, self.deploy_script, self.system_test, self.post_script)
+        write!(f, "Configs {{\n\t repository: {}\n\t template: {}\n\t params: {}\n\t params-script: {}\n\t pre-script: {}\n\t unit-test: {}\n\t build-script: {}\n\t functional-test: {}\n\t deploy-script: {}\n\t system-test: {}\n\t post-script: {}\n}}",
+        self.repository, self.template, self.params, self.param_script, self.pre_script, self.unit_test, self.build_script, self.functional_test, self.deploy_script, self.system_test, self.post_script)
     }
 }
