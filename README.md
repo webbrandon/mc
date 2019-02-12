@@ -15,7 +15,7 @@ The purpose of this tool is to simplify management of continuous development and
 
 If no file is assigned to a step the cli will look in its current base path for a **mc.yaml**.  Best practice is to create modular and stateless scripts for each step. 
 
-![Master OF Ceremony Cli Tool](sample/cli-demo.gif)  
+![Master OF Ceremony Cli Tool](examples/cli-demo.gif)  
 _When you use option parameters they will override the existing mc.yaml configuration._
 
 **Cli Options** (Use individually or conjunction w/ mc.yaml)   
