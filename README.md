@@ -198,6 +198,25 @@ specs:
 Currently we only have one parameter `url` for repository remote host.  These options are expected to grow.
 
 
+### Container Settings
+Deploy pipelines in a stable container image to ensure your environment is properly configured.
+
+**mc.yaml (container options)**   
+```YAML
+...
+  container:
+    image: mc:slave
+    volumes:
+    - local-path: ./examples
+      host-path: /opt/mc/examples
+  ...
+```
+
+Current options are for:
+
+- **Image**: Container image repository destination.
+- **Volumes**: Define paths from locals that need to be available in container.
+
 ### Flows
 You can segment your steps into flow patterns.  This is useful if you find yourself often using many options like `--no-build` and others when reading from mc.yaml file contents.
 

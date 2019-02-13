@@ -6,6 +6,11 @@ metadata:
 specs:
   repository: 
     url: https://github.com/webbrandon/mc.git
+  container:
+    image: mc:slave
+    volumes:
+    - local-path: ./examples
+      host-path: /opt/mc/examples
   env:
   - name: GLOBAL
     default: global-value
