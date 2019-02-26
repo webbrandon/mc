@@ -21,13 +21,14 @@ fn check_for_existing_value(value_name: &String) -> String {
 fn ask_with_options(context: String, default_value: String, env_name: String, value_options: Vec<String>) -> String {
     let color_theme = ColorfulTheme::default();
     let question = if context.len() > 0 {context} else {format!("{} should be set?", env_name)};
-    Select::with_theme(&color_theme)
+    let response = Select::with_theme(&color_theme)
         .with_prompt(&question)
         .default(value_options.iter().position(|x| x == &default_value).unwrap_or(0))
         .items(&value_options[..])
         .interact()
-        .unwrap()
-        .to_string()
+        .unwrap();
+    
+    value_options[response].to_owned()
 }
 
 fn ask_bool(context: String, env_name: String) -> bool {
