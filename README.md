@@ -1,7 +1,7 @@
 # Master of Ceremony
 
 **About**  
-The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure CI/CD steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
+The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure pipeline steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
 
 **Features**  
 - Built in _Handlebars_ template engine using JSON params file. (_[learn more](#templating)_)
