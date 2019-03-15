@@ -94,6 +94,9 @@ impl Configs {
             request.set_deploy_script(matches.value_of("deploy-script").unwrap_or("").to_owned());
             request.set_system_test(matches.value_of("system-test").unwrap_or("").to_owned());
             request.set_post_script(matches.value_of("post-script").unwrap_or("").to_owned());
+            if matches.is_present("template") || matches.is_present("parameters") || matches.is_present("template-out") {
+                request.set_no_prompt(true);
+            }
         } else {
             let mc_config = matches.value_of("config").unwrap_or("mc.yaml");
             let s = file_to_string(mc_config);
