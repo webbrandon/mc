@@ -55,7 +55,8 @@ pub fn flow_by_type(flow_name: String, yaml_doc: yaml_rust::Yaml) -> (String, St
                     flow_env = a.to_string();
                 },
                 None => {
-                    println!("Empty flow pattern.  Will apply default pattern.");
+                    // Do nothing. Optional field.
+                    println!("Empty flow env file.  Will use local environment.");
                 }
             }
             match x["flow"].as_vec() {
@@ -70,6 +71,7 @@ pub fn flow_by_type(flow_name: String, yaml_doc: yaml_rust::Yaml) -> (String, St
                     }
                 },
                 None => {
+                    // Do nothing. Optional field.
                     println!("Empty flow pattern.  Will apply default pattern.");
                 }
             }
@@ -103,6 +105,8 @@ impl Configs {
             let docs = yaml::YamlLoader::load_from_str(&s).unwrap();
             for doc in &docs {
                 if (matches.is_present("flow") || matches.is_present("no-pre") || matches.is_present("no-build") || matches.is_present("no-deploy")) || matches.is_present("no-template") || matches.is_present("no-post") || matches.is_present("no-prompt") {
+                    request.set_flow_name(matches.value_of("flow").unwrap_or("").to_owned());
+                    request.set_flow(flow_by_type(request.flow_name().to_string(), doc["specs"]["flows"].to_owned()));
                     request.set_no_pre(matches.is_present("no-pre"));
                     request.set_no_unit_test(matches.is_present("no-unit-test"));
                     request.set_no_build(matches.is_present("no-build"));
@@ -112,8 +116,6 @@ impl Configs {
                     request.set_no_template(matches.is_present("no-template"));
                     request.set_no_post(matches.is_present("no-post"));
                     request.set_no_prompt(matches.is_present("no-prompt"));
-                    request.set_flow_name(matches.value_of("flow").unwrap_or("").to_owned());
-                    request.set_flow(flow_by_type(request.flow_name().to_string(), doc["specs"]["flows"].to_owned()));
                 }
                 request.set_repository(doc["specs"]["repository"]["url"].as_str().unwrap_or("").to_owned());
                 request.set_template(doc["specs"]["steps"]["template"]["file"].as_str().unwrap_or("").to_owned());

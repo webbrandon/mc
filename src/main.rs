@@ -49,7 +49,7 @@ fn main() {
     EnvFile::check_and_load(&matches);
     if request.has_flow() {
         flow = request.flow().to_owned();
-        if flow.1.len() < 1 {
+        if flow.1.len() > 1 {
             EnvFile::load_env(flow.1);
         }
     }
@@ -62,7 +62,7 @@ fn main() {
             Steps::run_unit_test(&request, &scripts, no_prompt, mute);
         } else if x == "build-script".to_string() {
             Steps::run_build(&request, &scripts, no_prompt, mute);
-        } else if x == "functional-test".to_string() {
+        } else if (x == "functional-test".to_string()) || (x == "integration-test".to_string()) {
             Steps::run_functional_test(&request, &scripts, no_prompt, mute);
         } else if x == "template".to_string() {
             Steps::run_template(&request, &scripts, no_prompt, mute);
