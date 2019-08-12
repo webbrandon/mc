@@ -20,12 +20,14 @@ impl StepsHandler {
     pub fn process(&mut self, step_model: Vec<(String, Step)>, prompt: bool, mute: bool) {
         for step in step_model {
             let mut ran_step = false;
-            if prompt && self.continue_prompt(step.0) {
-                ran_step = self.process_step(step.1, prompt, mute);
+            if prompt {
+                if self.continue_prompt(step.0) {
+                    ran_step = self.process_step(step.1, prompt, mute);
+                } else {ran_step = true;}
             } else if !prompt {
                 ran_step = self.process_step(step.1, prompt, mute);
-            }
-
+            } 
+            
             if !ran_step {
                 eprintln!("Step Failed!");
                 std::process::exit(1);
