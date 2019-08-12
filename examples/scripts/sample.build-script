@@ -1,4 +1,0 @@
-#!/bin/sh
-printf "Your pipeline while request value for GLOBAL is '${GLOBAL}'."
-
-exit 0

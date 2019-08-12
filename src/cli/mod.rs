@@ -1,136 +1,76 @@
-use clap::{Arg, App, AppSettings};
+pub mod completions;
+pub use completions::Completions;
+use std::path::PathBuf;
+use structopt::StructOpt;
 
-pub fn build_cli() -> App<'static, 'static> {
-    App::new("mc")
-        .version("0.5.8")
-        .setting(AppSettings::DisableVersion)
-        .about("\nContinuous development for todays software made easy. You can import files individually or with a \"mc.yaml\" file. Option settings will override use of \"mc.yaml\" file.")
-        .arg(Arg::with_name("config")
-            .help("Sets the \"mc.yaml\" file to use.")
-            .short("f")
-            .long("file")
-            .value_name("CONFIG")
-            .required(false))        
-        .arg(Arg::with_name("env")
-            .help("Load from .env file.")
-            .short("e")
-            .long("env")
-            .value_name("ENV")
-            .required(false))
-        .arg(Arg::with_name("repo")
-            .help("Clone git repository.")
-            .long("repo")
-            .value_name("REPO")
-            .required(false))
-        .arg(Arg::with_name("flow")
-           .long("flow")
-           .value_name("FLOW_NAME")
-           .help("Use flow pattern from mc.yaml.")
-           .takes_value(true))
-        .arg(Arg::with_name("template")
-           .short("t")
-           .long("template")
-           .value_name("TEMPLATE")
-           .help("Sets a custom template file")
-           .takes_value(true))
-        .arg(Arg::with_name("param-script")
-            .long("param-script")
-            .value_name("PARAM_SCRIPT")
-            .help("Sets a custom script to configure parameters file at render time.")
-            .takes_value(true))
-         .arg(Arg::with_name("parameters")
-             .short("p")
-             .long("param")
-             .value_name("PARAM")
-             .help("Sets a custom template parameters file.")
-             .takes_value(true))
-        .arg(Arg::with_name("template-out")
-            .short("o")
-            .long("template-out")
-            .value_name("OUT")
-            .help("Rendered template out file write location.")
-            .takes_value(true))
-        .arg(Arg::with_name("pre-script")
-           .help("Sets the script that run before all other scripts.")
-           .short("c")
-           .long("pre-script")
-           .value_name("PRE_SCRIPT")
-           .required(false))
-        .arg(Arg::with_name("unit-test")
-           .help("Sets the script file to use for running unit test.")
-           .short("u")
-           .long("unit-test")
-           .value_name("UNIT_TEST")
-           .required(false))
-        .arg(Arg::with_name("build-script")
-           .help("Sets the script file to use for setting building software.")
-           .short("b")
-           .long("build-script")
-           .value_name("BUILD_SCRIPT")
-           .required(false))
-        .arg(Arg::with_name("functional-test")
-           .help("Sets the script file to use for running functional test.")
-           .short("n")
-           .long("functional-test")
-           .value_name("FUNCTIONAL_TEST")
-           .required(false))
-        .arg(Arg::with_name("deploy-script")
-           .help("Sets the script file to use after _build script_.")
-           .short("d")
-           .long("deploy-script")
-           .value_name("DEPLOY_SCRIPT")
-           .required(false))
-        .arg(Arg::with_name("system-test")
-           .help("Sets the script file to use for running system test.")
-           .short("y")
-           .long("system-test")
-           .value_name("SYSTEM_TEST")
-           .required(false))
-        .arg(Arg::with_name("post-script")
-           .help("Sets the script file to use after configuring template.")
-           .short("s")
-           .long("post-script")
-           .value_name("POST_SCRIPT")
-           .required(false))
-        .arg(Arg::with_name("mute")
-           .help("Silence output.")
-           .short("m")
-           .long("mute")
-           .required(false))
-        .arg(Arg::with_name("no-pre")
-           .help("Skip pre step from mc.yaml.")
-           .long("no-pre")
-           .required(false))
-        .arg(Arg::with_name("no-deploy")
-           .help("Skip deploy step from mc.yaml.")
-           .long("no-deploy")
-           .required(false))
-        .arg(Arg::with_name("no-unit-test")
-           .help("Skip unit testing step from mc.yaml.")
-           .long("no-unit-test")
-           .required(false))
-        .arg(Arg::with_name("no-functional-test")
-           .help("Skip functional testing step from mc.yaml.")
-           .long("no-functional-test")
-           .required(false))
-        .arg(Arg::with_name("no-system-test")
-           .help("Skip system testing step from mc.yaml.")
-           .long("no-system-test")
-           .required(false))
-        .arg(Arg::with_name("no-build")
-           .help("Skip build step from mc.yaml.")
-           .long("no-build")
-           .required(false))
-        .arg(Arg::with_name("no-post")
-           .help("Skip post build step from mc.yaml.")
-           .long("no-post")
-           .required(false))
-        .arg(Arg::with_name("no-template")
-           .help("Skip template step from mc.yaml settings.")
-           .long("no-template")
-           .required(false))
-        .arg(Arg::with_name("no-prompt")
-           .help("Turn prompt off for mc.yaml steps.")
-           .long("no-prompt")
-           .required(false))
+#[derive(Debug, StructOpt, Default, Clone)]
+#[structopt(raw(
+    global_settings = "&[structopt::clap::AppSettings::DeriveDisplayOrder, structopt::clap::AppSettings::DisableVersion, structopt::clap::AppSettings::DisableHelpSubcommand]"
+))]
+pub struct Opt {
+    /// Sets the "mc.yaml" file to use.
+    #[structopt(long = "config", short = "c", parse(from_os_str))]
+    pub file: Option<PathBuf>,
+
+    /// Load from .env file.
+    #[structopt(long = "env", short = "e", parse(from_os_str))]
+    pub env: Option<PathBuf>,
+
+    /// Silence output.
+    #[structopt(short = "m", long = "mute")]
+    pub mute: bool,
+
+    /// Use flow pattern from mc.yaml.
+    #[structopt(long = "flow", short = "f")]
+    pub flow: Option<String>,
+
+    /// Clone git repository.
+    #[structopt(long = "repo", short = "r")]
+    pub repo: Option<String>,
+
+    /// Sets the script to run the the start.
+    #[structopt(long = "script", short = "s", parse(from_os_str))]
+    pub script: Option<PathBuf>,
+
+    /// Sets a custom template file.
+    #[structopt(long = "template", short = "t", parse(from_os_str))]
+    pub template: Option<PathBuf>,
+
+    /// Rendered template out file write location.
+    #[structopt(long = "template-out", short = "o", parse(from_os_str))]
+    pub template_out: Option<PathBuf>,
+
+    /// Sets a custom template parameters file.
+    #[structopt(long = "param", short = "p", parse(from_os_str))]
+    pub param: Option<PathBuf>,
+
+    /// Sets the script to run at the end.
+    #[structopt(long = "post-script", short = "l", parse(from_os_str))]
+    pub post_script: Option<PathBuf>,
+
+    /// Turn prompt off for mc.yaml steps.
+    #[structopt(long = "no-prompt", short = "n")]
+    pub prompt: bool,
+
+    #[structopt(subcommand)]
+    pub commands: Option<Commands>,
+}
+
+#[derive(Debug, StructOpt, Clone)]
+#[structopt(raw(
+    global_settings = "&[structopt::clap::AppSettings::DeriveDisplayOrder, structopt::clap::AppSettings::DisableVersion, structopt::clap::AppSettings::DisableHelpSubcommand]"
+))]
+pub enum Commands {
+    /// Completion scripts for various shells.
+    #[structopt(
+        raw(setting = "structopt::clap::AppSettings::DisableHelpSubcommand"),
+        name = "completions"
+    )]
+    Completions(Completions),
+}
+
+impl Opt {
+    pub fn new() -> Opt {
+        Default::default()
+    }
 }

@@ -1,20 +1,25 @@
 [package]
 name = "mc"
-version = "0.5.8"
-authors = ["Brandon Clark <brandon.clark@leafgroup.com>"]
-build = "src/build.rs"
+version = "2.0.0-rc"
 edition = "2018"
+build = "src/build.rs"
 
 [build-dependencies]
-clap = "2.32.0"
+clap = "2.33.0"
+structopt = "0.2.16"
 
 [dependencies]
-clap = "2.32.0"
-handlebars = "1.1.0"
-run_script = "0.2.5"
-serde_json = "1.0.38"
-yaml-rust = "0.4.2"
-dialoguer = "0.3.0"
+clap = "2.33.0"
+serde = "1.0.98"
+serde_yaml = "0.8.9"
+serde_json = "1.0.40"
+serde_derive = "1.0.98"
 dotenv = "0.13.0"
+reqwest = "0.9.19"
+structopt = "0.2.16"
+log = "0.4.8"
+git2 = "0.9.2"
+handlebars = "2.0.0-beta.2"
+run_script = "0.2.5"
+dialoguer = "0.3.0"
 console = "0.7.1"
-git2 = "0.8"

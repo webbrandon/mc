@@ -1,4 +1,0 @@
-#!/bin/sh
-printf "Test and release."
-
-exit 0

@@ -1,7 +1,9 @@
 /target
 **/*.rs.bk
-sample.out
-*.params
-darwin
-debian
-sample.template-out
+
+/mc
+/src/completions/_mc
+/src/completions/_mc.ps1
+/src/completions/mc.bash
+/src/completions/mc.elv
+/src/completions/mc.fish
