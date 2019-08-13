@@ -10,7 +10,7 @@ pub struct Step {
     pub order: Option<usize>,
     pub env_prompt: Option<Vec<EnvironmentPrompt>>,
     pub script: Option<PathBuf>,
-    pub template: Option<Vec<Template>>,
+    pub templates: Option<Vec<Template>>,
     pub post_script: Option<PathBuf>,
 }
 
@@ -20,7 +20,7 @@ impl Step {
             order: None,
             env_prompt: Some(vec![EnvironmentPrompt::new()]),
             script: None,
-            template: Some(vec![Template::new()]),
+            templates: Some(vec![Template::new()]),
             post_script: None,
         }
     }
@@ -29,7 +29,7 @@ impl Step {
         let mut steps = HashMap::new();
         let mut step = Step::new();
         let template = Template::new();
-        step.template = Some(vec![template]);
+        step.templates = Some(vec![template]);
         
         steps.insert(String::from("pre"), step.clone());
         steps.insert(String::from("unit-test"), step.clone());

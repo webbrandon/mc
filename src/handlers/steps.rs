@@ -55,7 +55,7 @@ impl StepsHandler {
             None => {}
         }
 
-        if step.template.is_some() {
+        if step.templates.is_some() {
             ran_step = self.process_template(step.clone(), mute);
         }
 
@@ -81,7 +81,7 @@ impl StepsHandler {
         let mut handler = template::TemplateHandler::new();
         handler.mute = mute;
 
-        match step_model.template {
+        match step_model.templates {
             Some(x) => {
                 handler.template = x;
             }
@@ -106,7 +106,7 @@ impl StepsHandler {
         template_model.params = param;
         
         step.script = script;
-        step.template = Some(vec![template_model]);
+        step.templates = Some(vec![template_model]);
         step.post_script = post_script;
 
         step
