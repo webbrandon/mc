@@ -12,12 +12,12 @@ impl EnvironmentPromptHandler {
     // Process a EnvironmentPrompt list.
     pub fn process(env_model: &Vec<EnvironmentPrompt>) {
         for prompt in env_model {
+            let context = match &prompt.context {
+                Some(context) => context.clone(),
+                None => format!("{} should be set?", &prompt.name),
+            };
             match &prompt.kind {
                 Some(x) => {
-                    let context = match &prompt.context {
-                        Some(context) => context.clone(),
-                        None => format!("{} should be set?", &prompt.name),
-                    };
                     if x == "input" {
                         env::set_var(
                             &prompt.name,
@@ -44,7 +44,12 @@ impl EnvironmentPromptHandler {
                         );
                     }
                 }
-                None => {}
+                None => {
+                    env::set_var(
+                        &prompt.name,
+                        EnvironmentPromptHandler::ask_bool(&context).to_string(),
+                    );
+                }
             }
         }
     }
@@ -61,7 +66,7 @@ impl EnvironmentPromptHandler {
     }
 
     // Prompt with list of options.
-    fn ask_with_options(
+    pub fn ask_with_options(
         context: &String,
         default_value: &Option<String>,
         value_options: &Option<Vec<String>>,

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct EnvironmentFile {
     pub url: Option<String>,
     pub path: Option<PathBuf>,

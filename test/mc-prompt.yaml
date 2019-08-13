@@ -1,0 +1,27 @@
+api: mc-prompt
+version: v1.0
+metadata:
+  name: example
+  description: ...
+  version: 1.1
+specs:
+  - name: OPTION_KIND
+    kind: option
+    options:
+      - 'Customer answer #1'
+  - name: OPTION_KIND
+    kind: option
+    default: 'Customer answer #2'
+    context: 'My question for you is ?.  You answer is stored in OPTION_KIND.'
+    options:
+      - 'Customer answer #1'
+      - 'Customer answer #2'
+  - name: INPUT_KIND
+    kind: input
+    context: 'My question for you is ?.  You answer is stored in INPUT_KIND.'
+  - name: INPUT_KIND
+    kind: input
+  - name: BOOL_KIND
+    context: 'My question for you is ?.  You answer is stored in BOOL_KIND.'
+  - name: BOOL_KIND
+    kind: boolean

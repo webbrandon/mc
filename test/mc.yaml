@@ -7,7 +7,8 @@ metadata:
 specs:
   repository:
     url: 'https://github.com/webbrandon/mc.git'
-    path: /path
+  env-file:
+    path: .env
   env-prompt:
     - name: GLOBAL_OPTION
       kind: option
@@ -27,7 +28,7 @@ specs:
         - name: INPUT_OPTION
           kind: input
           context: 'My question for you is ?.  You answer is stored in INPUT_OPTION.'
-      script: test/test.sh
+      script: ../test/test.sh
     build:
       env-prompt:
         - name: BOOL_OPTION

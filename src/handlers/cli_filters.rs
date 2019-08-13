@@ -15,17 +15,19 @@ impl CliFiltersHandler {
         CliFiltersHandler { cli: Opt::new() }
     }
 
-    pub fn process(&mut self, model: &mut MasterOfCeremonyHandler) {
+    pub fn process(&mut self, model: &mut MasterOfCeremonyHandler) -> MasterOfCeremonyHandler {
         self.filter_env(model);
         self.filter_repo(model);
         self.filter_flow(model);
         self.filter_steps(model);
+        
+        model.to_owned()
     }
 
     pub fn filter_env(&mut self, model: &mut MasterOfCeremonyHandler) {
         match &self.cli.env {
             Some(x) => {
-                model.data.specs.set_env_file_path(x.to_path_buf());
+                model.data.mc_model.specs.set_env_file_path(x.to_path_buf());
             }
             None => {}
         }
@@ -34,7 +36,7 @@ impl CliFiltersHandler {
     pub fn filter_repo(&mut self, model: &mut MasterOfCeremonyHandler) {
         match &self.cli.repo {
             Some(x) => {
-                model.data.specs.set_repo_url(x.to_string());
+                model.data.mc_model.specs.set_repo_url(x.to_string());
             }
             None => {}
         }
@@ -43,12 +45,12 @@ impl CliFiltersHandler {
     pub fn filter_flow(&mut self, model: &mut MasterOfCeremonyHandler) {
         match &self.cli.flow {
             Some(flow) => {
-                model.data.specs.set_flow(flow);
+                model.data.mc_model.specs.set_flow(flow);
             }
             None => {
                 // If no flow is defined then set to None so default flow is applied.
                 // (ie: All available steps.)
-                model.data.specs.flows = None;
+                model.data.mc_model.specs.flows = None;
             }
         }
     }
@@ -76,9 +78,9 @@ impl CliFiltersHandler {
 
         if set_steps {
             model.prompt = false;
-            model.data.specs.flows = None;
-            model.data.specs.steps = HashMap::new();
-            model.data.specs.steps.insert(
+            model.data.mc_model.specs.flows = None;
+            model.data.mc_model.specs.steps = HashMap::new();
+            model.data.mc_model.specs.steps.insert(
                 "pre".to_string(),
                 handler.create_step(
                     self.cli.script.to_owned(),

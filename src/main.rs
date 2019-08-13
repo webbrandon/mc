@@ -39,8 +39,10 @@ fn main() {
             // Load the yaml config if it exist.  This will allow users to choose api specifications.
             // Advanced feature sets are available in configuration files.
             debug!("Loading yaml config");
-            mc_api = handlers::MasterOfCeremonyHandler::from_file(&cli_settings.file);
-            mc_api.add_cli(cli_settings);
+            
+            mc_api = handlers::MasterOfCeremonyHandler::new();
+            mc_api.add_cli(cli_settings.clone());
+            mc_api.load_file(&cli_settings.file);
         }
     }
     mc_api.process();

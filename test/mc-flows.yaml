@@ -1,0 +1,13 @@
+api: mc-flows
+version: v1.0
+metadata:
+  name: example
+  description: ...
+  version: 1.1
+specs:
+  - name: job-name
+    env-file:
+      path: .env
+    flow:
+      - build
+      - deploy
