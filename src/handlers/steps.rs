@@ -6,6 +6,7 @@ use dialoguer::theme::ColorfulTheme;
 use dialoguer::Confirmation;
 
 use crate::models::steps::Step;
+use crate::models::template::Template;
 use std::path::PathBuf;
 
 /// The StepsHandler will process Step request.
@@ -87,20 +88,6 @@ impl StepsHandler {
             None => {}
         }
 
-        match step_model.out_file {
-            Some(x) => {
-                handler.out = x;
-            }
-            None => {}
-        }
-
-        match step_model.params {
-            Some(x) => {
-                handler.params = x;
-            }
-            None => {}
-        }
-
         handler.process()
     }
 
@@ -113,11 +100,14 @@ impl StepsHandler {
         post_script: Option<PathBuf>,
     ) -> Step {
         let mut step = Step::new_empty();
+        let mut template_model = Template::new();
+        template_model.template = template;
+        template_model.out_file = template_out;
+        template_model.params = param;
+        
         step.script = script;
-        step.template = template;
-        step.out_file = template_out;
+        step.template = Some(vec![template_model]);
         step.post_script = post_script;
-        step.params = param;
 
         step
     }

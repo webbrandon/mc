@@ -49,6 +49,8 @@ impl MasterOfCeremonyApiCreator {
             self.write_api_to_file(Path::new("mc-prompt.yaml"), serde_yaml::to_string(&models::MasterOfCeremonyPromptModel::new()).unwrap());
         }  else if api == "mc-repo" {
             self.write_api_to_file(Path::new("mc-repo.yaml"), serde_yaml::to_string(&models::MasterOfCeremonyRepositoryModel::new()).unwrap());
+        }  else if api == "mc-template" {
+            self.write_api_to_file(Path::new("mc-template.yaml"), serde_yaml::to_string(&models::MasterOfCeremonyTemplateModel::new()).unwrap());
         } else {
             self.write_api_to_file(Path::new("mc.yaml"), serde_yaml::to_string(&models::MasterOfCeremonyModel::new()).unwrap());
         }

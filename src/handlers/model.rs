@@ -2,7 +2,7 @@ extern crate serde_yaml;
 
 use super::api_validate;
 use crate::models::{
-    MasterOfCeremonyModelSelection, MasterOfCeremonyModel, MasterOfCeremonyFlowModel, 
+    MasterOfCeremonyModelSelection, MasterOfCeremonyModel, MasterOfCeremonyFlowModel, MasterOfCeremonyTemplateModel,
     MasterOfCeremonyPromptModel, MasterOfCeremonyRepositoryModel, MasterOfCeremonyEnvironmentFileModel
 };
 
@@ -17,6 +17,7 @@ pub struct MasterOfCeremonyModelHandler {
     pub mc_env: MasterOfCeremonyEnvironmentFileModel,
     pub mc_flow: MasterOfCeremonyFlowModel,
     pub mc_prompt: MasterOfCeremonyPromptModel,
+    pub mc_templates: MasterOfCeremonyTemplateModel,
     pub mc_repository: MasterOfCeremonyRepositoryModel,
 }
 
@@ -35,9 +36,12 @@ impl MasterOfCeremonyModelHandler {
         }  else if self.api == "mc-prompt" {
             let model: MasterOfCeremonyPromptModel = serde_yaml::from_str(&self.config_raw).unwrap();
             self.mc_prompt = model;
-        }  else if self.api == "mc-repository" {
+        }  else if self.api == "mc-repo" {
             let model: MasterOfCeremonyRepositoryModel = serde_yaml::from_str(&self.config_raw).unwrap();
             self.mc_repository = model;
+        }   else if self.api == "mc-template" {
+            let model: MasterOfCeremonyTemplateModel = serde_yaml::from_str(&self.config_raw).unwrap();
+            self.mc_templates = model;
         } else {
             let model: MasterOfCeremonyModel = serde_yaml::from_str(&self.config_raw).unwrap();
             self.mc_model = model;
@@ -68,8 +72,10 @@ impl MasterOfCeremonyModelHandler {
             MasterOfCeremonyModelSelection::MasterOfCeremonyEnvironmentFileModel
         }  else if self.api == "mc-prompt" {
             MasterOfCeremonyModelSelection::MasterOfCeremonyPromptModel
-        }  else if self.api == "mc-repository" {
+        }  else if self.api == "mc-repo" {
             MasterOfCeremonyModelSelection::MasterOfCeremonyRepositoryModel
+        }  else if self.api == "mc-template" {
+            MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel
         } else {
             MasterOfCeremonyModelSelection::MasterOfCeremonyModel
         }

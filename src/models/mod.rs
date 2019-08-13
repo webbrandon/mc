@@ -5,9 +5,11 @@ pub mod flows;
 pub mod repository;
 pub mod specs;
 pub mod steps;
+pub mod template;
 
 pub use env_file::EnvironmentFile;
 pub use env_prompt::EnvironmentPrompt;
+pub use template::Template;
 pub use repository::Repository;
 pub use details::Details;
 pub use flows::Flow;
@@ -21,6 +23,7 @@ pub enum MasterOfCeremonyModelSelection {
     MasterOfCeremonyFlowModel,
     MasterOfCeremonyRepositoryModel,
     MasterOfCeremonyEnvironmentFileModel,
+    MasterOfCeremonyTemplateModel
 }
 
 /// Master Of Cermony API Schema 2.0
@@ -66,6 +69,15 @@ pub struct MasterOfCeremonyEnvironmentFileModel {
     pub version: String,
     pub metadata: Option<Details>,
     pub specs: EnvironmentFile,
+}
+
+/// Master Of Cermony Environment File API Schema 2.0
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct MasterOfCeremonyTemplateModel {
+    pub api: String,
+    pub version: String,
+    pub metadata: Option<Details>,
+    pub specs: Vec<Template>,
 }
 
 impl MasterOfCeremonyModel {
@@ -120,6 +132,17 @@ impl MasterOfCeremonyEnvironmentFileModel {
             version: String::from("v2.0"),
             metadata: Some(Details::new()),
             specs: EnvironmentFile::new(),
+        }
+    }
+}
+
+impl MasterOfCeremonyTemplateModel {
+    pub fn new() -> MasterOfCeremonyTemplateModel {
+        MasterOfCeremonyTemplateModel {
+            api: String::from("mc-templates"),
+            version: String::from("v2.0"),
+            metadata: Some(Details::new()),
+            specs: vec![Template::new()],
         }
     }
 }

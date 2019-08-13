@@ -57,6 +57,12 @@ impl MasterOfCeremonyHandler {
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyRepositoryModel => {
                 self.build_from_repository(Some(self.data.mc_repository.specs.clone()));
+            },
+            MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel => {
+                let mut handler = template::TemplateHandler::new();
+                handler.template = self.data.mc_templates.specs;
+                handler.mute = self.cli.cli.mute;
+                handler.process();
             }
         }
     }
