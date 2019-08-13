@@ -6,7 +6,7 @@ use std::io::{self, Write};
 use std::path::PathBuf;
 use std::process;
 
-/// The StepsHandler will process Step request.
+/// The ScriptHandler will process a script an manage the outpout.
 #[derive(Debug, Default)]
 pub struct ScriptHandler {
     pub script_path: PathBuf,

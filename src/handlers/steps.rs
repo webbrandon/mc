@@ -112,7 +112,7 @@ impl StepsHandler {
         param: Option<PathBuf>,
         post_script: Option<PathBuf>,
     ) -> Step {
-        let mut step = Step::new();
+        let mut step = Step::new_empty();
         step.script = script;
         step.template = template;
         step.out_file = template_out;

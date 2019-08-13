@@ -30,6 +30,9 @@ _mc() {
             completions)
                 cmd+="__completions"
                 ;;
+            create)
+                cmd+="__create"
+                ;;
             elvish)
                 cmd+="__elvish"
                 ;;
@@ -49,7 +52,7 @@ _mc() {
 
     case "${cmd}" in
         mc)
-            opts=" -m -n -h -c -e -f -r -s -t -o -p -l  --mute --no-prompt --help --config --env --flow --repo --script --template --template-out --param --post-script   completions"
+            opts=" -m -n -h -c -e -f -r -s -t -o -p -l  --mute --no-prompt --help --config --env --flow --repo --script --template --template-out --param --post-script   completions create"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -226,6 +229,25 @@ _mc() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        mc__create)
+            opts=" -g -h -V  --guide --help --version --api  "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --api)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
     esac
 }
 
@@ -249,6 +271,7 @@ complete -c mc -n "__fish_use_subcommand" -s m -l mute -d 'Silence output.'
 complete -c mc -n "__fish_use_subcommand" -s n -l no-prompt -d 'Turn prompt off for mc.yaml steps.'
 complete -c mc -n "__fish_use_subcommand" -s h -l help -d 'Prints help information'
 complete -c mc -n "__fish_use_subcommand" -f -a "completions" -d 'Completion scripts for various shells.'
+complete -c mc -n "__fish_use_subcommand" -f -a "create" -d 'Create api files.'
 complete -c mc -n "__fish_seen_subcommand_from completions" -s h -l help -d 'Prints help information'
 complete -c mc -n "__fish_seen_subcommand_from completions" -s V -l version -d 'Prints version information'
 complete -c mc -n "__fish_seen_subcommand_from completions" -f -a "bash" -d 'Bash completion script.'
@@ -266,6 +289,10 @@ complete -c mc -n "__fish_seen_subcommand_from powershell" -s h -l help -d 'Prin
 complete -c mc -n "__fish_seen_subcommand_from powershell" -s V -l version -d 'Prints version information'
 complete -c mc -n "__fish_seen_subcommand_from elvish" -s h -l help -d 'Prints help information'
 complete -c mc -n "__fish_seen_subcommand_from elvish" -s V -l version -d 'Prints version information'
+complete -c mc -n "__fish_seen_subcommand_from create" -l api -d 'What API type you would like to create.'
+complete -c mc -n "__fish_seen_subcommand_from create" -s g -l guide -d 'Use the api create guide.'
+complete -c mc -n "__fish_seen_subcommand_from create" -s h -l help -d 'Prints help information'
+complete -c mc -n "__fish_seen_subcommand_from create" -s V -l version -d 'Prints version information'
 
 "#);
 }
@@ -386,6 +413,17 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(create)
+_arguments "${_arguments_options[@]}" \
+'--api=[What API type you would like to create.]' \
+'-g[Use the api create guide.]' \
+'--guide[Use the api create guide.]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
         esac
     ;;
 esac
@@ -395,6 +433,7 @@ esac
 _mc_commands() {
     local commands; commands=(
         "completions:Completion scripts for various shells." \
+"create:Create api files." \
     )
     _describe -t commands 'mc commands' commands "$@"
 }
@@ -415,6 +454,13 @@ _mc__completions_commands() {
 "elvish:Elvish completion script." \
     )
     _describe -t commands 'mc completions commands' commands "$@"
+}
+(( $+functions[_mc__create_commands] )) ||
+_mc__create_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'mc create commands' commands "$@"
 }
 (( $+functions[_mc__completions__elvish_commands] )) ||
 _mc__completions__elvish_commands() {
@@ -498,6 +544,7 @@ Register-ArgumentCompleter -Native -CommandName 'mc' -ScriptBlock {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('completions', 'completions', [CompletionResultType]::ParameterValue, 'Completion scripts for various shells.')
+            [CompletionResult]::new('create', 'create', [CompletionResultType]::ParameterValue, 'Create api files.')
             break
         }
         'mc;completions' {
@@ -541,6 +588,16 @@ Register-ArgumentCompleter -Native -CommandName 'mc' -ScriptBlock {
             break
         }
         'mc;completions;elvish' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'mc;create' {
+            [CompletionResult]::new('--api', 'api', [CompletionResultType]::ParameterName, 'What API type you would like to create.')
+            [CompletionResult]::new('-g', 'g', [CompletionResultType]::ParameterName, 'Use the api create guide.')
+            [CompletionResult]::new('--guide', 'guide', [CompletionResultType]::ParameterName, 'Use the api create guide.')
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
@@ -600,6 +657,7 @@ edit:completion:arg-completer[mc] = [@words]{
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand completions 'Completion scripts for various shells.'
+            cand create 'Create api files.'
         }
         &'mc;completions'= {
             cand -h 'Prints help information'
@@ -637,6 +695,15 @@ edit:completion:arg-completer[mc] = [@words]{
             cand --version 'Prints version information'
         }
         &'mc;completions;elvish'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'mc;create'= {
+            cand --api 'What API type you would like to create.'
+            cand -g 'Use the api create guide.'
+            cand --guide 'Use the api create guide.'
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand -V 'Prints version information'

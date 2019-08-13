@@ -7,6 +7,10 @@ pub struct EnvironmentFile {
 }
 
 impl EnvironmentFile {
+    pub fn new() -> EnvironmentFile {
+        Default::default()
+    }
+    
     pub fn file_location_type(self) -> Option<&'static str> {
         if self.url.is_some() {
             Some("url")

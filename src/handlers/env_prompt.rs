@@ -95,7 +95,7 @@ impl EnvironmentPromptHandler {
     }
 
     // Prompt with boolean question.
-    fn ask_bool(context: &String) -> bool {
+    pub fn ask_bool(context: &String) -> bool {
         let color_theme = ColorfulTheme {
             yes_style: Style::new().cyan(),
             no_style: Style::new().cyan(),
@@ -108,7 +108,7 @@ impl EnvironmentPromptHandler {
     }
 
     // Prompt for user defined input.
-    fn ask_input(
+    pub fn ask_input(
         context: &String,
         default_value: &Option<String>,
         env_name: &String,

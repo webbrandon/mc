@@ -1,20 +1,24 @@
-mod cli_filters;
-mod env_file;
-mod env_prompt;
-mod api_validate;
+pub mod cli_filters;
+pub mod env_file;
+pub mod env_prompt;
+pub mod api_validate;
 pub mod file;
-mod model;
-mod repository;
+pub mod model;
+pub mod repository;
 pub mod script;
-mod steps;
+pub mod steps;
 pub mod template;
+
+use std::path::PathBuf;
+
 use crate::models::{MasterOfCeremonyModelSelection, Repository, EnvironmentFile, EnvironmentPrompt, Flow};
 use crate::cli::Opt;
+
 use cli_filters::CliFiltersHandler;
 use model::MasterOfCeremonyModelHandler;
-use std::path::PathBuf;
 use steps::StepsHandler;
 
+/// Master Of Cermony handler for processing the various apis.
 #[derive(Debug, Default, Clone)]
 pub struct MasterOfCeremonyHandler {
     mute: bool,
@@ -28,6 +32,7 @@ impl MasterOfCeremonyHandler {
         Default::default()
     }
 
+    /// Process the selected (mc.yaml) or/and defined (cli) api request.
     pub fn process(mut self) {
         self.data.process();
         
@@ -52,12 +57,11 @@ impl MasterOfCeremonyHandler {
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyRepositoryModel => {
                 self.build_from_repository(Some(self.data.mc_repository.specs.clone()));
-            },
-            MasterOfCeremonyModelSelection::None => eprintln!("You have requested an api that is not supported."),
+            }
         }
     }
 
-    /// Create MasterOfCeremonyHandler with a configuration file.
+    /// Load api configuration file request.
     pub fn load_file(&mut self, file: &Option<PathBuf>) {
         let mut handler = MasterOfCeremonyModelHandler::new();
         let configuration = file::load_config(file, self.prompt);

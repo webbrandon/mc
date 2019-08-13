@@ -26,10 +26,7 @@ impl MasterOfCeremonyModelHandler {
     }
     
     pub fn process(&mut self) {
-        if self.api == "mc" {
-            let model: MasterOfCeremonyModel = serde_yaml::from_str(&self.config_raw).unwrap();
-            self.mc_model = model;
-        } else if self.api == "mc-flows" {
+        if self.api == "mc-flows" {
             let model: MasterOfCeremonyFlowModel = serde_yaml::from_str(&self.config_raw).unwrap();
             self.mc_flow = model;
         }  else if self.api == "mc-env" {
@@ -41,6 +38,9 @@ impl MasterOfCeremonyModelHandler {
         }  else if self.api == "mc-repository" {
             let model: MasterOfCeremonyRepositoryModel = serde_yaml::from_str(&self.config_raw).unwrap();
             self.mc_repository = model;
+        } else {
+            let model: MasterOfCeremonyModel = serde_yaml::from_str(&self.config_raw).unwrap();
+            self.mc_model = model;
         }
     }
     
@@ -71,7 +71,7 @@ impl MasterOfCeremonyModelHandler {
         }  else if self.api == "mc-repository" {
             MasterOfCeremonyModelSelection::MasterOfCeremonyRepositoryModel
         } else {
-            MasterOfCeremonyModelSelection::None
+            MasterOfCeremonyModelSelection::MasterOfCeremonyModel
         }
     }
 }

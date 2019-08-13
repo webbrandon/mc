@@ -4,7 +4,7 @@ use std::env;
 use std::fs;
 use std::path::PathBuf;
 
-/// The EnvironmentFile load a dot env file. (eg: .env)
+/// The RepositoryHandler will clone and enter a repositories path on a local system.
 #[derive(Debug, Default)]
 pub struct RepositoryHandler {}
 

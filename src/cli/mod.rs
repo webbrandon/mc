@@ -1,5 +1,9 @@
 pub mod completions;
+pub mod create;
+
 pub use completions::Completions;
+pub use create::Create;
+
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -67,6 +71,13 @@ pub enum Commands {
         name = "completions"
     )]
     Completions(Completions),
+    
+    /// Create api files.
+    #[structopt(
+        raw(setting = "structopt::clap::AppSettings::DisableHelpSubcommand"),
+        name = "create"
+    )]
+    Create(Create),
 }
 
 impl Opt {

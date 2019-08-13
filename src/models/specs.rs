@@ -17,6 +17,16 @@ pub struct Specs {
 }
 
 impl Specs {
+    pub fn new() -> Specs {
+        Specs {
+            repository: Some(Repository::new()),
+            steps: Step::new().default_set(),
+            env_file: Some(EnvironmentFile::new()),
+            env_prompt: Some(vec![EnvironmentPrompt::new()]),
+            flows: Some(vec![Flow::new()]),
+        }
+    }
+    
     pub fn set_repo_url(&mut self, url: String) {
         let repo = Repository {
             path: None,
