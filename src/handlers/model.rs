@@ -42,10 +42,7 @@ impl MasterOfCeremonyModelHandler {
         }   else if self.api == "mc-template" {
             let model: MasterOfCeremonyTemplateModel = serde_yaml::from_str(&self.config_raw).unwrap();
             self.mc_templates = model;
-        } else {
-            let model: MasterOfCeremonyModel = serde_yaml::from_str(&self.config_raw).unwrap();
-            self.mc_model = model;
-        }
+        } 
     }
     
     pub fn set_api(&mut self, yaml_file: String) {
@@ -77,7 +74,7 @@ impl MasterOfCeremonyModelHandler {
         }  else if self.api == "mc-template" {
             MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel
         } else {
-            MasterOfCeremonyModelSelection::MasterOfCeremonyModel
+            MasterOfCeremonyModelSelection::None
         }
     }
 }

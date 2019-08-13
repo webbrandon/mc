@@ -63,7 +63,8 @@ impl MasterOfCeremonyHandler {
                 handler.template = self.data.mc_templates.specs;
                 handler.mute = self.cli.cli.mute;
                 handler.process();
-            }
+            },
+            MasterOfCeremonyModelSelection::None => eprintln!("Unrecognized API")
         }
     }
 

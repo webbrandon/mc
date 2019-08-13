@@ -23,7 +23,8 @@ pub enum MasterOfCeremonyModelSelection {
     MasterOfCeremonyFlowModel,
     MasterOfCeremonyRepositoryModel,
     MasterOfCeremonyEnvironmentFileModel,
-    MasterOfCeremonyTemplateModel
+    MasterOfCeremonyTemplateModel,
+    None
 }
 
 /// Master Of Cermony API Schema 2.0
