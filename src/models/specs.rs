@@ -27,6 +27,10 @@ impl Specs {
         }
     }
     
+    pub fn new_empty() -> Specs {
+        Default::default()
+    }
+    
     pub fn set_repo_url(&mut self, url: String) {
         let repo = Repository {
             path: None,

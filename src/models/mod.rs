@@ -7,6 +7,7 @@ pub mod specs;
 pub mod steps;
 pub mod template;
 
+use std::collections::HashMap;
 pub use env_file::EnvironmentFile;
 pub use env_prompt::EnvironmentPrompt;
 pub use template::Template;
@@ -14,6 +15,7 @@ pub use repository::Repository;
 pub use details::Details;
 pub use flows::Flow;
 pub use specs::Specs;
+pub use steps::Step;
 
 /// Master Of Cermony API selection.
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -24,6 +26,7 @@ pub enum MasterOfCeremonyModelSelection {
     MasterOfCeremonyRepositoryModel,
     MasterOfCeremonyEnvironmentFileModel,
     MasterOfCeremonyTemplateModel,
+    MasterOfCeremonyStepModel,
     None
 }
 
@@ -81,6 +84,15 @@ pub struct MasterOfCeremonyTemplateModel {
     pub specs: Vec<Template>,
 }
 
+/// Master Of Cermony API Schema 2.0
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct MasterOfCeremonyStepModel {
+    pub api: String,
+    pub version: String,
+    pub metadata: Option<Details>,
+    pub specs: HashMap<String, Step>,
+}
+
 impl MasterOfCeremonyModel {
     pub fn new() -> MasterOfCeremonyModel {
         MasterOfCeremonyModel {
@@ -89,6 +101,10 @@ impl MasterOfCeremonyModel {
             metadata: Some(Details::new()),
             specs: Specs::new(),
         }
+    }
+    
+    pub fn new_empty() -> MasterOfCeremonyModel {
+        Default::default()
     }
 }
 
@@ -145,5 +161,67 @@ impl MasterOfCeremonyTemplateModel {
             metadata: Some(Details::new()),
             specs: vec![Template::new()],
         }
+    }
+}
+
+impl MasterOfCeremonyStepModel {
+    pub fn new() -> MasterOfCeremonyStepModel {
+        let mut step_model: HashMap<String, Step> = HashMap::new();
+        step_model.insert(String::from(""), Step::new());
+        MasterOfCeremonyStepModel {
+            api: String::from("mc-steps"),
+            version: String::from("v2.0"),
+            metadata: Some(Details::new()),
+            specs: step_model,
+        }
+    }
+    
+    pub fn default_sort(&mut self) -> Vec<(String, Step)> {
+        let mut sorted_steps: Vec<(String, Step)> = Vec::new();
+        let mut steps_copy = self.specs.clone();
+        let step_order_instructions = vec![
+            "pre",
+            "unit-test",
+            "build",
+            "functional-test",
+            "template",
+            "deploy",
+            "system-test",
+            "post",
+        ];
+
+        for step_order in step_order_instructions {
+            if steps_copy.contains_key(step_order) {
+                match steps_copy.get(step_order) {
+                    Some(x) => {
+                        sorted_steps.push((step_order.to_string(), x.clone()));
+                        steps_copy.remove(step_order);
+                    }
+                    None => {}
+                }
+            }
+        }
+
+        //  Order steps by our defined default pipeline order.  Track custom step request for later.
+        let custom_steps: Vec<(String, Step)> = steps_copy.clone().into_iter().collect();
+
+        // Add custom step elements.  Insert by order if requested and will be based on
+        // available defined steps in a default pipeline order or else push to end in order
+        // recieved.  We should rethink this structure as custom event will more than likely
+        // always be random due to the nature of HashMap.
+        for step_model in custom_steps {
+            match step_model.1.order {
+                Some(order) => {
+                    if sorted_steps.len() > order {
+                        sorted_steps.insert(order - 1, step_model);
+                    }
+                }
+                None => {
+                    sorted_steps.push(step_model);
+                }
+            }
+        }
+
+        sorted_steps
     }
 }

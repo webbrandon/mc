@@ -18,7 +18,7 @@ impl StepsHandler {
         Default::default()
     }
 
-    pub fn process(&mut self, step_model: Vec<(String, Step)>, prompt: bool, mute: bool) {
+    pub fn process(mut self, step_model: Vec<(String, Step)>, prompt: bool, mute: bool) {
         for step in step_model {
             let mut ran_step = false;
             if prompt {
@@ -43,6 +43,7 @@ impl StepsHandler {
             match step.clone().env_prompt {
                 Some(x) => {
                     env_prompt::EnvironmentPromptHandler::process(&x);
+                    println!("");
                 }
                 None => {}
             }
@@ -51,17 +52,20 @@ impl StepsHandler {
         match step.clone().script {
             Some(x) => {
                 ran_step = self.process_script(x, mute);
+                println!("");
             }
             None => {}
         }
 
         if step.templates.is_some() {
             ran_step = self.process_template(step.clone(), mute);
+            println!("");
         }
 
         match step.clone().post_script {
             Some(x) => {
                 ran_step = self.process_script(x, mute);
+                println!("");
             }
             None => {}
         }
@@ -121,7 +125,7 @@ impl StepsHandler {
         {
             true
         } else {
-            println!("Skipping {} step.", step_name);
+            println!("Skipping {} step.\n", step_name);
             false
         }
     }

@@ -2,16 +2,15 @@ pub mod cli_filters;
 pub mod env_file;
 pub mod env_prompt;
 pub mod api_validate;
-pub mod file;
 pub mod model;
 pub mod repository;
 pub mod script;
 pub mod steps;
 pub mod template;
-
 use std::path::PathBuf;
 
-use crate::models::{MasterOfCeremonyModelSelection, Repository, EnvironmentFile, EnvironmentPrompt, Flow};
+use crate::mc_file;
+use crate::models::{MasterOfCeremonyModelSelection, Repository, EnvironmentFile, EnvironmentPrompt, Flow, Step};
 use crate::cli::Opt;
 
 use cli_filters::CliFiltersHandler;
@@ -34,8 +33,6 @@ impl MasterOfCeremonyHandler {
 
     /// Process the selected (mc.yaml) or/and defined (cli) api request.
     pub fn process(mut self) {
-        self.data.process();
-        
         match self.data.get_api_type() {
             MasterOfCeremonyModelSelection::MasterOfCeremonyModel => {
                 let mut cli_filter = self.cli.clone();
@@ -44,7 +41,7 @@ impl MasterOfCeremonyHandler {
                 self.flow_environment_values_from_file(self.data.mc_model.specs.flows.clone());
                 self.environment_values_from_prompt(self.data.mc_model.specs.env_prompt.clone());
                 self.build_from_repository(self.data.mc_model.specs.repository.clone());
-                self.process_steps();
+                self.process_steps(self.data.mc_model.specs.clone().sort_steps().clone());
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyPromptModel => {
                 self.environment_values_from_prompt(Some(self.data.mc_prompt.specs.clone()));
@@ -57,6 +54,9 @@ impl MasterOfCeremonyHandler {
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyRepositoryModel => {
                 self.build_from_repository(Some(self.data.mc_repository.specs.clone()));
+            },
+            MasterOfCeremonyModelSelection::MasterOfCeremonyStepModel => {
+                self.process_steps(self.data.clone().mc_steps.default_sort());
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel => {
                 let mut handler = template::TemplateHandler::new();
@@ -71,9 +71,8 @@ impl MasterOfCeremonyHandler {
     /// Load api configuration file request.
     pub fn load_file(&mut self, file: &Option<PathBuf>) {
         let mut handler = MasterOfCeremonyModelHandler::new();
-        let configuration = file::load_config(file, self.prompt);
+        handler.set_config_files(file);
         
-        handler.set_api(configuration);
         self.data = handler;
     }
 
@@ -137,8 +136,8 @@ impl MasterOfCeremonyHandler {
         }
     }
 
-    pub fn process_steps(&mut self) {
-        let mut handler = StepsHandler::new();
-        handler.process(self.data.mc_model.specs.sort_steps(), self.prompt, self.mute);
+    pub fn process_steps(&mut self, steps: Vec<(String, Step)>) {
+        let handler = StepsHandler::new();
+        handler.process(steps, self.prompt, self.mute);
     }
 }

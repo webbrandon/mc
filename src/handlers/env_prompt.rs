@@ -28,6 +28,7 @@ impl EnvironmentPromptHandler {
                                 &prompt.options,
                             ),
                         );
+                        println!("");
                     } else if x == "option" {
                         env::set_var(
                             &prompt.name,
@@ -37,11 +38,13 @@ impl EnvironmentPromptHandler {
                                 &prompt.options,
                             ),
                         );
+                        println!("");
                     } else {
                         env::set_var(
                             &prompt.name,
                             EnvironmentPromptHandler::ask_bool(&context).to_string(),
                         );
+                        println!("");
                     }
                 }
                 None => {
@@ -49,6 +52,7 @@ impl EnvironmentPromptHandler {
                         &prompt.name,
                         EnvironmentPromptHandler::ask_bool(&context).to_string(),
                     );
+                    println!("");
                 }
             }
         }

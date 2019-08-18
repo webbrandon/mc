@@ -1,8 +1,10 @@
 use crate::models::template::Template;
-use super::file;
+use super::mc_file;
 use handlebars::Handlebars;
 use serde_json::value::Value as Json;
 use std::str::FromStr;
+
+use mc_file::MasterOfCeremonyFileHandler;
 
 /// The TemplateHandler will merge a template file with parameters file.
 #[derive(Debug, Default, Clone)]
@@ -26,7 +28,7 @@ impl TemplateHandler {
     }
 
     pub fn process_template(&mut self, template: Template) -> bool {
-        let json = self.extract_json(file::load(template.params.unwrap().to_owned()));
+        let json = self.extract_json(MasterOfCeremonyFileHandler::load(MasterOfCeremonyFileHandler::new(), template.params.unwrap().to_owned()));
         let mut handlebars = Handlebars::new();
 
         handlebars
@@ -37,7 +39,7 @@ impl TemplateHandler {
         match handlebars.render("template", &json) {
             Ok(data) => {
                 self.std_out(data.clone());
-                file::out(template.out_file.unwrap().to_owned(), &data);
+                MasterOfCeremonyFileHandler::out(MasterOfCeremonyFileHandler::new(), template.out_file.unwrap().to_owned(), &data);
                 true
             }
             Err(e) => {

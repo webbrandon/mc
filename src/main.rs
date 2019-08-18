@@ -16,6 +16,7 @@ pub mod completions;
 pub mod handlers;
 pub mod models;
 pub mod creator;
+pub mod mc_file;
 
 use cli::{Commands, Opt};
 use completions::CompletionProcess;

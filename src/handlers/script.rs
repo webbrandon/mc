@@ -1,4 +1,4 @@
-use super::file;
+use super::mc_file;
 
 use run_script;
 use run_script::ScriptOptions;
@@ -20,7 +20,7 @@ impl ScriptHandler {
 
     pub fn process(&mut self) -> bool {
         let (code, _output, error) = run_script::run(
-            &file::load(self.script_path.to_owned()),
+            &mc_file::MasterOfCeremonyFileHandler::load(mc_file::MasterOfCeremonyFileHandler::new(), self.script_path.to_owned()),
             &vec![],
             &self.get_options(),
         )
