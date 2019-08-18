@@ -1,5 +1,5 @@
-api: mc-prompt
-version: v1.0
+api: mc-prompts
+version: v2.0
 metadata:
   name: example
   description: ...

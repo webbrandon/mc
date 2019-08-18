@@ -1,0 +1,15 @@
+api: mc-templates
+version: v2.0
+metadata:
+  name: example
+  description: ...
+  version: 1.1
+specs:
+  - name: kube-svc.yaml
+    template: ../test1.tmpl
+    out_file: kube-svc.yaml
+    params: ../test.params
+  - name: kube-deploy.yaml
+    template: ../test2.tmpl
+    out_file: kube-deploy.yaml
+    params: ../test.params

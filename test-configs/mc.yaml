@@ -1,0 +1,32 @@
+api: mc
+version: 2.0
+specs:
+  repository:
+    url: 'https://github.com/webbrandon/mc.git'
+  env-file:
+    path: .env
+  env-prompt:
+    - name: GLOBAL_OPTION
+      kind: option
+      default: no
+      context: 'My question for you is ?.  You answer is stored in GLOBAL_OPTION.'
+      options:
+        - 'Customer answer #1'
+        - 'Customer answer #2'
+  flows:
+    - name: job-name
+      flow:
+        - build
+        - deploy
+  steps:
+    pre:
+      env-prompt:
+        - name: INPUT_OPTION
+          kind: input
+          context: 'My question for you is ?.  You answer is stored in INPUT_OPTION.'
+      script: ../test.sh
+    build:
+      env-prompt:
+        - name: BOOL_OPTION
+          context: 'My question for you is ?.  You answer is stored in BOOL_OPTION.'
+      script: /path

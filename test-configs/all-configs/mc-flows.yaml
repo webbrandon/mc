@@ -1,5 +1,5 @@
 api: mc-flows
-version: v1.0
+version: v2.0
 metadata:
   name: example
   description: ...
