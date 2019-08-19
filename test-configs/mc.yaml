@@ -24,9 +24,9 @@ specs:
         - name: INPUT_OPTION
           kind: input
           context: 'My question for you is ?.  You answer is stored in INPUT_OPTION.'
-      script: ../test.sh
+      script: test.sh
     build:
       env-prompt:
         - name: BOOL_OPTION
           context: 'My question for you is ?.  You answer is stored in BOOL_OPTION.'
-      script: /path
+      script: test.sh
