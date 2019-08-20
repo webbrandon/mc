@@ -28,6 +28,9 @@ impl TemplateHandler {
     }
 
     pub fn process_template(&mut self, template: Template) -> bool {
+        if !self.mute {
+            println!("");
+        }
         let params = match template.params {
             Some(x) => x,
             None => {

@@ -42,6 +42,7 @@ impl MasterOfCeremonyHandler {
                 self.flow_environment_values_from_file(self.data.mc_model.specs.flows.clone());
                 self.environment_values_from_prompt(self.data.mc_model.specs.env_prompt.clone());
                 self.process_steps(self.data.mc_model.specs.clone().sort_steps().clone());
+                
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyPromptModel => {
                 self.environment_values_from_prompt(Some(self.data.mc_prompt.specs.clone()));
@@ -65,6 +66,10 @@ impl MasterOfCeremonyHandler {
                 handler.process();
             },
             MasterOfCeremonyModelSelection::None => eprintln!("Unrecognized API")
+        }
+        if !self.mute {
+            println!("\nComplete.");
+            std::process::exit(0)
         }
     }
 
