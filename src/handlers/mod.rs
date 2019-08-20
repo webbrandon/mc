@@ -59,6 +59,9 @@ impl MasterOfCeremonyHandler {
             MasterOfCeremonyModelSelection::MasterOfCeremonyStepModel => {
                 self.process_steps(self.data.clone().mc_steps.default_sort());
             },
+            MasterOfCeremonyModelSelection::MasterOfCeremonyContainerizationModel => {
+                println!("Coming Soon");
+            },
             MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel => {
                 let mut handler = template::TemplateHandler::new();
                 handler.template = self.data.mc_templates.specs;

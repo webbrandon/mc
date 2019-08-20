@@ -6,8 +6,12 @@ pub mod repository;
 pub mod specs;
 pub mod steps;
 pub mod template;
+pub mod containerization;
+pub mod dockerization;
 
 use std::collections::HashMap;
+pub use containerization::Containerization;
+pub use dockerization::Dockerization;
 pub use env_file::EnvironmentFile;
 pub use env_prompt::EnvironmentPrompt;
 pub use template::Template;
@@ -27,6 +31,7 @@ pub enum MasterOfCeremonyModelSelection {
     MasterOfCeremonyEnvironmentFileModel,
     MasterOfCeremonyTemplateModel,
     MasterOfCeremonyStepModel,
+    MasterOfCeremonyContainerizationModel,
     None
 }
 
@@ -84,13 +89,22 @@ pub struct MasterOfCeremonyTemplateModel {
     pub specs: Vec<Template>,
 }
 
-/// Master Of Cermony API Schema 2.0
+/// Master Of Cermony Step API Schema 2.0
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 pub struct MasterOfCeremonyStepModel {
     pub api: String,
     pub version: String,
     pub metadata: Option<Details>,
     pub specs: HashMap<String, Step>,
+}
+
+/// Master Of Cermony Containerization API Schema 2.0
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct MasterOfCeremonyContainerizationModel {
+    pub api: String,
+    pub version: String,
+    pub metadata: Option<Details>,
+    pub specs: Containerization,
 }
 
 impl MasterOfCeremonyModel {
@@ -160,6 +174,18 @@ impl MasterOfCeremonyTemplateModel {
             version: String::from("v2.0"),
             metadata: Some(Details::new()),
             specs: vec![Template::new()],
+        }
+    }
+}
+
+/// Master Of Cermony Containerization API Schema 2.0
+impl MasterOfCeremonyContainerizationModel {
+    pub fn new() -> MasterOfCeremonyContainerizationModel {
+        MasterOfCeremonyContainerizationModel {
+            api: String::from("mc-container"),
+            version: String::from("v1.0"),
+            metadata: Some(Details::new()),
+            specs: Containerization::new(),
         }
     }
 }
