@@ -1,5 +1,5 @@
 #!/bin/bash 
-VERSION=v2.0.0-rc1
+VERSION=v2.0.0-beta
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   echo "Downloading debian client."
