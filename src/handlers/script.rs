@@ -27,6 +27,9 @@ impl ScriptHandler {
         .unwrap();
 
         if code == 0 {
+            if !self.mute {
+                println!("");
+            }
             true
         } else {
             writeln!(

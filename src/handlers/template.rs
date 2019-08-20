@@ -28,18 +28,35 @@ impl TemplateHandler {
     }
 
     pub fn process_template(&mut self, template: Template) -> bool {
-        let json = self.extract_json(MasterOfCeremonyFileHandler::load(MasterOfCeremonyFileHandler::new(), template.params.unwrap().to_owned()));
+        let params = match template.params {
+            Some(x) => x,
+            None => {
+                eprintln!("Parameters not available at generation time.");
+                std::process::exit(1)
+            }
+        };
+        let json = self.extract_json(MasterOfCeremonyFileHandler::load(MasterOfCeremonyFileHandler::new(), params));
         let mut handlebars = Handlebars::new();
-
-        handlebars
-            .register_template_file("template", &template.template.unwrap().to_owned())
-            .ok()
-            .unwrap();
+        let temp = match template.template {
+            Some(x) => x,
+            None => {
+                eprintln!("Template not assigned.");
+                std::process::exit(1)
+            }
+        };
+        
+        match handlebars.register_template_file("template", &temp).ok() {
+            Some(_x) => {},
+            None => {
+                eprintln!("Template not available at generation time.");
+                std::process::exit(1)
+            },
+        }
 
         match handlebars.render("template", &json) {
             Ok(data) => {
                 self.std_out(data.clone());
-                MasterOfCeremonyFileHandler::out(MasterOfCeremonyFileHandler::new(), template.out_file.unwrap().to_owned(), &data);
+                MasterOfCeremonyFileHandler::out(MasterOfCeremonyFileHandler::new(), template.out_file.unwrap_or(std::path::Path::new("template.out").to_path_buf()).to_owned(), &data);
                 true
             }
             Err(e) => {

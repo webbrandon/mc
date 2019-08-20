@@ -86,7 +86,10 @@ impl MasterOfCeremonyModelHandler {
                 self.model_used = "mc-flows".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
         }  else if api_version.0 == "mc-env" {
-            let model: MasterOfCeremonyEnvironmentFileModel = serde_yaml::from_str(&yaml_file).unwrap();
+            let model: MasterOfCeremonyEnvironmentFileModel = match serde_yaml::from_str(&yaml_file) {
+                Ok(x) => x,
+                Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyEnvironmentFileModel::new()},
+            };
             self.mc_env = model;
             if self.model_used != "mc" {
                 self.model_used = "mc-env".to_owned();
@@ -98,25 +101,37 @@ impl MasterOfCeremonyModelHandler {
                 self.model_used = "mc-prompts".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
         }  else if api_version.0 == "mc-repo" {
-            let model: MasterOfCeremonyRepositoryModel = serde_yaml::from_str(&yaml_file).unwrap();
+            let model: MasterOfCeremonyRepositoryModel = match serde_yaml::from_str(&yaml_file) {
+                Ok(x) => x,
+                Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyRepositoryModel::new()},
+            };
             self.mc_repository = model;
             if self.model_used != "mc" {
                 self.model_used = "mc-repo".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
         }  else if api_version.0 == "mc-templates" {
-            let model: MasterOfCeremonyTemplateModel = serde_yaml::from_str(&yaml_file).unwrap();
+            let model: MasterOfCeremonyTemplateModel = match serde_yaml::from_str(&yaml_file) {
+                Ok(x) => x,
+                Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyTemplateModel::new()},
+            };
             self.mc_templates = model;
             if self.model_used != "mc" {
                 self.model_used = "mc-templates".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
         }  else if api_version.0 == "mc-steps" {
-            let model: MasterOfCeremonyStepModel = serde_yaml::from_str(&yaml_file).unwrap();
+            let model: MasterOfCeremonyStepModel = match serde_yaml::from_str(&yaml_file) {
+                Ok(x) => x,
+                Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyStepModel::new()},
+            };
             self.mc_steps = model;
             if self.model_used != "mc" {
                 self.model_used = "mc-steps".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
         }  else if api_version.0 == "mc" {
-            let model: MasterOfCeremonyModel = serde_yaml::from_str(&yaml_file).unwrap();
+            let model: MasterOfCeremonyModel = match serde_yaml::from_str(&yaml_file) {
+                Ok(x) => x,
+                Err(e) => {eprintln!("Unknown in config file: {:?}", e.location().unwrap()); MasterOfCeremonyModel::new()},
+            };
             self.mc_model = model;
             if self.configs.len() >= 1 {
                 self.model_used = "mc".to_owned();

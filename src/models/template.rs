@@ -59,7 +59,7 @@ impl<'de> Deserialize<'de> for Template {
                             "template" => Ok(Field::Input),
                             "out-file" => Ok(Field::Output),
                             "params" => Ok(Field::Params),
-                            _ => Err(de::Error::unknown_field(value, FIELDS)),
+                            _ => Err(de::Error::custom("Uknown field name.")),
                         }
                     }
                 }
@@ -95,7 +95,7 @@ impl<'de> Deserialize<'de> for Template {
                         }
                         Field::Input => {
                             if template.is_some() {
-                                return Err(de::Error::duplicate_field("path"));
+                                return Err(de::Error::duplicate_field("script"));
                             }
                             template = match map.next_value() {
                                 Ok(x) => {
@@ -112,7 +112,7 @@ impl<'de> Deserialize<'de> for Template {
                         }
                         Field::Output => {
                             if out_file.is_some() {
-                                return Err(de::Error::duplicate_field("path"));
+                                return Err(de::Error::duplicate_field("out-file"));
                             }
                             out_file = match map.next_value() {
                                 Ok(x) => {
@@ -129,7 +129,7 @@ impl<'de> Deserialize<'de> for Template {
                         }
                         Field::Params => {
                             if params.is_some() {
-                                return Err(de::Error::duplicate_field("path"));
+                                return Err(de::Error::duplicate_field("params"));
                             }
                             params = match map.next_value() {
                                 Ok(x) => {

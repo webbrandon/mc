@@ -16,8 +16,8 @@ impl EnvironmentFileHandler {
                 if x == "path" {
                     let env_run = dotenv::from_filename(&env_model.clone().path.unwrap());
                     match env_run {
-                        Ok(_x) => println!("Loaded env-file: {:?}", env_model.path.unwrap()),
-                        Err(e) => eprintln!("Cannot load env-file: {}", e),
+                        Ok(_x) => println!("Loaded env-file: {:?}\n", env_model.path.unwrap()),
+                        Err(e) => eprintln!("Cannot load env-file: {}\n", e),
                     }
                 } else if x == "url" {
                     let response = reqwest::get(&env_model.url.unwrap());

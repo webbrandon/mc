@@ -43,7 +43,6 @@ impl StepsHandler {
             match step.clone().env_prompt {
                 Some(x) => {
                     env_prompt::EnvironmentPromptHandler::process(&x);
-                    println!("");
                 }
                 None => {}
             }
@@ -52,20 +51,17 @@ impl StepsHandler {
         match step.clone().script {
             Some(x) => {
                 ran_step = self.process_script(x, mute);
-                println!("");
             }
             None => {}
         }
 
         if step.templates.is_some() {
             ran_step = self.process_template(step.clone(), mute);
-            println!("");
         }
 
         match step.clone().post_script {
             Some(x) => {
                 ran_step = self.process_script(x, mute);
-                println!("");
             }
             None => {}
         }

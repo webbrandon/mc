@@ -5,4 +5,4 @@ metadata:
   description: ...
   version: 1.1
 specs:
-  path: .env
+  path: ../.env

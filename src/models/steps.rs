@@ -78,7 +78,7 @@ impl<'de> Deserialize<'de> for Step {
                     type Value = Field;
 
                     fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-                        formatter.write_str("`name` or `template` or `out-file` or `params`")
+                        formatter.write_str("`order` or `env-prompt` or `script` or `templates` or `post-script`")
                     }
 
                     fn visit_str<E>(self, value: &str) -> Result<Field, E>
@@ -91,7 +91,7 @@ impl<'de> Deserialize<'de> for Step {
                             "script" => Ok(Field::Script),
                             "templates" => Ok(Field::Temp),
                             "post-script" => Ok(Field::Post),
-                            _ => Err(de::Error::unknown_field(value, FIELDS)),
+                            _ => Err(de::Error::custom("Uknown field name.")),
                         }
                     }
                 }
