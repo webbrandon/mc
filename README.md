@@ -2,7 +2,7 @@
 ![Master Of Ceremony](./docs/header.png)
   
 **About**  
-Master Of Ceremony is a script and template configuration management utility.  The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing. Configure service pipelines into a packages. Call pipelines for a service through these packages locally or in an existing continuous development and integration service.
+Master Of Ceremony is a script and template configuration management utility framework.  The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing. Configure service pipelines into a packages. Call pipelines for a service through these packages locally or in an existing continuous development and integration service.
 
 ## Usage
 
@@ -114,7 +114,11 @@ Currently the reserved steps are presented below in the default order they are r
 Steps can apply the `mc-env`, `mc-prompts` and `mc-templates` api.  The `mc-templates` api will be applied as the reserved _template_ and its default flow position.
 
 **Using scripts**  
-You can use any shell available to the operating environment.  Be sure to set the shebang in the first line of a script to specify the shell you are targeting. Using exit codes is recommended to order identify failures.
+You can use any shell available to the operating environment.  Be sure to set the shebang in the first line of a script to specify the shell you are targeting. 
+
+Recommendation:
+- Use exit codes to identify failures in a script. 
+- Apply the Unix Philosophy and keep scripts modular and stateless.
 
 **Commandline with mc-steps**  
 ```bash
@@ -232,7 +236,7 @@ specs:
 ---
 
 #### mc-flows
-You can segment your steps into flow patterns to represent a pipelines sequence of steps.
+You can segment your steps into flow patterns to represent a pipelines sequence of steps.  The `mc-env` api can be added to individual flows. When applying this `mc-env` to a flow it will take priority and overwrite any global configuration.
 
 **Selecting a flow.**
 This api needs to be used in conjunction with a `mc-steps` configuration.  You call it using the option flow option.
