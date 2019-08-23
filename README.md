@@ -3,7 +3,7 @@
   
 **Continuous Integration and Continuous Delivery Orchestration Framework**
 
-The purpose of this tool is to simplify management of continuous integration and delivery pipelines.  This is an open sourced project that helps decoupling themselves services that can become bottlenecks or blockers to software deployment and testing. Configure service pipelines into configuration packages. Call pipelines for a service through these packages locally or in an existing continuous integration and delivery service.
+The purpose of this tool is to simplify management of continuous integration and delivery pipelines.  Configure service pipelines into configuration packages.  Call pipelines for a service through these packages locally or in an existing continuous integration and delivery service.
 
 ## Usage
 
