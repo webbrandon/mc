@@ -1,8 +1,9 @@
 **2.0.0-beta**   
 ![Master Of Ceremony](./docs/header.png)
   
-**About**  
-Master Of Ceremony is a script and template configuration management utility framework.  The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing. Configure service pipelines into a packages. Call pipelines for a service through these packages locally or in an existing continuous development and integration service.
+**Continuous Integration and Continuous Delivery Orchestration Framework**
+
+The purpose of this tool is to simplify management of continuous integration and delivery pipelines.  This is an open sourced project that helps decoupling themselves services that can become bottlenecks or blockers to software deployment and testing. Configure service pipelines into configuration packages. Call pipelines for a service through these packages locally or in an existing continuous integration and delivery service.
 
 ## Usage
 
