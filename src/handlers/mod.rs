@@ -7,6 +7,7 @@ pub mod repository;
 pub mod script;
 pub mod steps;
 pub mod template;
+pub mod containerization;
 use std::path::PathBuf;
 
 use crate::mc_file;
@@ -14,7 +15,7 @@ use crate::models::{MasterOfCeremonyModelSelection, Repository, EnvironmentFile,
 use crate::cli::Opt;
 
 use cli_filters::CliFiltersHandler;
-use model::MasterOfCeremonyModelHandler;
+use model::MasterOfCeremonyModelHandler;    
 use steps::StepsHandler;
 
 /// Master Of Cermony handler for processing the various apis.
@@ -60,7 +61,9 @@ impl MasterOfCeremonyHandler {
                 self.process_steps(self.data.clone().mc_steps.default_sort());
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyContainerizationModel => {
-                println!("Coming Soon");
+                let mut handler = containerization::ContainerizationHandler::new();
+                handler.set_container(self.data.mc_container.specs.clone());
+                handler.process();
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel => {
                 let mut handler = template::TemplateHandler::new();

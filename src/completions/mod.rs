@@ -52,7 +52,7 @@ _mc() {
 
     case "${cmd}" in
         mc)
-            opts=" -m -n -h -c -e -f -r -s -t -o -p -l  --mute --no-prompt --help --config --env --flow --repo --script --template --template-out --param --post-script   completions create"
+            opts=" -n -m -h -c -e -f -r -d -s -t -o -p -l  --no-prompt --mute --help --config --env --flow --repo --docker --script --template --template-out --param --post-script   create completions"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -88,6 +88,14 @@ _mc() {
                     return 0
                     ;;
                     -r)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --docker)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -258,20 +266,25 @@ complete -F _mc -o bashdefault -o default mc
 
 pub fn fish() {
     println!("{}",r#"
-complete -c mc -n "__fish_use_subcommand" -s c -l config -d 'Sets the "mc.yaml" file to use.'
-complete -c mc -n "__fish_use_subcommand" -s e -l env -d 'Load from .env file.'
-complete -c mc -n "__fish_use_subcommand" -s f -l flow -d 'Use flow pattern from mc.yaml.'
+complete -c mc -n "__fish_use_subcommand" -s c -l config -d 'Define which api config file to use.'
+complete -c mc -n "__fish_use_subcommand" -s e -l env -d 'Load dot env file. Overrides env-prompts api configs.'
+complete -c mc -n "__fish_use_subcommand" -s f -l flow -d 'Use flow pattern.'
 complete -c mc -n "__fish_use_subcommand" -s r -l repo -d 'Clone git repository.'
+complete -c mc -n "__fish_use_subcommand" -s d -l docker -d 'Docker image to run in.'
 complete -c mc -n "__fish_use_subcommand" -s s -l script -d 'Sets the script to run the the start.'
 complete -c mc -n "__fish_use_subcommand" -s t -l template -d 'Sets a custom template file.'
 complete -c mc -n "__fish_use_subcommand" -s o -l template-out -d 'Rendered template out file write location.'
 complete -c mc -n "__fish_use_subcommand" -s p -l param -d 'Sets a custom template parameters file.'
 complete -c mc -n "__fish_use_subcommand" -s l -l post-script -d 'Sets the script to run at the end.'
+complete -c mc -n "__fish_use_subcommand" -s n -l no-prompt -d 'Proceed prompts default to yes and env-prompts are disabled.'
 complete -c mc -n "__fish_use_subcommand" -s m -l mute -d 'Silence output.'
-complete -c mc -n "__fish_use_subcommand" -s n -l no-prompt -d 'Turn prompt off for mc.yaml steps.'
 complete -c mc -n "__fish_use_subcommand" -s h -l help -d 'Prints help information'
-complete -c mc -n "__fish_use_subcommand" -f -a "completions" -d 'Completion scripts for various shells.'
 complete -c mc -n "__fish_use_subcommand" -f -a "create" -d 'Create api files.'
+complete -c mc -n "__fish_use_subcommand" -f -a "completions" -d 'Completion scripts for various shells.'
+complete -c mc -n "__fish_seen_subcommand_from create" -l api -d 'What API type you would like to create.'
+complete -c mc -n "__fish_seen_subcommand_from create" -s g -l guide -d 'Use the api create guide.'
+complete -c mc -n "__fish_seen_subcommand_from create" -s h -l help -d 'Prints help information'
+complete -c mc -n "__fish_seen_subcommand_from create" -s V -l version -d 'Prints version information'
 complete -c mc -n "__fish_seen_subcommand_from completions" -s h -l help -d 'Prints help information'
 complete -c mc -n "__fish_seen_subcommand_from completions" -s V -l version -d 'Prints version information'
 complete -c mc -n "__fish_seen_subcommand_from completions" -f -a "bash" -d 'Bash completion script.'
@@ -289,10 +302,6 @@ complete -c mc -n "__fish_seen_subcommand_from powershell" -s h -l help -d 'Prin
 complete -c mc -n "__fish_seen_subcommand_from powershell" -s V -l version -d 'Prints version information'
 complete -c mc -n "__fish_seen_subcommand_from elvish" -s h -l help -d 'Prints help information'
 complete -c mc -n "__fish_seen_subcommand_from elvish" -s V -l version -d 'Prints version information'
-complete -c mc -n "__fish_seen_subcommand_from create" -l api -d 'What API type you would like to create.'
-complete -c mc -n "__fish_seen_subcommand_from create" -s g -l guide -d 'Use the api create guide.'
-complete -c mc -n "__fish_seen_subcommand_from create" -s h -l help -d 'Prints help information'
-complete -c mc -n "__fish_seen_subcommand_from create" -s V -l version -d 'Prints version information'
 
 "#);
 }
@@ -316,14 +325,16 @@ _mc() {
 
     local context curcontext="$curcontext" state line
     _arguments "${_arguments_options[@]}" \
-'-c+[Sets the "mc.yaml" file to use.]' \
-'--config=[Sets the "mc.yaml" file to use.]' \
-'-e+[Load from .env file.]' \
-'--env=[Load from .env file.]' \
-'-f+[Use flow pattern from mc.yaml.]' \
-'--flow=[Use flow pattern from mc.yaml.]' \
+'-c+[Define which api config file to use.]' \
+'--config=[Define which api config file to use.]' \
+'-e+[Load dot env file. Overrides env-prompts api configs.]' \
+'--env=[Load dot env file. Overrides env-prompts api configs.]' \
+'-f+[Use flow pattern.]' \
+'--flow=[Use flow pattern.]' \
 '-r+[Clone git repository.]' \
 '--repo=[Clone git repository.]' \
+'-d+[Docker image to run in.]' \
+'--docker=[Docker image to run in.]' \
 '-s+[Sets the script to run the the start.]' \
 '--script=[Sets the script to run the the start.]' \
 '-t+[Sets a custom template file.]' \
@@ -334,10 +345,10 @@ _mc() {
 '--param=[Sets a custom template parameters file.]' \
 '-l+[Sets the script to run at the end.]' \
 '--post-script=[Sets the script to run at the end.]' \
+'-n[Proceed prompts default to yes and env-prompts are disabled.]' \
+'--no-prompt[Proceed prompts default to yes and env-prompts are disabled.]' \
 '-m[Silence output.]' \
 '--mute[Silence output.]' \
-'-n[Turn prompt off for mc.yaml steps.]' \
-'--no-prompt[Turn prompt off for mc.yaml steps.]' \
 '-h[Prints help information]' \
 '--help[Prints help information]' \
 ":: :_mc_commands" \
@@ -349,7 +360,18 @@ _mc() {
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:mc-command-$line[1]:"
         case $line[1] in
-            (completions)
+            (create)
+_arguments "${_arguments_options[@]}" \
+'--api=[What API type you would like to create.]' \
+'-g[Use the api create guide.]' \
+'--guide[Use the api create guide.]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+(completions)
 _arguments "${_arguments_options[@]}" \
 '-h[Prints help information]' \
 '--help[Prints help information]' \
@@ -413,17 +435,6 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
-(create)
-_arguments "${_arguments_options[@]}" \
-'--api=[What API type you would like to create.]' \
-'-g[Use the api create guide.]' \
-'--guide[Use the api create guide.]' \
-'-h[Prints help information]' \
-'--help[Prints help information]' \
-'-V[Prints version information]' \
-'--version[Prints version information]' \
-&& ret=0
-;;
         esac
     ;;
 esac
@@ -432,8 +443,8 @@ esac
 (( $+functions[_mc_commands] )) ||
 _mc_commands() {
     local commands; commands=(
-        "completions:Completion scripts for various shells." \
-"create:Create api files." \
+        "create:Create api files." \
+"completions:Completion scripts for various shells." \
     )
     _describe -t commands 'mc commands' commands "$@"
 }
@@ -519,14 +530,16 @@ Register-ArgumentCompleter -Native -CommandName 'mc' -ScriptBlock {
 
     $completions = @(switch ($command) {
         'mc' {
-            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Sets the "mc.yaml" file to use.')
-            [CompletionResult]::new('--config', 'config', [CompletionResultType]::ParameterName, 'Sets the "mc.yaml" file to use.')
-            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Load from .env file.')
-            [CompletionResult]::new('--env', 'env', [CompletionResultType]::ParameterName, 'Load from .env file.')
-            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Use flow pattern from mc.yaml.')
-            [CompletionResult]::new('--flow', 'flow', [CompletionResultType]::ParameterName, 'Use flow pattern from mc.yaml.')
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Define which api config file to use.')
+            [CompletionResult]::new('--config', 'config', [CompletionResultType]::ParameterName, 'Define which api config file to use.')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Load dot env file. Overrides env-prompts api configs.')
+            [CompletionResult]::new('--env', 'env', [CompletionResultType]::ParameterName, 'Load dot env file. Overrides env-prompts api configs.')
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Use flow pattern.')
+            [CompletionResult]::new('--flow', 'flow', [CompletionResultType]::ParameterName, 'Use flow pattern.')
             [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Clone git repository.')
             [CompletionResult]::new('--repo', 'repo', [CompletionResultType]::ParameterName, 'Clone git repository.')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Docker image to run in.')
+            [CompletionResult]::new('--docker', 'docker', [CompletionResultType]::ParameterName, 'Docker image to run in.')
             [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Sets the script to run the the start.')
             [CompletionResult]::new('--script', 'script', [CompletionResultType]::ParameterName, 'Sets the script to run the the start.')
             [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Sets a custom template file.')
@@ -537,14 +550,24 @@ Register-ArgumentCompleter -Native -CommandName 'mc' -ScriptBlock {
             [CompletionResult]::new('--param', 'param', [CompletionResultType]::ParameterName, 'Sets a custom template parameters file.')
             [CompletionResult]::new('-l', 'l', [CompletionResultType]::ParameterName, 'Sets the script to run at the end.')
             [CompletionResult]::new('--post-script', 'post-script', [CompletionResultType]::ParameterName, 'Sets the script to run at the end.')
+            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Proceed prompts default to yes and env-prompts are disabled.')
+            [CompletionResult]::new('--no-prompt', 'no-prompt', [CompletionResultType]::ParameterName, 'Proceed prompts default to yes and env-prompts are disabled.')
             [CompletionResult]::new('-m', 'm', [CompletionResultType]::ParameterName, 'Silence output.')
             [CompletionResult]::new('--mute', 'mute', [CompletionResultType]::ParameterName, 'Silence output.')
-            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Turn prompt off for mc.yaml steps.')
-            [CompletionResult]::new('--no-prompt', 'no-prompt', [CompletionResultType]::ParameterName, 'Turn prompt off for mc.yaml steps.')
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
-            [CompletionResult]::new('completions', 'completions', [CompletionResultType]::ParameterValue, 'Completion scripts for various shells.')
             [CompletionResult]::new('create', 'create', [CompletionResultType]::ParameterValue, 'Create api files.')
+            [CompletionResult]::new('completions', 'completions', [CompletionResultType]::ParameterValue, 'Completion scripts for various shells.')
+            break
+        }
+        'mc;create' {
+            [CompletionResult]::new('--api', 'api', [CompletionResultType]::ParameterName, 'What API type you would like to create.')
+            [CompletionResult]::new('-g', 'g', [CompletionResultType]::ParameterName, 'Use the api create guide.')
+            [CompletionResult]::new('--guide', 'guide', [CompletionResultType]::ParameterName, 'Use the api create guide.')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             break
         }
         'mc;completions' {
@@ -594,16 +617,6 @@ Register-ArgumentCompleter -Native -CommandName 'mc' -ScriptBlock {
             [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             break
         }
-        'mc;create' {
-            [CompletionResult]::new('--api', 'api', [CompletionResultType]::ParameterName, 'What API type you would like to create.')
-            [CompletionResult]::new('-g', 'g', [CompletionResultType]::ParameterName, 'Use the api create guide.')
-            [CompletionResult]::new('--guide', 'guide', [CompletionResultType]::ParameterName, 'Use the api create guide.')
-            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
-            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
-            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
-            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
-            break
-        }
     })
 
     $completions.Where{ $_.CompletionText -like "$wordToComplete*" } |
@@ -632,14 +645,16 @@ edit:completion:arg-completer[mc] = [@words]{
     }
     completions = [
         &'mc'= {
-            cand -c 'Sets the "mc.yaml" file to use.'
-            cand --config 'Sets the "mc.yaml" file to use.'
-            cand -e 'Load from .env file.'
-            cand --env 'Load from .env file.'
-            cand -f 'Use flow pattern from mc.yaml.'
-            cand --flow 'Use flow pattern from mc.yaml.'
+            cand -c 'Define which api config file to use.'
+            cand --config 'Define which api config file to use.'
+            cand -e 'Load dot env file. Overrides env-prompts api configs.'
+            cand --env 'Load dot env file. Overrides env-prompts api configs.'
+            cand -f 'Use flow pattern.'
+            cand --flow 'Use flow pattern.'
             cand -r 'Clone git repository.'
             cand --repo 'Clone git repository.'
+            cand -d 'Docker image to run in.'
+            cand --docker 'Docker image to run in.'
             cand -s 'Sets the script to run the the start.'
             cand --script 'Sets the script to run the the start.'
             cand -t 'Sets a custom template file.'
@@ -650,14 +665,23 @@ edit:completion:arg-completer[mc] = [@words]{
             cand --param 'Sets a custom template parameters file.'
             cand -l 'Sets the script to run at the end.'
             cand --post-script 'Sets the script to run at the end.'
+            cand -n 'Proceed prompts default to yes and env-prompts are disabled.'
+            cand --no-prompt 'Proceed prompts default to yes and env-prompts are disabled.'
             cand -m 'Silence output.'
             cand --mute 'Silence output.'
-            cand -n 'Turn prompt off for mc.yaml steps.'
-            cand --no-prompt 'Turn prompt off for mc.yaml steps.'
             cand -h 'Prints help information'
             cand --help 'Prints help information'
-            cand completions 'Completion scripts for various shells.'
             cand create 'Create api files.'
+            cand completions 'Completion scripts for various shells.'
+        }
+        &'mc;create'= {
+            cand --api 'What API type you would like to create.'
+            cand -g 'Use the api create guide.'
+            cand --guide 'Use the api create guide.'
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
         }
         &'mc;completions'= {
             cand -h 'Prints help information'
@@ -695,15 +719,6 @@ edit:completion:arg-completer[mc] = [@words]{
             cand --version 'Prints version information'
         }
         &'mc;completions;elvish'= {
-            cand -h 'Prints help information'
-            cand --help 'Prints help information'
-            cand -V 'Prints version information'
-            cand --version 'Prints version information'
-        }
-        &'mc;create'= {
-            cand --api 'What API type you would like to create.'
-            cand -g 'Use the api create guide.'
-            cand --guide 'Use the api create guide.'
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand -V 'Prints version information'
