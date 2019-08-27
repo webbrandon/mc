@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 use tokio::prelude::*;
 use tokio::runtime::Runtime;
 use bollard::container::{
-    Config, CreateContainerOptions, StartContainerOptions, HostConfig, MountPoint, LogsOptions
+    LogConfig, Config, CreateContainerOptions, StartContainerOptions, HostConfig, MountPoint, LogsOptions
 };
 use bollard::image::{BuildImageOptions, CreateImageOptions};
 use bollard::{Docker};
@@ -30,6 +30,15 @@ impl ContainerizationHandler {
     }
     
     pub fn process(&mut self) {
+        // Always make sure we add the base of operations.  This the base Path
+        // for all volume paths.
+        self.volumes.push(MountPoint {
+            target: std::fs::canonicalize(Path::new(".")).unwrap().to_str().unwrap().to_string(),
+            source: Path::new("/opt/mc").to_str().unwrap().to_string(),
+            type_: "bind".to_string(),
+            consistency: "default".to_string(),
+            ..Default::default()
+        });
         match &self.container_model.docker {
             Some(docker_model) => {
                 match &docker_model.image {
@@ -144,7 +153,6 @@ impl ContainerizationHandler {
         let mut rt = Runtime::new().unwrap();
         let docker = self.docker_connect();
         let build_config = self.docker_build_config();
-        // let me = std::fs::read_to_string(self.build_file.clone());
         
         let stream = docker
             .chain()
@@ -180,6 +188,10 @@ impl ContainerizationHandler {
             cmd: Some(vec!["mc".to_string()]),
             host_config: Some(HostConfig {
                 mounts: Some(self.volumes.clone()),
+                log_config: Some(LogConfig {
+                    type_: Some(String::from("json-file")),
+                    config: Some(HashMap::new())
+                }),
                 ..Default::default()
             }),
             ..Default::default()

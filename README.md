@@ -33,6 +33,7 @@ OPTIONS:
     -e, --env <env>                      Load from .env file.
     -f, --flow <flow>                    Use flow pattern from mc.yaml.
     -r, --repo <repo>                    Clone git repository.
+    -i, --image <image>                  Container image to use when running flow.
     -s, --script <script>                Sets the script to run the the start.
     -t, --template <template>            Sets a custom template file.
     -o, --template-out <template_out>    Rendered template out file write location.
@@ -56,6 +57,7 @@ Api's are called from the client or configuration file in YAML format.
 |[mc&#x2011;flows](#mc-flows)|Configured flows to be used with the `mc-steps` api.|mc&#x2011;flows.yaml|
 |[mc&#x2011;steps](#mc-steps)|Configure steps that runs scripts and template handlers. Use reserved step flows for default order to process or assign `order` to each step.|mc&#x2011;steps.yaml|
 |[mc&#x2011;templates](#mc-templates)|Combine a template with a parameters to generate a file. |mc&#x2011;templates.yaml| 
+|[mc&#x2011;container](#mc-container)|Run step flows in a defined image container. |mc&#x2011;container.yaml| 
 
 ### Api Configuration Files
 When running from configuration files MC will run in the directory executed as the base path.  When multiple configuration files are present they will be combined.  Combined configuration will never overwrite `mc` master configurations. Configuration api's are loaded with the defined default file. _(Note: Configuration files and also be `.yml`)_
@@ -175,7 +177,6 @@ Run your step flow configurations inside a container if you want to provide a wa
 ```bash
 mc -i mc-slave:latest
 ```
-_Use the no-prompt option to bypass prompting. You must account for empty values if not set with `mc-env` api._
 
 **mc-container.yaml**   
 ```YAML
