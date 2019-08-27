@@ -33,6 +33,7 @@ OPTIONS:
     -e, --env <env>                      Load from .env file.
     -f, --flow <flow>                    Use flow pattern from mc.yaml.
     -r, --repo <repo>                    Clone git repository.
+    -i, --image <image>                  Container image to use when running flow.
     -s, --script <script>                Sets the script to run the the start.
     -t, --template <template>            Sets a custom template file.
     -o, --template-out <template_out>    Rendered template out file write location.
