@@ -36,6 +36,10 @@ pub struct Opt {
     #[structopt(long = "repo", short = "r")]
     pub repo: Option<String>,
 
+    /// Container image to use when running flow.
+    #[structopt(long = "image", short = "i")]
+    pub image: Option<String>,
+
     /// Docker image to run in.
     #[structopt(long = "docker", short = "d")]
     pub docker: Option<String>,

@@ -6,7 +6,7 @@ pub struct Dockerization {
     pub image: Option<String>,
     pub dockerfile: Option<PathBuf>,
     pub port: Option<i32>,
-    pub volumes: Option<Vec<String>>,
+    pub volumes: Option<Vec<PathBuf>>,
 }
 
 impl Dockerization {
@@ -14,13 +14,24 @@ impl Dockerization {
         Default::default()
     }
     
-    pub fn new_values(image: Option<String>, dockerfile: Option<PathBuf>, port: Option<i32>, volumes: Option<Vec<String>>) -> Self  {
+    pub fn new_values(image: Option<String>, dockerfile: Option<PathBuf>, port: Option<i32>, volumes: Option<Vec<PathBuf>>) -> Self  {
         Dockerization {
             image,
             dockerfile,
             port,
             volumes,
         }
+    }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        match &self.volumes {
+            Some(paths) => collection.extend(paths.iter().cloned()),
+            None => {},
+        }
+        
+        collection
     }
 }
 
@@ -98,7 +109,23 @@ impl<'de> Deserialize<'de> for Dockerization {
                             if volumes.is_some() {
                                 return Err(de::Error::duplicate_field("volumes"));
                             }
-                            volumes = Some(map.next_value()?);
+                            volumes = match map.next_value() {
+                                Ok(x) => {
+                                    let x_mut:Option<Vec<PathBuf>> = x;
+                                    match x_mut {
+                                        Some(paths) => {
+                                            let mut mutated_path: Vec<PathBuf> = Vec::new();
+                                            for path in paths {
+                                                let new_path: PathBuf = path;
+                                                mutated_path.push(std::fs::canonicalize(new_path.as_path()).unwrap_or(new_path));
+                                            }
+                                            Some(mutated_path)
+                                        },
+                                        None => {None},
+                                    }
+                                },
+                                Err(e) => {eprintln!("{:?}", e);None},
+                            };
                         }
                         Field::Dockerfile => {
                             if dockerfile.is_some() {
@@ -120,7 +147,12 @@ impl<'de> Deserialize<'de> for Dockerization {
                     }
                 }
                 
-                let volumes = volumes.unwrap_or_else(|| None);
+                let volumes = match volumes {
+                    Some(x) => {
+                        Some(x)
+                    },
+                    None => {None},
+                };
                 let dockerfile = match &dockerfile {
                     Some(x) => {
                         let new_path = std::fs::canonicalize(x.as_path());

@@ -176,4 +176,38 @@ impl MasterOfCeremonyModelHandler {
             MasterOfCeremonyModelSelection::None
         }
     }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        if self.model_used == "mc" || self.configs.len() > 1 {
+            //
+        }
+        if self.model_used == "mc-flows" {
+            for flow in &self.mc_templates.specs {
+                collection.extend(flow.clone().collect_paths());
+            }
+        } 
+        if self.model_used == "mc-env" {
+            collection.extend(self.mc_env.specs.collect_paths());
+        }  
+        if self.model_used == "mc-repo" {
+            collection.extend(self.mc_repository.specs.collect_paths());
+        } 
+        if self.model_used == "mc-templates" {
+            for template in &self.mc_templates.specs {
+                collection.extend(template.clone().collect_paths());
+            }
+        } 
+        if self.model_used == "mc-steps" {
+            for step in &self.mc_steps.specs {
+                collection.extend(step.1.clone().collect_paths());
+            }
+        } 
+        if self.model_used == "mc-container" {
+            collection.extend(self.mc_container.specs.collect_paths());
+        } 
+        
+        collection
+    }
 }

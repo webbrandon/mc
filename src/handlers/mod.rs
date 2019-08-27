@@ -11,7 +11,7 @@ pub mod containerization;
 use std::path::PathBuf;
 
 use crate::mc_file;
-use crate::models::{MasterOfCeremonyModelSelection, Repository, EnvironmentFile, EnvironmentPrompt, Flow, Step};
+use crate::models::{MasterOfCeremonyModelSelection, Repository, EnvironmentFile, EnvironmentPrompt, Flow, Step, Containerization};
 use crate::cli::Opt;
 
 use cli_filters::CliFiltersHandler;
@@ -38,6 +38,10 @@ impl MasterOfCeremonyHandler {
             MasterOfCeremonyModelSelection::MasterOfCeremonyModel => {
                 let mut cli_filter = self.cli.clone();
                 self = cli_filter.process(&mut self);
+                self.run_container(
+                    self.data.mc_model.specs.clone().collect_paths(), 
+                    self.data.mc_model.specs.container.clone()
+                );
                 self.build_from_repository(self.data.mc_model.specs.repository.clone());
                 self.environment_values_from_file(self.data.mc_model.specs.env_file.clone());
                 self.flow_environment_values_from_file(self.data.mc_model.specs.flows.clone());
@@ -61,9 +65,10 @@ impl MasterOfCeremonyHandler {
                 self.process_steps(self.data.clone().mc_steps.default_sort());
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyContainerizationModel => {
-                let mut handler = containerization::ContainerizationHandler::new();
-                handler.set_container(self.data.mc_container.specs.clone());
-                handler.process();
+                self.run_container(
+                    self.data.mc_container.specs.clone().collect_paths(), 
+                    Some(self.data.mc_container.specs.clone())
+                );
             },
             MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel => {
                 let mut handler = template::TemplateHandler::new();
@@ -134,6 +139,18 @@ impl MasterOfCeremonyHandler {
             Some(x) => {
                 env_prompt::EnvironmentPromptHandler::process(x);
             }
+            None => {}
+        }
+    }
+
+    pub fn run_container(&mut self, volumes: Vec<PathBuf>, container_model: Option<Containerization>) {
+        match container_model {
+            Some(model) => {
+                let mut handler = containerization::ContainerizationHandler::new();
+                handler.set_container(model);
+                handler.set_volumes(volumes);
+                handler.process();
+            },
             None => {}
         }
     }
