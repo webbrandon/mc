@@ -12,25 +12,37 @@ use structopt::StructOpt;
     global_settings = "&[structopt::clap::AppSettings::DeriveDisplayOrder, structopt::clap::AppSettings::DisableVersion, structopt::clap::AppSettings::DisableHelpSubcommand]"
 ))]
 pub struct Opt {
-    /// Sets the "mc.yaml" file to use.
+    /// Define which api config file to use.
     #[structopt(long = "config", short = "c", parse(from_os_str))]
     pub file: Option<PathBuf>,
 
-    /// Load from .env file.
+    /// Load dot env file. Overrides env-prompts api configs.
     #[structopt(long = "env", short = "e", parse(from_os_str))]
     pub env: Option<PathBuf>,
+
+    /// Proceed prompts default to yes and env-prompts are disabled.
+    #[structopt(long = "no-prompt", short = "n")]
+    pub prompt: bool,
 
     /// Silence output.
     #[structopt(short = "m", long = "mute")]
     pub mute: bool,
 
-    /// Use flow pattern from mc.yaml.
+    /// Use flow pattern.
     #[structopt(long = "flow", short = "f")]
     pub flow: Option<String>,
 
     /// Clone git repository.
     #[structopt(long = "repo", short = "r")]
     pub repo: Option<String>,
+
+    /// Container image to use when running flow.
+    #[structopt(long = "image", short = "i")]
+    pub image: Option<String>,
+
+    /// Docker image to run in.
+    #[structopt(long = "docker", short = "d")]
+    pub docker: Option<String>,
 
     /// Sets the script to run the the start.
     #[structopt(long = "script", short = "s", parse(from_os_str))]
@@ -52,10 +64,6 @@ pub struct Opt {
     #[structopt(long = "post-script", short = "l", parse(from_os_str))]
     pub post_script: Option<PathBuf>,
 
-    /// Turn prompt off for mc.yaml steps.
-    #[structopt(long = "no-prompt", short = "n")]
-    pub prompt: bool,
-
     #[structopt(subcommand)]
     pub commands: Option<Commands>,
 }
@@ -65,19 +73,19 @@ pub struct Opt {
     global_settings = "&[structopt::clap::AppSettings::DeriveDisplayOrder, structopt::clap::AppSettings::DisableVersion, structopt::clap::AppSettings::DisableHelpSubcommand]"
 ))]
 pub enum Commands {
-    /// Completion scripts for various shells.
-    #[structopt(
-        raw(setting = "structopt::clap::AppSettings::DisableHelpSubcommand"),
-        name = "completions"
-    )]
-    Completions(Completions),
-    
     /// Create api files.
     #[structopt(
         raw(setting = "structopt::clap::AppSettings::DisableHelpSubcommand"),
         name = "create"
     )]
     Create(Create),
+    
+    /// Completion scripts for various shells.
+    #[structopt(
+        raw(setting = "structopt::clap::AppSettings::DisableHelpSubcommand"),
+        name = "completions"
+    )]
+    Completions(Completions),
 }
 
 impl Opt {

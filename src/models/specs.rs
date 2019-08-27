@@ -1,7 +1,9 @@
+use crate::models::dockerization::Dockerization;
 use super::env_file::EnvironmentFile;
 use super::env_prompt::EnvironmentPrompt;
 use super::flows::Flow;
 use super::repository::Repository;
+use super::containerization::Containerization;
 use super::steps::Step;
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -14,6 +16,7 @@ pub struct Specs {
     pub env_file: Option<EnvironmentFile>,
     pub env_prompt: Option<Vec<EnvironmentPrompt>>,
     pub flows: Option<Vec<Flow>>,
+    pub container: Option<Containerization>,
 }
 
 impl Specs {
@@ -24,6 +27,7 @@ impl Specs {
             env_file: Some(EnvironmentFile::new()),
             env_prompt: Some(vec![EnvironmentPrompt::new()]),
             flows: Some(vec![Flow::new()]),
+            container: Some(Containerization::new()),
         }
     }
     
@@ -37,6 +41,13 @@ impl Specs {
             url: Some(url),
         };
         self.repository = Some(repo);
+    }
+
+    pub fn set_container_image(&mut self, image: String) {
+        let container = Containerization {
+            docker: Some(Dockerization::new_values(Some(image), None, None, None)),
+        };
+        self.container = Some(container);
     }
 
     pub fn set_env_file_path(&mut self, path: PathBuf) {
@@ -144,5 +155,41 @@ impl Specs {
             }
             None => self.default_sort(),
         }
+    }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        match &self.repository {
+            Some(paths) => collection.extend(paths.clone().collect_paths()),
+            None => {},
+        }
+        
+        match &self.env_file {
+            Some(paths) => collection.extend(paths.clone().collect_paths()),
+            None => {},
+        }
+        
+        match &self.flows {
+            Some(paths) => {
+                for flow in paths {
+                    collection.extend(flow.clone().collect_paths());
+                }
+            },
+            None => {},
+        }
+        
+        match &self.container {
+            Some(container) => {
+                collection.extend(container.clone().collect_paths());
+            },
+            None => {},
+        }
+        
+        for step in &self.steps {
+            collection.extend(step.1.clone().collect_paths());
+        }
+        
+        collection
     }
 }

@@ -57,6 +57,22 @@ impl Step {
     pub fn new_empty() -> Step {
         Default::default()
     }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        match &self.script {
+            Some(path) => collection.push(path.to_path_buf()),
+            None => {},
+        }
+        
+        match &self.post_script {
+            Some(path) => collection.push(path.to_path_buf()),
+            None => {},
+        }
+        
+        collection
+    }
 }
 
 

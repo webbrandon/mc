@@ -4,8 +4,10 @@ use std::path::PathBuf;
 use super::api_validate;
 use super::mc_file;
 use crate::models::{
-    MasterOfCeremonyModelSelection, MasterOfCeremonyModel, MasterOfCeremonyFlowModel, MasterOfCeremonyTemplateModel, Step,
-    MasterOfCeremonyPromptModel, MasterOfCeremonyRepositoryModel, MasterOfCeremonyEnvironmentFileModel, MasterOfCeremonyStepModel
+    MasterOfCeremonyModelSelection, MasterOfCeremonyModel, MasterOfCeremonyFlowModel, 
+    MasterOfCeremonyTemplateModel, Step, MasterOfCeremonyPromptModel, 
+    MasterOfCeremonyRepositoryModel, MasterOfCeremonyEnvironmentFileModel, 
+    MasterOfCeremonyStepModel, MasterOfCeremonyContainerizationModel
 };
 
 /// The ModelHandler will intake a file as a String and populate the model fields.  Files currently
@@ -15,6 +17,7 @@ pub struct MasterOfCeremonyModelHandler {
     pub configs: Vec<PathBuf>,
     pub model_used: String,
     pub mc_model: MasterOfCeremonyModel,
+    pub mc_container: MasterOfCeremonyContainerizationModel,
     pub mc_env: MasterOfCeremonyEnvironmentFileModel,
     pub mc_flow: MasterOfCeremonyFlowModel,
     pub mc_prompt: MasterOfCeremonyPromptModel,
@@ -85,7 +88,7 @@ impl MasterOfCeremonyModelHandler {
             if self.model_used != "mc" {
                 self.model_used = "mc-flows".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
-        }  else if api_version.0 == "mc-env" {
+        } else if api_version.0 == "mc-env" {
             let model: MasterOfCeremonyEnvironmentFileModel = match serde_yaml::from_str(&yaml_file) {
                 Ok(x) => x,
                 Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyEnvironmentFileModel::new()},
@@ -94,13 +97,13 @@ impl MasterOfCeremonyModelHandler {
             if self.model_used != "mc" {
                 self.model_used = "mc-env".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
-        }  else if api_version.0 == "mc-prompts" {
+        } else if api_version.0 == "mc-prompts" {
             let model: MasterOfCeremonyPromptModel = serde_yaml::from_str(&yaml_file).unwrap();
             self.mc_prompt = model;
             if self.model_used != "mc" {
                 self.model_used = "mc-prompts".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
-        }  else if api_version.0 == "mc-repo" {
+        } else if api_version.0 == "mc-repo" {
             let model: MasterOfCeremonyRepositoryModel = match serde_yaml::from_str(&yaml_file) {
                 Ok(x) => x,
                 Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyRepositoryModel::new()},
@@ -109,7 +112,7 @@ impl MasterOfCeremonyModelHandler {
             if self.model_used != "mc" {
                 self.model_used = "mc-repo".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
-        }  else if api_version.0 == "mc-templates" {
+        } else if api_version.0 == "mc-templates" {
             let model: MasterOfCeremonyTemplateModel = match serde_yaml::from_str(&yaml_file) {
                 Ok(x) => x,
                 Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyTemplateModel::new()},
@@ -118,7 +121,7 @@ impl MasterOfCeremonyModelHandler {
             if self.model_used != "mc" {
                 self.model_used = "mc-templates".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
-        }  else if api_version.0 == "mc-steps" {
+        } else if api_version.0 == "mc-steps" {
             let model: MasterOfCeremonyStepModel = match serde_yaml::from_str(&yaml_file) {
                 Ok(x) => x,
                 Err(e) => {eprintln!("Unknown in config file: {:?}", e.location()); MasterOfCeremonyStepModel::new()},
@@ -126,6 +129,15 @@ impl MasterOfCeremonyModelHandler {
             self.mc_steps = model;
             if self.model_used != "mc" {
                 self.model_used = "mc-steps".to_owned();
+            } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
+        } else if api_version.0 == "mc-container" {
+            let model: MasterOfCeremonyContainerizationModel = match serde_yaml::from_str(&yaml_file) {
+                Ok(x) => x,
+                Err(e) => {eprintln!("Unknown in config file: {:?}", e.location().unwrap()); MasterOfCeremonyContainerizationModel::new()},
+            };
+            self.mc_container = model;
+            if self.model_used != "mc" {
+                self.model_used = "mc-container".to_owned();
             } else if self.configs.len() > 1 { self.model_used = "mc".to_owned(); }
         }  else if api_version.0 == "mc" {
             let model: MasterOfCeremonyModel = match serde_yaml::from_str(&yaml_file) {
@@ -158,8 +170,44 @@ impl MasterOfCeremonyModelHandler {
             MasterOfCeremonyModelSelection::MasterOfCeremonyTemplateModel
         } else if self.model_used == "mc-steps" {
             MasterOfCeremonyModelSelection::MasterOfCeremonyStepModel
+        } else if self.model_used == "mc-container" {
+            MasterOfCeremonyModelSelection::MasterOfCeremonyContainerizationModel
         } else {
             MasterOfCeremonyModelSelection::None
         }
+    }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        if self.model_used == "mc" || self.configs.len() > 1 {
+            //
+        }
+        if self.model_used == "mc-flows" {
+            for flow in &self.mc_templates.specs {
+                collection.extend(flow.clone().collect_paths());
+            }
+        } 
+        if self.model_used == "mc-env" {
+            collection.extend(self.mc_env.specs.collect_paths());
+        }  
+        if self.model_used == "mc-repo" {
+            collection.extend(self.mc_repository.specs.collect_paths());
+        } 
+        if self.model_used == "mc-templates" {
+            for template in &self.mc_templates.specs {
+                collection.extend(template.clone().collect_paths());
+            }
+        } 
+        if self.model_used == "mc-steps" {
+            for step in &self.mc_steps.specs {
+                collection.extend(step.1.clone().collect_paths());
+            }
+        } 
+        if self.model_used == "mc-container" {
+            collection.extend(self.mc_container.specs.collect_paths());
+        } 
+        
+        collection
     }
 }

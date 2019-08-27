@@ -26,6 +26,27 @@ impl Template {
             params,
         }
     }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        match &self.template {
+            Some(path) => collection.push(path.to_path_buf()),
+            None => {},
+        }
+        
+        match &self.out_file {
+            Some(path) => collection.push(path.to_path_buf()),
+            None => {},
+        }
+        
+        match &self.params {
+            Some(path) => collection.push(path.to_path_buf()),
+            None => {},
+        }
+        
+        collection
+    }
 }
 
 

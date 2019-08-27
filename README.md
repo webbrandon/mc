@@ -1,8 +1,20 @@
 **2.0.0-beta**   
 ![Master Of Ceremony](./docs/header.png)
   
-**About**  
-Master Of Ceremony is a script and template configuration management utility framework.  The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing. Configure service pipelines into a packages. Call pipelines for a service through these packages locally or in an existing continuous development and integration service.
+**Continuous Integration and Continuous Delivery Orchestration Framework**
+
+The purpose of this tool is to simplify management of continuous integration and delivery pipelines.  Configure service pipelines into configuration packages.  Call pipelines for a service through these packages locally or in an existing continuous integration and delivery service.
+
+**Features**
+- Configure individual pipeline steps.
+- Use shell script of any kind. (eg. bash, python, node.js, ...)
+- Assign steps into pipeline flows.
+- Built in templating engine.
+- Customize prompting for collecting environment values.
+- Git repository handling.
+- Assign dotenv files to pipeline.
+- Run flows in containerized environments. **beta**
+- Deploy in existing CI/CD systems.
 
 ## Usage
 
@@ -153,6 +165,28 @@ specs:
     post-script: test2.sh
   my-custom-step:
     script: cleanup.sh
+```
+
+---
+
+#### mc-container
+Run your step flow configurations inside a container if you want to provide a way to guarantee scripts run consistently.  Currently docker is only supported.   **Still under beta usage only and may not contain all stated features.**
+
+```bash
+mc -i mc-slave:latest
+```
+_Use the no-prompt option to bypass prompting. You must account for empty values if not set with `mc-env` api._
+
+**mc-container.yaml**   
+```YAML
+---
+api: mc-container
+version: "1.0-beta"
+specs:
+  docker:
+    image: mc-slave:latest
+    volumes:
+      - "/opt/secrets"
 ```
 
 ---

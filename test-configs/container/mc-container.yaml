@@ -1,0 +1,11 @@
+api: mc-container
+version: "1.0"
+metadata:
+  name: example
+  description: ...
+  version: 1.1
+specs:
+  docker:
+    image: mc-slave:latest
+    volumes:
+      - "./"

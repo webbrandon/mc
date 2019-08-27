@@ -1,3 +1,4 @@
+use std::path::PathBuf;
 use super::env_file::EnvironmentFile;
 
 #[serde(rename_all = "kebab-case")]
@@ -20,5 +21,16 @@ impl Flow {
             flow: flows,
             env_file: Some(EnvironmentFile::new()),
         }
+    }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        match &self.env_file {
+            Some(env) => collection.extend(env.clone().collect_paths()),
+            None => {},
+        }
+        
+        collection
     }
 }

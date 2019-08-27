@@ -49,6 +49,8 @@ impl MasterOfCeremonyFileHandler {
             String::from("mc-steps.yml"),
             String::from("mc-templates.yaml"),
             String::from("mc-templates.yml"),
+            String::from("mc-container.yaml"),
+            String::from("mc-container.yml"),
             String::from("mc-env.yaml"),
             String::from("mc-env.yml"),
             String::from("mc-prompts.yaml"),
@@ -104,6 +106,7 @@ impl MasterOfCeremonyFileHandler {
             ("mc-steps.yaml", "mc-steps.yml"),
             ("mc-templates.yaml", "mc-templates.yml"),
             ("mc-prompts.yaml", "mc-prompts.yml"),
+            ("mc-container.yaml", "mc-container.yml"),
             ("mc-env.yaml", "mc-env.yml"),
         ];
         for comparison in &prefernce_comparisons {

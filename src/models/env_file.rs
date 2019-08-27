@@ -31,6 +31,17 @@ impl EnvironmentFile {
             None
         }
     }
+    
+    pub fn collect_paths(&mut self) -> Vec<PathBuf> {
+        let mut collection: Vec<PathBuf> = Vec::new();
+        
+        match &self.path {
+            Some(path) => collection.push(path.to_path_buf()),
+            None => {},
+        }
+        
+        collection
+    }
 }
 
 impl<'de> Deserialize<'de> for EnvironmentFile {
