@@ -177,7 +177,6 @@ Run your step flow configurations inside a container if you want to provide a wa
 ```bash
 mc -i mc-slave:latest
 ```
-_Use the no-prompt option to bypass prompting. You must account for empty values if not set with `mc-env` api._
 
 **mc-container.yaml**   
 ```YAML
