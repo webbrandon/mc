@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 use tokio::prelude::*;
 use tokio::runtime::Runtime;
 use bollard::container::{
-    Config, CreateContainerOptions, StartContainerOptions, HostConfig, MountPoint, LogsOptions
+    LogConfig, Config, CreateContainerOptions, StartContainerOptions, HostConfig, MountPoint, LogsOptions
 };
 use bollard::image::{BuildImageOptions, CreateImageOptions};
 use bollard::{Docker};
@@ -30,6 +30,15 @@ impl ContainerizationHandler {
     }
     
     pub fn process(&mut self) {
+        // Always make sure we add the base of operations.  This the base Path
+        // for all volume paths.
+        self.volumes.push(MountPoint {
+            target: Path::new("/opt/mc").to_str().unwrap().to_string(),
+            source: std::fs::canonicalize(Path::new(".")).unwrap().to_str().unwrap().to_string(),
+            type_: "bind".to_string(),
+            consistency: "default".to_string(),
+            ..Default::default()
+        });
         match &self.container_model.docker {
             Some(docker_model) => {
                 match &docker_model.image {
@@ -40,13 +49,13 @@ impl ContainerizationHandler {
                                     Ok(_) => {
                                         //println!("{:?}", run);
                                     },
-                                    Err(e) => {
-                                        println!("{:?}", e);
+                                    Err(_e) => {
+                                        // println!("{:?}", e);
                                     }
                                 }
                             },
-                            Err(e) => {
-                                println!("{:?}", e);
+                            Err(_e) => {
+                                // println!("{:?}", e);
                             }
                         }
                     },
@@ -86,10 +95,16 @@ impl ContainerizationHandler {
     
     pub fn convert_to_container_path(&mut self, path: &PathBuf) -> String {
         let mut mutated_path:PathBuf; 
-        let home_path = std::fs::canonicalize(Path::new(".")).unwrap();
+        let home_path = match std::fs::canonicalize(Path::new("./")) {
+            Ok(path_x) => path_x,
+            Err(_e) => Path::new(".").to_path_buf(),
+        };
         let slave_path = Path::new("/opt/mc");
         
-        mutated_path = path.strip_prefix(&home_path).map_err(|_| ()).unwrap().to_path_buf();
+        mutated_path = match path.strip_prefix(&home_path) {
+            Ok(path_x) => path_x.to_path_buf(),
+            Err(_e) => path.to_owned(),
+        };
         mutated_path = slave_path.join(mutated_path);
         
         mutated_path.to_str().unwrap().to_string()
@@ -97,8 +112,8 @@ impl ContainerizationHandler {
     
     pub fn set_volumes(&mut self, volumes: Vec<PathBuf>) {
         let mut mounts: Vec<MountPoint<String>> = Vec::new();
+        
         for volume in volumes {
-            
             mounts.push(MountPoint {
                 target: self.convert_to_container_path(&volume),
                 source: volume.to_str().unwrap_or("${PWD}").to_string(),
@@ -107,6 +122,7 @@ impl ContainerizationHandler {
                 ..Default::default()
             });
         }
+        
         self.volumes = mounts;
     }
     
@@ -144,7 +160,6 @@ impl ContainerizationHandler {
         let mut rt = Runtime::new().unwrap();
         let docker = self.docker_connect();
         let build_config = self.docker_build_config();
-        // let me = std::fs::read_to_string(self.build_file.clone());
         
         let stream = docker
             .chain()
@@ -157,7 +172,9 @@ impl ContainerizationHandler {
             .into_stream();
             
         let future = stream
-            .map_err(|e| println!("{:?}", e))
+            .map_err(|e| {
+                println!("{:?}", e)
+            })
             .for_each(|_| {
                 Ok(())
             });
@@ -180,6 +197,10 @@ impl ContainerizationHandler {
             cmd: Some(vec!["mc".to_string()]),
             host_config: Some(HostConfig {
                 mounts: Some(self.volumes.clone()),
+                log_config: Some(LogConfig {
+                    type_: Some(String::from("json-file")),
+                    config: Some(HashMap::new())
+                }),
                 ..Default::default()
             }),
             ..Default::default()
@@ -207,7 +228,9 @@ impl ContainerizationHandler {
             .into_stream();
             
         let future = stream
-            .map_err(|e| println!("{:?}", e))
+            .map_err(|e| {
+                println!("{:?}", e)
+            })
             .for_each(|_| {
                 Ok(())
             });

@@ -5,16 +5,18 @@
 
 The purpose of this tool is to simplify management of continuous integration and delivery pipelines.  Configure service pipelines into configuration packages.  Call pipelines for a service through these packages locally or in an existing continuous integration and delivery service.
 
+Not familiar with CI/CD orchestration and are wondering what's so great about MC? Take a challenge and see the ways it can help you in your everyday development and management practices, [learn more](HACKS.md).
+
 **Features**
 - Configure individual pipeline steps.
-- Use shell script of any kind. (eg. bash, python, node.js, ...)
+- Use shell script of any kind for step development. (eg. bash, python, node.js, ...)
 - Assign steps into pipeline flows.
 - Built in templating engine.
 - Customize prompting for collecting environment values.
 - Git repository handling.
 - Assign dotenv files to pipeline.
 - Run flows in containerized environments. **beta**
-- Deploy in existing CI/CD systems.
+- Deploy in existing CI/CD systems. [learn more](#deploy-in-existing-cicd)
 
 ## Usage
 
@@ -321,6 +323,84 @@ specs:
     out-file: template.bash  
 ```
 
+## Deploy in existing CI/CD?  
+MC is designed to be built cross platform meaning you should be able to access with the correct permission settings in most CI/CD systems.  If you can't find a binary that fits your needs please let us know by filing an issue.  
+  
+Here is an example of a minimalist implementation on Jenkins using a Kubernetes JNLP slave:  
+
+**Dockerfile.jnlp-slave**
+```dockerfile
+FROM jenkins/jnlp-slave:latest
+
+ARG MC_VER=v2.0.0-beta
+
+USER root
+RUN apt-get update && apt-get install -qq curl
+
+RUN curl -LO https://github.com/webbrandon/mc/releases/download/${MC_VER}/debian && \
+  chmod +x debian && \
+  mv debian /usr/local/bin/mc
+
+RUN apt-get clean -y
+
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+RUN groupadd mc && \
+    usermod -aG mc jenkins && \
+    usermod -aG docker jenkins && \
+    chsh -s /bin/bash
+    
+ENTRYPOINT ["jenkins-slave"]
+```
+
+**Jenkinsfile**
+```java
+node('mc-slave') {
+    container('jnlp-mc') {
+        env.ENVIRONMENT="prod"
+        
+        stage('run build pipeline'){
+            sh'''      
+            mc --env=${ENVIRONMENT}.env --flow=build --no-prompt
+            '''
+        }
+    }
+ }
+```
+  
+**mc.yaml**  
+```yaml
+api: mc
+version: "2.0"
+specs:
+  repository:
+    url: 'https://github.com/webbrandon/mc.git'
+  flows:
+    - name: build
+      flow:
+        - unit-test
+        - build
+    - name: deploy
+      flow:
+        - template
+        - deploy
+        - feature-test
+  steps:
+    unit-test:
+      script: test.sh
+    build:
+      script: build.sh
+    template:
+      script: template.sh
+      templates: 
+        template: deploy.tmpl
+        out-file: deploy.yaml
+        params: my.params
+    deploy:
+      script: deploy.sh
+```
+
+
 ## Build From Source
 If you are building from source you will need to have the [Rust language ](https://rustup.rs/) application suite installed and download the [source code](https://webbrandon.github.io/mc).  I have built and tested for linux and OSX only.  If you try on Windows please let me know how it goes.
 
@@ -331,6 +411,21 @@ cargo build --release
 cargo install --force
 ```
 
+## Future Feature Work Plans
+The goal of MC is to create an eco system that becomes flexible and easy to integrate existing and custom CI/CD processes into.  Please feel free to make contributions or begin conversations on how we can make things better.  There is a long way to go but the journey has began.  
+
+Here is some of the things we are planning on adding to MC:
+
+- Remote file request for most file association fields.
+- Containerization
+  - Docker API **(In-progress)**
+  - Kubernetes API
+- Configuration api's associate outside of directory associations.
+- Api creation with prompted guide.
+- Studio management options for many services.
+- Studio dameon to begin making automation self handled.
+- Step sharing package management system. 
+- Current feature refinement. 
 
 Unlicense (Public Domain)
 ============================

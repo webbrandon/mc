@@ -52,7 +52,7 @@ _mc() {
 
     case "${cmd}" in
         mc)
-            opts=" -n -m -h -c -e -f -r -d -s -t -o -p -l  --no-prompt --mute --help --config --env --flow --repo --docker --script --template --template-out --param --post-script   create completions"
+            opts=" -n -m -h -c -e -f -r -i -d -s -t -o -p -l  --no-prompt --mute --help --config --env --flow --repo --image --docker --script --template --template-out --param --post-script   create completions"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -88,6 +88,14 @@ _mc() {
                     return 0
                     ;;
                     -r)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --image)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -i)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -270,6 +278,7 @@ complete -c mc -n "__fish_use_subcommand" -s c -l config -d 'Define which api co
 complete -c mc -n "__fish_use_subcommand" -s e -l env -d 'Load dot env file. Overrides env-prompts api configs.'
 complete -c mc -n "__fish_use_subcommand" -s f -l flow -d 'Use flow pattern.'
 complete -c mc -n "__fish_use_subcommand" -s r -l repo -d 'Clone git repository.'
+complete -c mc -n "__fish_use_subcommand" -s i -l image -d 'Container image to use when running flow.'
 complete -c mc -n "__fish_use_subcommand" -s d -l docker -d 'Docker image to run in.'
 complete -c mc -n "__fish_use_subcommand" -s s -l script -d 'Sets the script to run the the start.'
 complete -c mc -n "__fish_use_subcommand" -s t -l template -d 'Sets a custom template file.'
@@ -333,6 +342,8 @@ _mc() {
 '--flow=[Use flow pattern.]' \
 '-r+[Clone git repository.]' \
 '--repo=[Clone git repository.]' \
+'-i+[Container image to use when running flow.]' \
+'--image=[Container image to use when running flow.]' \
 '-d+[Docker image to run in.]' \
 '--docker=[Docker image to run in.]' \
 '-s+[Sets the script to run the the start.]' \
@@ -538,6 +549,8 @@ Register-ArgumentCompleter -Native -CommandName 'mc' -ScriptBlock {
             [CompletionResult]::new('--flow', 'flow', [CompletionResultType]::ParameterName, 'Use flow pattern.')
             [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Clone git repository.')
             [CompletionResult]::new('--repo', 'repo', [CompletionResultType]::ParameterName, 'Clone git repository.')
+            [CompletionResult]::new('-i', 'i', [CompletionResultType]::ParameterName, 'Container image to use when running flow.')
+            [CompletionResult]::new('--image', 'image', [CompletionResultType]::ParameterName, 'Container image to use when running flow.')
             [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Docker image to run in.')
             [CompletionResult]::new('--docker', 'docker', [CompletionResultType]::ParameterName, 'Docker image to run in.')
             [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Sets the script to run the the start.')
@@ -653,6 +666,8 @@ edit:completion:arg-completer[mc] = [@words]{
             cand --flow 'Use flow pattern.'
             cand -r 'Clone git repository.'
             cand --repo 'Clone git repository.'
+            cand -i 'Container image to use when running flow.'
+            cand --image 'Container image to use when running flow.'
             cand -d 'Docker image to run in.'
             cand --docker 'Docker image to run in.'
             cand -s 'Sets the script to run the the start.'

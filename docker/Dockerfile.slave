@@ -3,7 +3,7 @@ FROM debian:stretch-slim
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
   curl
-RUN curl https://webbrandon.github.io/mc/install.sh -sS | bash -s
+RUN curl https://raw.githubusercontent.com/webbrandon/mc/v2.0.0-beta/install.sh -sS | bash -s
 
 RUN mkdir -p /opt/mc
 WORKDIR /opt/mc
