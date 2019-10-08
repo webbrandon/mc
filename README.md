@@ -1,5 +1,7 @@
 # Master of Ceremony
 
+2.0 Beta is ready to begin testing, [learn more](https://github.com/webbrandon/mc/tree/master2).
+
 **About**  
 The purpose of this tool is to simplify management of continuous development and integration pipelines while decoupling steps from services architectures that can become bottlenecks or blockers to software deployment and testing.  This tool helps configure pipeline steps into a package that can be used for existing CI/CD services or to process locally with a user at the helm. 
 
